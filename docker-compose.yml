@@ -1,0 +1,111 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coinapp_app
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+      - ./entrypoint.sh:/entrypoint.sh
+    ports:
+      - "9000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost
+      - DB_DRIVER=pgsql
+      - APP_ROLE=app
+    command: ["sh", "/entrypoint.sh"]
+
+  nginx:
+    image: nginx:alpine
+    container_name: coinapp_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  vite:
+    image: node:18-alpine
+    container_name: coinapp_vite
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+      - ./entrypoint.sh:/entrypoint.sh
+    ports:
+      - "5173:5173"
+    depends_on:
+      - app
+    environment:
+      - HOST=0.0.0.0
+      - APP_ROLE=vite
+    command: ["sh", "/entrypoint.sh"]
+
+  postgres:
+    image: postgres:15
+    container_name: coinapp_postgres
+    environment:
+      POSTGRES_DB: coinapp
+      POSTGRES_USER: coinuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    container_name: coinapp_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coinapp_queue
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+      - ./entrypoint.sh:/entrypoint.sh
+    depends_on:
+      - app
+    environment:
+      - APP_ROLE=queue
+    command: ["sh", "/entrypoint.sh"]
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coinapp_scheduler
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+      - ./entrypoint.sh:/entrypoint.sh
+    depends_on:
+      - app
+    environment:
+      - APP_ROLE=scheduler
+    command: ["sh", "/entrypoint.sh"]
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: coinapp_mailpit
+    ports:
+      - "8025:8025"
+
+volumes:
+  pgdata:
+  redisdata:
