@@ -4,7 +4,17 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('@/components/pages/home.vue'), // ленивый импорт
+        component: () => import('../pages/Home.vue'),
+    },
+    {
+        path: '/about',
+        name: 'about',
+        component: () => import('../pages/About.vue'),
+    },
+    {
+        path: '/convert',
+        name: 'convert',
+        component: () => import('../pages/Convert.vue'),
     },
 ]
 

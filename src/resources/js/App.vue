@@ -1,9 +1,10 @@
 <template>
-    <div class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
+    <div class="min-h-screen bg-gray-900 text-white">
+        <Header />
         <router-view />
     </div>
 </template>
 
 <script setup>
-// ничего не нужно
+import Header from './components/Header.vue'
 </script>

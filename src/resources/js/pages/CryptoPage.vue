@@ -6,5 +6,5 @@
 </template>
 
 <script setup>
-import CryptoTable from '@/components/CryptoTable.vue'
+import CryptoTable from '../components/CryptoTable.vue'
 </script>
