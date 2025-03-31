@@ -1,18 +1,11 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
     content: [
-        './resources/**/*.blade.php',
-        './resources/**/*.js',
-        './resources/**/*.vue', // ← важно!
-        './storage/framework/views/*.php',
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './resources/**/*.blade.php',  // Для Blade-шаблонов
+        './resources/**/*.vue',       // Для Vue компонентов
+        './resources/**/*.js',        // Для JS файлов
     ],
     theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Instrument Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-            },
-        },
+        extend: {},
     },
     plugins: [],
 }

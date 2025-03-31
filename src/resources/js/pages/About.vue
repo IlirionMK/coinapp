@@ -1,12 +1,8 @@
 <template>
-    <section class="p-6 max-w-3xl mx-auto">
-        <h1 class="text-3xl font-bold mb-4">О проекте</h1>
-        <p class="text-lg leading-relaxed text-gray-300">
-            Этот дашборд показывает актуальные данные о криптовалютах, курсы обмена, графики и новости.
-            Проект создан с использованием Laravel, Vue и Tailwind CSS.
-        </p>
-    </section>
+    <div class="p-6">
+        <h1 class="text-3xl font-bold text-green-400">О проекте</h1>
+        <p class="mt-4 text-gray-300">Этот проект демонстрирует SPA с использованием Vue + Laravel.</p>
+    </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>

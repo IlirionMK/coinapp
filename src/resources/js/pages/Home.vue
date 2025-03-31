@@ -1,5 +1,6 @@
 <template>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+        <Header />
         <CryptoTable />
         <Converter />
         <NewsFeed />
@@ -7,6 +8,7 @@
 </template>
 
 <script setup>
+import Header from '../components/Header.vue'
 import CryptoTable from '../components/CryptoTable.vue'
 import Converter from '../components/Converter.vue'
 import NewsFeed from '../components/NewsFeed.vue'

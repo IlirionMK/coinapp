@@ -1,7 +1,7 @@
 <template>
     <div class="p-6">
-        <h1 class="text-2xl font-bold mb-4">Конвертация</h1>
-        <p>Функция конвертации скоро будет доступна.</p>
+        <h1 class="text-3xl font-bold text-blue-400">Конвертер валют</h1>
+        <p class="mt-4 text-gray-300">Здесь будет конвертация криптовалют.</p>
     </div>
 </template>
 

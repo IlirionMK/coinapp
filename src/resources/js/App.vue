@@ -1,10 +1,10 @@
 <template>
-    <div class="min-h-screen bg-gray-900 text-white">
-        <Header />
+    <div>
+        <Navigation />
         <router-view />
     </div>
 </template>
 
 <script setup>
-import Header from './components/Header.vue'
+import Navigation from './components/Navigation.vue'
 </script>
