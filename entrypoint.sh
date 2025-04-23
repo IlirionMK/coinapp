@@ -4,19 +4,19 @@ set -e
 
 cd /var/www/html
 
-echo "🎬 Контейнер стартует с ролью: $APP_ROLE"
+echo "Container starting with role: $APP_ROLE"
 
 case "$APP_ROLE" in
   app)
-    echo "🚀 Запуск Laravel APP"
+    echo "Starting Laravel application..."
 
     if [ ! -f artisan ]; then
-      echo "🔧 Laravel не найден. Устанавливаем..."
+      echo "Laravel not found. Creating new project..."
       composer create-project laravel/laravel . --prefer-dist
     fi
 
     if [ ! -f .env ]; then
-      echo "📄 Настройка .env"
+      echo "Setting up .env"
       if [ -f .env.docker ]; then
         cp .env.docker .env
       else
@@ -27,7 +27,7 @@ case "$APP_ROLE" in
 
     DB_DRIVER=${DB_DRIVER:-sqlite}
     if [ "$DB_DRIVER" = "sqlite" ]; then
-      echo "🎛️ Используем SQLite"
+      echo "Using SQLite"
       sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
       sed -i '/^DB_HOST=/d' .env
       sed -i '/^DB_PORT=/d' .env
@@ -35,7 +35,7 @@ case "$APP_ROLE" in
       echo "DB_DATABASE=${PWD}/database/database.sqlite" >> .env
       mkdir -p database && touch database/database.sqlite
     else
-      echo "🔗 Используем PostgreSQL"
+      echo "Using PostgreSQL"
       sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=pgsql/' .env
       sed -i 's/^DB_HOST=.*/DB_HOST=postgres/' .env
       sed -i 's/^DB_PORT=.*/DB_PORT=5432/' .env
@@ -47,7 +47,7 @@ case "$APP_ROLE" in
     chmod -R 775 storage bootstrap/cache database || true
     chown -R www-data:www-data storage bootstrap/cache database || true
 
-    echo "📦 Установка PHP-зависимостей..."
+    echo "Installing PHP dependencies..."
     composer install --no-interaction || true
 
     php artisan config:clear
@@ -55,38 +55,38 @@ case "$APP_ROLE" in
     php artisan storage:link || true
     php artisan cache:clear || true
 
-    echo "✅ Laravel готов!"
+    echo "Laravel is ready."
     exec php-fpm
     ;;
 
   vite)
-    echo "🎨 Запуск Vite"
+    echo "Starting Vite"
     cd /var/www/html
 
     if [ ! -d node_modules ]; then
-      echo "📦 Установка NPM-зависимостей (впервые)..."
+      echo "Installing NPM dependencies (initial)..."
       npm install
     else
-      echo "📦 Проверка наличия vue и @vitejs/plugin-vue..."
+      echo "Checking for vue and @vitejs/plugin-vue..."
       if ! npm list vue >/dev/null 2>&1 || ! npm list @vitejs/plugin-vue >/dev/null 2>&1; then
-        echo "➕ Установка недостающих пакетов..."
+        echo "Installing missing packages..."
         npm install vue @vitejs/plugin-vue
       else
-        echo "✅ vue и @vitejs/plugin-vue уже установлены"
+        echo "vue and @vitejs/plugin-vue already installed"
       fi
     fi
 
-    echo "🚀 Запуск Vite Dev Server"
+    echo "Starting Vite Dev Server"
     exec npm run dev
     ;;
 
   queue)
-    echo "📩 Запуск Laravel Queue"
+    echo "Starting Laravel queue worker"
     exec php artisan queue:work --verbose --tries=3 --timeout=90
     ;;
 
   scheduler)
-    echo "⏰ Запуск Laravel Scheduler"
+    echo "Starting Laravel scheduler"
     while true; do
       php artisan schedule:run --verbose --no-interaction &
       sleep 60
@@ -94,7 +94,7 @@ case "$APP_ROLE" in
     ;;
 
   *)
-    echo "⚠️ Неизвестная роль: $APP_ROLE"
+    echo "Unknown role: $APP_ROLE"
     exec "$@"
     ;;
 esac

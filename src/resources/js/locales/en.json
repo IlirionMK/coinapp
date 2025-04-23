@@ -2,5 +2,15 @@
     "home": "Home",
     "convert": "Convert",
     "about": "About",
-    "welcome": "Welcome to Crypto Dashboard"
+    "welcome": "Welcome to Crypto Dashboard",
+    "intro": "Stay updated with the latest crypto prices and news.",
+    "crypto_table": "Crypto Prices",
+    "converter": "Currency Converter",
+    "converter_intro": "Converter component is under development.",
+    "news": "Latest News",
+    "news_intro": "Here will be the latest news from the world of cryptocurrencies.",
+    "loading": "Loading",
+    "name": "Name",
+    "price": "Price",
+    "change": "Change"
 }

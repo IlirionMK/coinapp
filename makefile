@@ -1,52 +1,17 @@
-# Основное
-up:
-	docker-compose up -d --build
-
-down:
-	docker-compose down --remove-orphans
-
-restart:
-	docker-compose down --remove-orphans && docker-compose up -d --build
-
-logs:
-	docker-compose logs -f app
-
-# Laravel
-artisan:
-	docker exec -it coinapp_app php artisan
-
-migrate:
-	docker exec -it coinapp_app php artisan migrate
-
-seed:
-	docker exec -it coinapp_app php artisan db:seed
-
-queue:
-	docker exec -it coinapp_queue php artisan queue:work
-
-scheduler:
-	docker exec -it coinapp_scheduler php artisan schedule:run
-
-# NPM / Vite
-npm-install:
-	docker exec -it coinapp_vite npm install
-
-npm-dev:
-	docker exec -it coinapp_vite npm run dev
-
-npm-build:
-	docker exec -it coinapp_vite npm run build
-
-# База
-psql:
-	docker exec -it coinapp_postgres psql -U coinuser -d coinapp
-
-# Утилиты
-ssh:
-	docker exec -it coinapp_app bash
-
-refresh:
-	docker-compose down --volumes --remove-orphans
-	rm -rf src
-	mkdir src
-	make up
+setup:
+	@echo "Starting environment setup..."
+	docker compose down --remove-orphans || true
+	docker compose up -d --build
+	@echo "Installing PHP dependencies..."
+	docker compose exec app composer install
+	@echo "Installing Node dependencies..."
+	docker compose exec vite npm install
+	@echo "Preparing .env and application key..."
+	docker compose exec app cp .env.example .env || true
+	docker compose exec app php artisan key:generate || true
+	docker compose exec app php artisan migrate --force || true
+	docker compose exec app php artisan db:seed || true
+	docker compose exec app php artisan storage:link || true
+	@echo "Building frontend..."
+	docker compose exec vite npm run build
+	@echo "Setup complete. Project is running at http://localhost:8000"

@@ -2,5 +2,15 @@
     "home": "Strona główna",
     "convert": "Konwerter",
     "about": "O projekcie",
-    "welcome": "Witamy w Crypto Dashboard"
+    "welcome": "Witamy w Crypto Dashboard",
+    "intro": "Bądź na bieżąco z najnowszymi cenami i wiadomościami kryptowalutowymi.",
+    "crypto_table": "Tabela kryptowalut",
+    "converter": "Konwerter walut",
+    "converter_intro": "Komponent konwertera w przygotowaniu.",
+    "news": "Najnowsze wiadomości",
+    "news_intro": "Tutaj będą pojawiać się aktualności ze świata kryptowalut.",
+    "loading": "Ładowanie",
+    "name": "Nazwa",
+    "price": "Cena",
+    "change": "Zmiana"
 }

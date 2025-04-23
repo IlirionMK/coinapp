@@ -1,0 +1,14 @@
+node_modules
+vendor
+.env
+.env.*
+*.log
+storage/*.key
+storage/logs
+storage/framework
+public/storage
+build
+coverage
+.idea
+.vscode
+*.sqlite
