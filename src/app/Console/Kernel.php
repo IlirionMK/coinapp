@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        // Здесь можно будет настроить запуск по расписанию
-        // $schedule->command('coins:sync')->everyFiveMinutes();
+        // Updating prices every 10 min
+         $schedule->command('coins:sync')->everyTenMinutes();
     }
 
     protected function commands(): void

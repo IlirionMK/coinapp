@@ -1,8 +1,8 @@
 <template>
-    <main class="p-6 max-w-7xl mx-auto">
+    <section>
         <h1 class="text-3xl font-bold mb-6">Crypto Dashboard</h1>
         <CryptoTable />
-    </main>
+    </section>
 </template>
 
 <script setup>

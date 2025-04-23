@@ -9,11 +9,11 @@ use App\Models\Coin;
 class SyncCoinsCommand extends Command
 {
     protected $signature = 'coins:sync';
-    protected $description = 'Sync cryptocurrency data from CoinGecko API';
+    protected $description = 'Fetch and update cryptocurrency data from CoinGecko';
 
-    public function handle(): void
+    public function handle(): int
     {
-        $this->info('Fetching data from CoinGecko...');
+        $this->info('Fetching coins from CoinGecko...');
 
         $response = Http::get('https://api.coingecko.com/api/v3/coins/markets', [
             'vs_currency' => 'usd',
@@ -23,26 +23,27 @@ class SyncCoinsCommand extends Command
             'sparkline' => false,
         ]);
 
-        if ($response->failed()) {
-            $this->error('Failed to fetch data from CoinGecko.');
-            return;
+        if (!$response->successful()) {
+            $this->error('Failed to fetch data');
+            return Command::FAILURE;
         }
 
-        foreach ($response->json() as $item) {
+        foreach ($response->json() as $data) {
             Coin::updateOrCreate(
-                ['coingecko_id' => $item['id']],
+                ['coingecko_id' => $data['id']],
                 [
-                    'symbol' => $item['symbol'],
-                    'name' => $item['name'],
-                    'image' => $item['image'],
-                    'price' => $item['current_price'],
-                    'market_cap' => $item['market_cap'],
-                    'market_cap_rank' => $item['market_cap_rank'],
-                    'price_change_percentage_24h' => $item['price_change_percentage_24h'],
+                    'name' => $data['name'],
+                    'symbol' => $data['symbol'],
+                    'image' => $data['image'],
+                    'price' => $data['current_price'],
+                    'market_cap' => $data['market_cap'],
+                    'market_cap_rank' => $data['market_cap_rank'],
+                    'price_change_percentage_24h' => $data['price_change_percentage_24h'],
                 ]
             );
         }
 
-        $this->info('Data successfully synced.');
+        $this->info('Coins synced successfully.');
+        return Command::SUCCESS;
     }
 }

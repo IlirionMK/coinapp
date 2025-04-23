@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('coingecko_id')->unique();
             $table->string('symbol');
             $table->string('name');
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->decimal('price', 20, 8)->nullable();
             $table->bigInteger('market_cap')->nullable();
             $table->integer('market_cap_rank')->nullable();
