@@ -18,7 +18,7 @@
                     {{ coin.name }} ({{ coin.symbol.toUpperCase() }})
                 </td>
                 <td class="px-6 py-4 text-gray-700">
-                    {{ coin.current_price | currency }}
+                    {{ formatCurrency(coin.current_price) }}
                 </td>
                 <td class="px-6 py-4">
             <span :class="{
@@ -39,22 +39,15 @@ import { ref, onMounted } from 'vue'
 
 const coins = ref([])
 
+function formatCurrency(value) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(value)
+}
+
 onMounted(async () => {
     const res = await fetch('/api/coins')
     coins.value = await res.json()
 })
-</script>
-
-<!-- Фильтр форматирования валют -->
-<script>
-export default {
-    filters: {
-        currency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-            }).format(value)
-        },
-    },
-}
 </script>
