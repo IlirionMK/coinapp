@@ -7,18 +7,22 @@ use App\Models\Coin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class CoinController extends Controller
 {
     public function index(): JsonResponse
     {
-        $lastUpdated = Coin::max('updated_at');
+        $wasRecentlySynced = Cache::get('coins_recently_synced');
 
-        if (!$lastUpdated || now()->diffInMinutes($lastUpdated) > 10) {
-            // Обновление запускается в фоне (если настроено queue), иначе сразу
-            Log::info('Обновляем данные о монетах через команду coins:sync');
-            Artisan::call('coins:sync');
+        if (!$wasRecentlySynced) {
+            Log::info('Обновляем данные о монетах через coins:sync');
+
+            // Запоминаем, что обновление было
+            Cache::put('coins_recently_synced', true, now()->addMinutes(10));
+
+            // Запускаем команду (можно заменить на dispatch в будущем)
+            Artisan::queue('coins:sync');
         }
 
         return response()->json(Coin::all());

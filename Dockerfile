@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
     libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_pgsql zip
 
+# Установка расширения Redis через PECL
+RUN pecl install redis && docker-php-ext-enable redis
+
 # Установка Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -20,7 +23,7 @@ COPY src/composer.json src/composer.lock ./
 RUN composer install --prefer-dist --no-dev --no-autoloader --no-scripts || true
 
 # Копируем всё приложение
-COPY ./src .
+COPY ./src ./
 
 # Финальный composer install
 RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader

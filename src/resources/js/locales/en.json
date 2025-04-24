@@ -12,5 +12,8 @@
     "loading": "Loading",
     "name": "Name",
     "price": "Price",
-    "change": "Change"
+    "change": "Change",
+    "coin": "Coin",
+    "market_cap": "Market Cap"
 }
+

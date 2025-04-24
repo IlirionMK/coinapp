@@ -8,6 +8,7 @@ storage/*.key
 storage/logs
 storage/framework
 public/storage
+src/public/storage
 build
 coverage
 .idea
