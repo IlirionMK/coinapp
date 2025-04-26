@@ -1,31 +1,31 @@
 FROM php:8.2-fpm
 
-# Установим системные зависимости и расширения PHP
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     git curl unzip zip \
     libpq-dev libzip-dev libpng-dev \
     libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_pgsql zip
 
-# Установка расширения Redis через PECL
+# Install Redis extension via PECL
 RUN pecl install redis && docker-php-ext-enable redis
 
-# Установка Composer
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Установка рабочей директории
+# Set working directory
 WORKDIR /var/www/html
 
-# Копируем только файлы composer для кэширования vendor
+# Copy only composer files for dependency caching
 COPY src/composer.json src/composer.lock ./
 
-# Установка зависимостей PHP (кэшируется)
+# Install PHP dependencies (cached layer)
 RUN composer install --prefer-dist --no-dev --no-autoloader --no-scripts || true
 
-# Копируем всё приложение
+# Copy the entire application
 COPY ./src ./
 
-# Финальный composer install
+# Final Composer install
 RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
 
 EXPOSE 9000
