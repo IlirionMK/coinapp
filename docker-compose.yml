@@ -38,7 +38,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html
-      - vite_node_modules:/var/www/html/node_modules  # сохраняем зависимости Vite
+      - vite_node_modules:/var/www/html/node_modules  
       - ./entrypoint.sh:/entrypoint.sh
     ports:
       - "5173:5173"
