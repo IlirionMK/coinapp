@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src/resources/js",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/resources/js/*"]
     }
   },
   "include": ["src/resources/js/**/*"]
