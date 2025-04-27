@@ -1,0 +1,91 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: environment/Dockerfile.dev
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "9000:9000"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=coinapp
+      - DB_USERNAME=coinuser
+      - DB_PASSWORD=secret
+    depends_on:
+      - postgres
+      - redis
+
+  vite:
+    image: node:18-alpine
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - app
+
+  queue:
+    build:
+      context: .
+      dockerfile: environment/Dockerfile.dev
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+      - ./entrypoint.sh:/entrypoint.sh
+    environment:
+      - ROLE=queue
+    depends_on:
+      - app
+    command: ["sh", "/entrypoint.sh"]
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: environment/Dockerfile.dev
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+      - ./entrypoint.sh:/entrypoint.sh
+    environment:
+      - ROLE=scheduler
+    depends_on:
+      - app
+    command: ["sh", "/entrypoint.sh"]
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.dev.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+      - vite
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: coinapp
+      POSTGRES_USER: coinuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5433:5432"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
