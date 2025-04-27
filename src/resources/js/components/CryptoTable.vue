@@ -1,81 +1,74 @@
 <template>
-    <table class="w-full table-auto border-collapse bg-white shadow rounded overflow-hidden">
-        <thead class="bg-gray-100 text-left text-sm text-gray-600">
-        <tr>
-            <th class="px-4 py-2">#</th>
-            <th class="px-4 py-2">{{ t('coin') }}</th>
-            <th class="px-4 py-2">{{ t('price') }}</th>
-            <th class="px-4 py-2">24h</th>
-            <th class="px-4 py-2">{{ t('market_cap') }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="loading">
-            <td colspan="5" class="text-center text-gray-500 py-10">
-                {{ t('loading') }}...
-            </td>
-        </tr>
-        <tr
-            v-else
-            v-for="(coin, index) in coins"
-            :key="coin.id"
-            class="border-t hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-        >
-            <td class="px-4 py-2">{{ index + 1 }}</td>
-            <td class="px-4 py-2 flex items-center gap-2">
-                <img
-                    loading="lazy"
-                    :src="`/proxy/image?url=${encodeURIComponent(coin.image)}`"
-                    :alt="coin.name"
-                    class="w-2 h-2 rounded-full object-cover"
-                />
-                {{ coin.name }} ({{ coin.symbol.toUpperCase() }})
-            </td>
-            <td class="px-4 py-2">{{ formatCurrency(coin.price) }}</td>
-            <td
-                class="px-4 py-2 font-semibold"
-                :class="coin.price_change_percentage_24h > 0 ? 'text-green-600' : 'text-red-600'"
-            >
-                {{ formatPercentage(coin.price_change_percentage_24h) }}
-            </td>
-            <td class="px-4 py-2">{{ formatMarketCap(coin.market_cap) }}</td>
-        </tr>
-        </tbody>
-    </table>
+    <section class="p-6">
+        <h2 class="text-2xl font-bold mb-4">{{ t('crypto_table') }}</h2>
+
+        <table class="min-w-full table-auto">
+            <thead>
+            <tr>
+                <th class="px-4 py-2 text-left">#</th>
+                <th class="px-4 py-2 text-left">{{ t('name') }}</th>
+                <th class="px-4 py-2 text-right">{{ t('price') }}</th>
+                <th class="px-4 py-2 text-right">{{ t('24h_change') }}</th>
+                <th class="px-4 py-2 text-right">{{ t('market_cap') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(coin, index) in coins" :key="coin.id" class="border-t">
+                <td class="px-4 py-2 text-center">{{ index + 1 }}</td>
+                <td class="px-4 py-2 flex items-center gap-2">
+                    <img
+                        :src="coin.icon_path"
+                        :alt="coin.name"
+                        class="w-6 h-6 rounded-full object-cover"
+                        @error="handleIconError"
+                    />
+                    <span>{{ coin.name }} ({{ coin.symbol.toUpperCase() }})</span>
+                </td>
+                <td class="px-4 py-2 text-right">
+                    {{ coin.price ? `$${Number(coin.price).toLocaleString()}` : '-' }}
+                </td>
+                <td
+                    class="px-4 py-2 text-right"
+                    :class="{
+                          'text-green-500': coin.price_change_percentage_24h > 0,
+                          'text-red-500': coin.price_change_percentage_24h < 0
+                        }"
+                >
+                    {{ coin.price_change_percentage_24h
+                    ? `${Number(coin.price_change_percentage_24h).toFixed(2)}%`
+                    : '-' }}
+                </td>
+                <td class="px-4 py-2 text-right">
+                    {{ coin.market_cap ? `$${Number(coin.market_cap).toLocaleString()}` : '-' }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n'
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-const props = defineProps({
-    coins: {
-        type: Array,
-        required: false,
-        default: () => []
-    },
-    loading: {
-        type: Boolean,
-        default: false
+const { t } = useI18n();
+
+const coins = ref([]);
+const loading = ref(true);
+
+const handleIconError = (event) => {
+    event.target.src = '/icons/default.png';
+};
+
+onMounted(async () => {
+    try {
+        const response = await fetch('/api/coins');
+        const data = await response.json();
+        coins.value = data;
+    } catch (error) {
+        console.error('Failed to load coins:', error);
+    } finally {
+        loading.value = false;
     }
-})
-
-const { t } = useI18n()
-
-function formatCurrency(value) {
-    if (typeof value !== 'number' || isNaN(value)) return '-'
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    }).format(value)
-}
-
-function formatPercentage(value) {
-    if (typeof value !== 'number' || isNaN(value)) return '-'
-    return `${value.toFixed(2)}%`
-}
-
-function formatMarketCap(value) {
-    if (typeof value !== 'number' || isNaN(value)) return '-'
-    return `$${value.toLocaleString()}`
-}
+});
 </script>

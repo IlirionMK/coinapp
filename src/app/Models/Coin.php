@@ -12,8 +12,15 @@ class Coin extends Model
         'name',
         'image',
         'price',
-        'market_cap',
-        'market_cap_rank',
         'price_change_percentage_24h',
+        'market_cap',
+        'volume_24h',
     ];
+
+    protected $appends = ['icon_path'];
+
+    public function getIconPathAttribute(): string
+    {
+        return "/icons/" . strtolower($this->symbol) . ".png";
+    }
 }

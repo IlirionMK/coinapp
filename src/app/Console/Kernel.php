@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         SyncCoinsCommand::class,
         CacheCoinImages::class,
+        IconsSyncCommand::class,
     ];
 
     protected function schedule(Schedule $schedule): void
