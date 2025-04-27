@@ -18,7 +18,7 @@ services:
       - APP_DEBUG=true
       - APP_URL=http://localhost
       - DB_DRIVER=pgsql
-      - APP_ROLE=app
+      - ROLE=app
     command: ["sh", "/entrypoint.sh"]
 
   nginx:
@@ -38,7 +38,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html
-      - vite_node_modules:/var/www/html/node_modules  
+      - vite_node_modules:/var/www/html/node_modules
       - ./entrypoint.sh:/entrypoint.sh
     ports:
       - "5173:5173"
@@ -46,7 +46,7 @@ services:
       - app
     environment:
       - HOST=0.0.0.0
-      - APP_ROLE=vite
+      - ROLE=vite
     command: ["sh", "/entrypoint.sh"]
 
   postgres:
@@ -81,7 +81,7 @@ services:
     depends_on:
       - app
     environment:
-      - APP_ROLE=queue
+      - ROLE=queue
     command: ["sh", "/entrypoint.sh"]
 
   scheduler:
@@ -96,7 +96,7 @@ services:
     depends_on:
       - app
     environment:
-      - APP_ROLE=scheduler
+      - ROLE=scheduler
     command: ["sh", "/entrypoint.sh"]
 
   mailpit:

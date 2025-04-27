@@ -27,7 +27,7 @@
                     loading="lazy"
                     :src="`/proxy/image?url=${encodeURIComponent(coin.image)}`"
                     :alt="coin.name"
-                    class="w-6 h-6"
+                    class="w-2 h-2 rounded-full object-cover"
                 />
                 {{ coin.name }} ({{ coin.symbol.toUpperCase() }})
             </td>
@@ -36,9 +36,9 @@
                 class="px-4 py-2 font-semibold"
                 :class="coin.price_change_percentage_24h > 0 ? 'text-green-600' : 'text-red-600'"
             >
-                {{ coin.price_change_percentage_24h.toFixed(2) }}%
+                {{ formatPercentage(coin.price_change_percentage_24h) }}
             </td>
-            <td class="px-4 py-2">${{ coin.market_cap.toLocaleString() }}</td>
+            <td class="px-4 py-2">{{ formatMarketCap(coin.market_cap) }}</td>
         </tr>
         </tbody>
     </table>
@@ -47,10 +47,16 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 
-// Деструктурируем props сразу — IDE не будет ругаться
-const { coins, loading } = defineProps({
-    coins: { type: Array, required: true },
-    loading: { type: Boolean, default: false }
+const props = defineProps({
+    coins: {
+        type: Array,
+        required: false,
+        default: () => []
+    },
+    loading: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const { t } = useI18n()
@@ -61,5 +67,15 @@ function formatCurrency(value) {
         style: 'currency',
         currency: 'USD',
     }).format(value)
+}
+
+function formatPercentage(value) {
+    if (typeof value !== 'number' || isNaN(value)) return '-'
+    return `${value.toFixed(2)}%`
+}
+
+function formatMarketCap(value) {
+    if (typeof value !== 'number' || isNaN(value)) return '-'
+    return `$${value.toLocaleString()}`
 }
 </script>

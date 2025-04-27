@@ -1,31 +1,25 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import laravel from 'laravel-vite-plugin'
-import path from 'path'
 
 export default defineConfig({
+    plugins: [vue()],
     server: {
         host: '0.0.0.0',
         port: 5173,
+        strictPort: true,
+        watch: {
+            usePolling: true,
+            interval: 100,
+        },
         hmr: {
             host: 'localhost',
-            port: 5173,
+            clientPort: 5173,
         },
     },
-    plugins: [
-        vue(),
-        laravel({
-            input: [
-                'resources/css/app.css',
-                'resources/js/app.js',
-            ],
-            refresh: true,
-        }),
-    ],
+    cacheDir: 'node_modules/.vite',
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'resources/js'),
-        }
-,
+            '@': '/resources/js',
+        },
     },
 })

@@ -5,26 +5,34 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Coin;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 
 class CoinController extends Controller
 {
     public function index(): JsonResponse
     {
-        $wasRecentlySynced = Cache::get('coins_recently_synced');
+        // Ключ для кэша
+        $cacheKey = 'coins:list';
 
-        if (!$wasRecentlySynced) {
-            Log::info('Обновляем данные о монетах через coins:sync');
+        $coins = Cache::remember($cacheKey, now()->addMinutes(10), function () {
+            return Coin::select([
+                'id',
+                'name',
+                'symbol',
+                'image',
+                'price',
+                'price_change_percentage_24h',
+                'market_cap'
+            ])
+                ->orderByDesc('market_cap')
+                ->get()
+                ->map(function ($coin) {
+                    $coin->price = (float) $coin->price;
+                    $coin->price_change_percentage_24h = (float) $coin->price_change_percentage_24h;
+                    return $coin;
+                });
+        });
 
-            // Запоминаем, что обновление было
-            Cache::put('coins_recently_synced', true, now()->addMinutes(10));
-
-            // Запускаем команду (можно заменить на dispatch в будущем)
-            Artisan::queue('coins:sync');
-        }
-
-        return response()->json(Coin::all());
+        return response()->json($coins);
     }
 }

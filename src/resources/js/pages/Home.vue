@@ -9,18 +9,20 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import CryptoTable from '@/components/crypto/CryptoTable.vue'
+import CryptoTable from '@/components/CryptoTable.vue'
 
 const { t } = useI18n()
+
 const coins = ref([])
 const loading = ref(true)
 
 onMounted(async () => {
     try {
         const response = await fetch('/api/coins')
-        coins.value = await response.json()
-    } catch (e) {
-        console.error('Ошибка при загрузке данных:', e)
+        const data = await response.json()
+        coins.value = data
+    } catch (error) {
+        console.error('Failed to load coins:', error)
     } finally {
         loading.value = false
     }
