@@ -23,10 +23,14 @@ class CoinController extends Controller
             ->orderByDesc('market_cap')
             ->get()
             ->map(function ($coin) {
+                // Используем public_path, чтобы проверить иконки
                 $localIconPath = public_path("icons/{$coin->coingecko_id}.png");
+
+                // Если файл существует, возвращаем его путь, иначе дефолтную иконку
                 $iconPath = File::exists($localIconPath)
                     ? "/icons/{$coin->coingecko_id}.png"
                     : "/icons/default.png";
+
                 return [
                     'id' => $coin->id,
                     'name' => $coin->name,

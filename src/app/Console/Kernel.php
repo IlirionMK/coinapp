@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\IconsSyncCommand;
+//use App\Console\Commands\IconsSyncCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\SyncCoinsCommand;
@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         SyncCoinsCommand::class,
         CacheCoinImages::class,
-        IconsSyncCommand::class,
+        //IconsSyncCommand::class,
     ];
 
     protected function schedule(Schedule $schedule): void

@@ -28,7 +28,8 @@
                         :alt="coin.name"
                         class="rounded-full object-cover"
                         style="width: 24px; height: 24px;"
-                        @error="handleIconError"
+                        @error="(e) => { e.target.onerror = null;
+                        e.target.src = '/icons/default.png'; }"
                     />
                     <span>{{ coin.name }} ({{ coin.symbol.toUpperCase() }})</span>
                 </td>
@@ -38,9 +39,9 @@
                 <td
                     class="px-4 py-2 text-right"
                     :class="{
-              'text-green-500': coin.price_change_percentage_24h > 0,
-              'text-red-500': coin.price_change_percentage_24h < 0
-            }"
+                        'text-green-500': coin.price_change_percentage_24h > 0,
+                        'text-red-500': coin.price_change_percentage_24h < 0
+                    }"
                 >
                     {{ coin.price_change_percentage_24h !== null
                     ? `${Number(coin.price_change_percentage_24h).toFixed(2)}%`
@@ -65,7 +66,7 @@ const coins = ref([]);
 const loading = ref(true);
 
 const handleIconError = (event) => {
-    event.target.src = '/icons/default.png';
+    event.target.src = '/icons/default.png'; // fallback если не загрузилась иконка
 };
 
 onMounted(async () => {

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProxyImageController;
+//use App\Http\Controllers\ProxyImageController;
 
 //Route::get('/proxy/image', ProxyImageController::class);
 

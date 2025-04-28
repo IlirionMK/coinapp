@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y \
     git curl unzip zip nodejs npm \
     libpq-dev libzip-dev libpng-dev \
     libonig-dev libxml2-dev \
+    netcat-openbsd \            # <-- добавлено сюда
     && docker-php-ext-install pdo pdo_pgsql zip \
     && pecl install redis \
     && docker-php-ext-enable redis
@@ -18,7 +19,6 @@ WORKDIR /var/www/html
 
 COPY ./src ./
 COPY src/public ./public
-
 
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install
