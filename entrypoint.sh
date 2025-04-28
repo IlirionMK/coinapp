@@ -10,8 +10,14 @@ case "$ROLE" in
     if [ ! -d "vendor" ]; then
       composer install --no-interaction --prefer-dist
     fi
+    echo "Waiting for PostgreSQL to be ready..."
+    until nc -z postgres 5432; do
+      sleep 1
+    done
+    echo "PostgreSQL is ready."
 
     echo "Running database migrations..."
+
     php artisan migrate --force
 
     echo "Syncing coins from CoinGecko..."

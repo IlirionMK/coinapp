@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Coin;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\File;
 
 class CoinController extends Controller
 {
@@ -22,6 +23,10 @@ class CoinController extends Controller
             ->orderByDesc('market_cap')
             ->get()
             ->map(function ($coin) {
+                $localIconPath = public_path("icons/{$coin->coingecko_id}.png");
+                $iconPath = File::exists($localIconPath)
+                    ? "/icons/{$coin->coingecko_id}.png"
+                    : "/icons/default.png";
                 return [
                     'id' => $coin->id,
                     'name' => $coin->name,
@@ -30,7 +35,7 @@ class CoinController extends Controller
                     'price' => $coin->price,
                     'price_change_percentage_24h' => $coin->price_change_percentage_24h,
                     'market_cap' => $coin->market_cap,
-                    'icon_path' => "/icons/{$coin->coingecko_id}.png",
+                    'icon_path' => $iconPath,
                 ];
             });
 

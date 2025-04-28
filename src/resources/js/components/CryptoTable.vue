@@ -1,10 +1,12 @@
 <template>
-    <section class="p-6">
-        <h2 class="text-2xl font-bold mb-4">{{ t('crypto_table') }}</h2>
+    <div class="overflow-x-auto">
+        <div v-if="loading" class="text-center py-10">
+            Loading...
+        </div>
 
-        <table class="min-w-full table-auto">
+        <table v-else class="min-w-full table-auto border-collapse">
             <thead>
-            <tr>
+            <tr class="bg-gray-100 dark:bg-gray-800">
                 <th class="px-4 py-2 text-left">#</th>
                 <th class="px-4 py-2 text-left">{{ t('name') }}</th>
                 <th class="px-4 py-2 text-right">{{ t('price') }}</th>
@@ -13,13 +15,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(coin, index) in coins" :key="coin.id" class="border-t">
+            <tr
+                v-for="(coin, index) in coins"
+                :key="coin.id"
+                class="border-t hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
                 <td class="px-4 py-2 text-center">{{ index + 1 }}</td>
                 <td class="px-4 py-2 flex items-center gap-2">
                     <img
+                        v-if="coin.icon_path"
                         :src="coin.icon_path"
                         :alt="coin.name"
-                        class="w-6 h-6 rounded-full object-cover"
+                        class="rounded-full object-cover"
+                        style="width: 24px; height: 24px;"
                         @error="handleIconError"
                     />
                     <span>{{ coin.name }} ({{ coin.symbol.toUpperCase() }})</span>
@@ -30,11 +38,11 @@
                 <td
                     class="px-4 py-2 text-right"
                     :class="{
-                          'text-green-500': coin.price_change_percentage_24h > 0,
-                          'text-red-500': coin.price_change_percentage_24h < 0
-                        }"
+              'text-green-500': coin.price_change_percentage_24h > 0,
+              'text-red-500': coin.price_change_percentage_24h < 0
+            }"
                 >
-                    {{ coin.price_change_percentage_24h
+                    {{ coin.price_change_percentage_24h !== null
                     ? `${Number(coin.price_change_percentage_24h).toFixed(2)}%`
                     : '-' }}
                 </td>
@@ -44,7 +52,7 @@
             </tr>
             </tbody>
         </table>
-    </section>
+    </div>
 </template>
 
 <script setup>

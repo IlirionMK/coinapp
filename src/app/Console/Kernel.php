@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
     {
         // Updating prices every 10 min
         $schedule->command('coins:sync')->everyTenMinutes();
-        $schedule->command('coins:cache-images')->dailyAt('02:00');
+        //$schedule->command('coins:cache-images')->dailyAt('02:00');
 
     }
 
