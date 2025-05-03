@@ -6,6 +6,9 @@ echo "Starting service with role: $ROLE"
 
 case "$ROLE" in
   app)
+    echo "Fixing permissions for Laravel..."
+    chmod -R 777 storage bootstrap/cache
+
     echo "Running database migrations..."
     php artisan migrate --force
 

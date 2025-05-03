@@ -1,8 +1,8 @@
 <template>
-    <nav class="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 shadow">
+    <nav class="flex items-center justify-between px-6 py-4 bg-white shadow">
         <!-- Логотип / Название -->
         <div class="text-xl font-semibold">
-            <router-link to="/" class="text-blue-600 dark:text-white hover:underline">
+            <router-link to="/" class="text-blue-600 hover:underline">
                 CryptoDash
             </router-link>
         </div>
@@ -13,8 +13,8 @@
                 v-for="link in links"
                 :key="link.to"
                 :to="link.to"
-                class="text-gray-700 dark:text-gray-200 hover:underline"
-                active-class="text-blue-600 dark:text-blue-400 underline"
+                class="text-gray-700 hover:underline"
+                active-class="text-blue-600 underline"
             >
                 {{ t(link.label) }}
             </router-link>

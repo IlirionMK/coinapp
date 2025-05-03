@@ -6,7 +6,7 @@
 
         <table v-else class="min-w-full table-auto border-collapse">
             <thead>
-            <tr class="bg-gray-100 dark:bg-gray-800">
+            <tr class="bg-gray-100">
                 <th class="px-4 py-2 text-left">#</th>
                 <th class="px-4 py-2 text-left">{{ t('name') }}</th>
                 <th class="px-4 py-2 text-right">{{ t('price') }}</th>
@@ -18,7 +18,7 @@
             <tr
                 v-for="(coin, index) in coins"
                 :key="coin.id"
-                class="border-t hover:bg-gray-50 dark:hover:bg-gray-700"
+                class="border-t hover:bg-gray-50"
             >
                 <td class="px-4 py-2 text-center">{{ index + 1 }}</td>
                 <td class="px-4 py-2 flex items-center gap-2">
