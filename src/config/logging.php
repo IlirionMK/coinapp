@@ -127,6 +127,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'coins' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/coins.log'),
+            'level' => 'info',
+        ],
+
+
     ],
 
 ];

@@ -1,13 +1,13 @@
 <template>
-    <section class="max-w-screen-xl mx-auto px-4 py-6 space-y-8">
-        <!-- Заголовок -->
-        <h2 class="text-2xl font-bold">{{ t('crypto_dashboard') }}</h2>
+    <section class="space-y-10">
+         <div>
+            <h2 class="text-2xl font-bold mb-2">{{ t('crypto_dashboard') }}</h2>
+            <p class="text-gray-600">{{ t('crypto_dashboard_description') }}</p>
+        </div>
 
-        <!-- Конвертер -->
-        <ConverterPreview />
+         <ConverterPreview />
 
-        <!-- Таблица -->
-        <div>
+         <div>
             <h3 class="text-xl font-semibold mb-4">{{ t('crypto_table') }}</h3>
             <CryptoTable :coins="coins" :loading="loading" />
         </div>
