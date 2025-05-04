@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex flex-col">
+    <div class="flex flex-col min-h-screen">
         <header class="bg-gray-800 text-white p-4">
             <div class="container mx-auto">
                 <h1 class="text-2xl font-bold">Crypto App</h1>

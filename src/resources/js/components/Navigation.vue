@@ -22,23 +22,16 @@
 
         <!-- Переключатель языка -->
         <div>
-            <button
-                @click="toggleLang"
-                class="bg-gray-700 text-white px-4 py-1 rounded text-xs hover:bg-gray-600"
-            >
-                {{ locale.value === 'en' ? 'PL' : 'EN' }}
-            </button>
+            <LanguageSwitcher />
         </div>
     </nav>
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
-import { loadLocaleMessages } from '@/utils/loadLocaleMessages'
-import i18n from './i18n'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 const links = [
     { to: '/', label: 'home' },
@@ -46,10 +39,4 @@ const links = [
     { to: '/convert', label: 'convert' },
     { to: '/about', label: 'about' }
 ]
-
-async function toggleLang() {
-    const newLocale = locale.value === 'en' ? 'pl' : 'en'
-    localStorage.setItem('locale', newLocale)
-    await loadLocaleMessages(i18n, newLocale)
-}
 </script>

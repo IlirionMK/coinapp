@@ -1,14 +1,10 @@
 #!/bin/bash
-
 set -e
 
 echo "Starting service with role: $ROLE"
 
 case "$ROLE" in
   app)
-    echo "Fixing permissions for Laravel..."
-    chmod -R 777 storage bootstrap/cache
-
     echo "Installing PHP dependencies if missing..."
     if [ ! -d "vendor" ]; then
       composer install --no-interaction --prefer-dist

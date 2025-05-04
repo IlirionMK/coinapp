@@ -11,9 +11,9 @@
     "news_intro": "Tutaj będą pojawiać się aktualności ze świata kryptowalut.",
     "loading": "Ładowanie",
     "name": "Nazwa",
-    "change": "Zmiana",
-    "coin": "Moneta",
     "price": "Cena",
+    "change": "Zmiana",
+    "24h_change": "Zmiana 24h",
+    "coin": "Moneta",
     "market_cap": "Kapitalizacja rynkowa"
 }
-

@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
-<body class="antialiased">
-<div id="app"></div>
+<body class="min-h-screen flex flex-col bg-white text-black">
+<div id="app" class="flex-grow flex flex-col"></div>
+<div id="app">LOADING APP</div>
 </body>
 </html>

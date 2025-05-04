@@ -13,7 +13,7 @@
     "name": "Name",
     "price": "Price",
     "change": "Change",
+    "24h_change": "24h Change",
     "coin": "Coin",
     "market_cap": "Market Cap"
 }
-

@@ -9,7 +9,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import CryptoTable from '@/components/CryptoTable.vue'
+import CryptoTable from '/resources/js/components/CryptoTable.vue'
 
 const { t } = useI18n()
 

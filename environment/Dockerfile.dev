@@ -19,3 +19,6 @@ RUN composer install
 RUN npm install
 
 CMD ["php-fpm"]
+
+USER www-data
+

@@ -2,12 +2,13 @@
 
 set -e
 
-echo "Starting service with role: $ROLE"
+echo "Starting production service with role: $ROLE"
 
 case "$ROLE" in
   app)
     echo "Fixing permissions for Laravel..."
-    chmod -R 777 storage bootstrap/cache
+    chown -R www-data:www-data storage bootstrap/cache
+    chmod -R 775 storage bootstrap/cache
 
     echo "Running database migrations..."
     php artisan migrate --force
@@ -20,12 +21,9 @@ case "$ROLE" in
       echo "Coins table not found, skipping sync!"
     fi
 
-    echo "Clearing and caching config/routes/views..."
-    php artisan config:clear
+    echo "Caching config/routes/views..."
     php artisan config:cache
-    php artisan route:clear
     php artisan route:cache
-    php artisan view:clear
     php artisan view:cache
 
     echo "Starting PHP-FPM server..."
