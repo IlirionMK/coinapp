@@ -2,13 +2,11 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../pages/Home.vue'
-import About from '../pages/About.vue'
 import Convert from '../pages/Convert.vue'
 
 const routes = [
-    { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '/convert', component: Convert },
+    { path: '/', name: 'home', component: Home },
+    { path: '/convert', name: 'convert', component: Convert },
 ]
 
 const router = createRouter({

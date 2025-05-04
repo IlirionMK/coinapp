@@ -19,7 +19,7 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { i18n } from '@/i18n'
-import { loadLocaleMessages } from 'resources/js/utils/loadLocaleMessages'
+import { loadLocaleMessages } from '../../utils/loadLocaleMessages'
 
 const { locale } = useI18n()
 const locales = ['en', 'pl']

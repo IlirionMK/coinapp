@@ -1,13 +1,11 @@
-// resources/js/utils/loadLocaleMessages.js
 export async function loadLocaleMessages(i18n, locale) {
     console.log('[i18n] Requested locale:', locale)
     console.log('[i18n] Available locales before:', i18n.global.availableLocales)
 
     if (!i18n?.global?.availableLocales.includes(locale)) {
         try {
-            // Динамический импорт
             const messages = await import(
-                /* @vite-ignore */ `resources/js/locales/${locale}.json`
+                /* @vite-ignore */ `../locales/${locale}.json`
                 )
             console.log(`[i18n] Loaded messages for "${locale}":`, messages)
             i18n.global.setLocaleMessage(locale, messages.default || messages)

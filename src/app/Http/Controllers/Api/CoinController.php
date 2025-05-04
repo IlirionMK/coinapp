@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Coin;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
 class CoinController extends Controller
@@ -23,10 +25,8 @@ class CoinController extends Controller
             ->orderByDesc('market_cap')
             ->get()
             ->map(function ($coin) {
-                // Используем public_path, чтобы проверить иконки
                 $localIconPath = public_path("icons/{$coin->coingecko_id}.png");
 
-                // Если файл существует, возвращаем его путь, иначе дефолтную иконку
                 $iconPath = File::exists($localIconPath)
                     ? "/icons/{$coin->coingecko_id}.png"
                     : "/icons/default.png";
@@ -44,5 +44,27 @@ class CoinController extends Controller
             });
 
         return response()->json($coins);
+    }
+
+    public function convert(Request $request): JsonResponse
+    {
+        $from = strtolower($request->query('from'));
+        $to = strtolower($request->query('to'));
+        $amount = floatval($request->query('amount', 1));
+
+        if (!$from || !$to || $amount <= 0) {
+            return response()->json(['error' => 'Invalid parameters'], 400);
+        }
+
+        $fromPrice = Cache::get("coin:{$from}:price");
+        $toPrice = Cache::get("coin:{$to}:price");
+
+        if (!$fromPrice || !$toPrice) {
+            return response()->json(['error' => 'Missing coin data'], 404);
+        }
+
+        $converted = ($amount * $fromPrice) / $toPrice;
+
+        return response()->json(['converted' => round($converted, 8)]);
     }
 }

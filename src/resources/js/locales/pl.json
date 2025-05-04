@@ -1,14 +1,24 @@
 {
-    "home": "Strona główna",
-    "convert": "Konwerter",
-    "about": "O projekcie",
-    "welcome": "Witamy w Crypto Dashboard",
-    "intro": "Bądź na bieżąco z najnowszymi cenami i wiadomościami kryptowalutowymi.",
-    "crypto_table": "Tabela kryptowalut",
-    "converter": "Konwerter walut",
-    "converter_intro": "Komponent konwertera w przygotowaniu.",
+    "app_name": "CoinApp",
+    "nav": {
+        "home": "Strona główna",
+        "converter": "Kantor",
+        "about": "O nas"
+    },
+    "footer": {
+        "copyright": "© 2025 CoinApp — Wszelkie prawa zastrzeżone"
+    },
+    "crypto_dashboard": "Panel kryptowalut",
+    "crypto_table": "Ceny kryptowalut",
+    "converter": "Kantor walutowy",
+    "converter_intro": "Szybka konwersja między kryptowalutami.",
+    "converter.title": "Kantor walutowy",
+    "converter.description": "Szybka konwersja między kryptowalutami.",
+    "converter.from": "Z",
+    "converter.to": "Na",
+    "converter.amount": "Kwota",
     "news": "Najnowsze wiadomości",
-    "news_intro": "Tutaj będą pojawiać się aktualności ze świata kryptowalut.",
+    "news_intro": "Tutaj będą pojawiać się najnowsze wiadomości ze świata kryptowalut.",
     "loading": "Ładowanie",
     "name": "Nazwa",
     "price": "Cena",

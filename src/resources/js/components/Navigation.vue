@@ -1,42 +1,36 @@
 <template>
-    <nav class="flex items-center justify-between px-6 py-4 bg-white shadow">
-        <!-- Логотип / Название -->
-        <div class="text-xl font-semibold">
-            <router-link to="/" class="text-blue-600 hover:underline">
-                CryptoDash
+    <header class="bg-white border-b shadow-sm">
+        <div class="container mx-auto flex items-center justify-between px-4 py-3">
+            <!-- Logo -->
+            <router-link to="/" class="text-xl font-bold text-gray-800 hover:text-gray-600">
+                CoinApp
             </router-link>
-        </div>
 
-        <!-- Навигационные ссылки -->
-        <div class="space-x-6 text-sm font-medium hidden md:flex">
-            <router-link
-                v-for="link in links"
-                :key="link.to"
-                :to="link.to"
-                class="text-gray-700 hover:underline"
-                active-class="text-blue-600 underline"
-            >
-                {{ t(link.label) }}
-            </router-link>
-        </div>
+            <!-- Right side -->
+            <div class="flex items-center space-x-4">
+                <router-link
+                    to="/"
+                    class="text-sm font-medium text-gray-700 hover:text-gray-900"
+                >
+                    {{ t('nav.home') }}
+                </router-link>
+                <router-link
+                    to="/convert"
+                    class="text-sm font-medium text-gray-700 hover:text-gray-900"
+                >
+                    {{ t('nav.converter') }}
+                </router-link>
 
-        <!-- Переключатель языка -->
-        <div>
-            <LanguageSwitcher />
+                <!-- Language switch -->
+                <LanguageSwitcher />
+            </div>
         </div>
-    </nav>
+    </header>
 </template>
 
 <script setup>
+import LanguageSwitcher from './ui/LanguageSwitcher.vue'
 import { useI18n } from 'vue-i18n'
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 const { t } = useI18n()
-
-const links = [
-    { to: '/', label: 'home' },
-    { to: '/news', label: 'news' },
-    { to: '/convert', label: 'convert' },
-    { to: '/about', label: 'about' }
-]
 </script>
