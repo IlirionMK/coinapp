@@ -1,15 +1,12 @@
 <template>
     <section class="space-y-10">
-         <div>
-            <h2 class="text-2xl font-bold mb-2">{{ t('crypto_dashboard') }}</h2>
-            <p class="text-gray-600">{{ t('crypto_dashboard_description') }}</p>
-        </div>
-
-         <ConverterPreview />
-
-         <div>
-            <h3 class="text-xl font-semibold mb-4">{{ t('crypto_table') }}</h3>
-            <CryptoTable :coins="coins" :loading="loading" />
+        <div class="md:flex md:gap-6">
+            <div class="flex-1">
+                <ConverterPreview />
+            </div>
+            <div class="flex-1">
+                <CryptoTable :coins="coins" :loading="loading" />
+            </div>
         </div>
     </section>
 </template>

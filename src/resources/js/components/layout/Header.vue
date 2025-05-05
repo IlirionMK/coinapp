@@ -1,11 +1,5 @@
 <template>
-    <header class="bg-white border-b shadow-sm">
-        <div class="max-w-screen-xl mx-auto px-4 py-4">
-            <Navigation />
-        </div>
+    <header class="bg-white border-b shadow-sm py-4">
+        <h1 class="text-xl font-semibold">CoinApp</h1>
     </header>
 </template>
-
-<script setup>
-import Navigation from './Navigation.vue'
-</script>

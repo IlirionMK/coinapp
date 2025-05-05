@@ -6,7 +6,7 @@
     <title>{{ config('app.name', 'CoinApp') }}</title>
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
-<body class="min-h-screen flex flex-col bg-white text-black">
-<div id="app" class="flex-grow flex flex-col"></div>
+<body class="bg-gray-50 text-gray-900 antialiased">
+<div id="app"></div>
 </body>
 </html>

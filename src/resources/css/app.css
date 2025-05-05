@@ -2,8 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
-#app {
-    @apply min-h-screen;
-}
+

@@ -1,80 +1,84 @@
 <template>
-    <div class="bg-white shadow rounded-xl p-6 w-full max-w-3xl mx-auto">
-        <h2 class="text-xl font-bold mb-4">{{ t('converter') }}</h2>
-        <p class="text-gray-600 mb-6">{{ t('converter_intro') }}</p>
+    <section class="bg-white p-4 rounded-lg shadow mb-6">
+        <h3 class="text-xl font-semibold mb-4">{{ t('converter_title') }}</h3>
 
-        <form class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <!-- From -->
+        <form @submit.prevent="convert" class="space-y-4">
             <div>
-                <label class="block text-sm font-medium mb-1">{{ t('converter.from') }}</label>
-                <select v-model="from" class="w-full border rounded px-3 py-2">
+                <label class="block text-sm font-medium mb-1">{{ t('from') }}</label>
+                <select v-model="from" class="w-full border rounded p-2">
                     <option v-for="coin in coins" :key="coin.id" :value="coin.symbol">
-                        {{ coin.name }} ({{ coin.symbol.toUpperCase() }})
+                        {{ coin.name }}
                     </option>
                 </select>
             </div>
 
-            <!-- To -->
             <div>
-                <label class="block text-sm font-medium mb-1">{{ t('converter.to') }}</label>
-                <select v-model="to" class="w-full border rounded px-3 py-2">
+                <label class="block text-sm font-medium mb-1">{{ t('to') }}</label>
+                <select v-model="to" class="w-full border rounded p-2">
                     <option v-for="coin in coins" :key="coin.id" :value="coin.symbol">
-                        {{ coin.name }} ({{ coin.symbol.toUpperCase() }})
+                        {{ coin.name }}
                     </option>
                 </select>
             </div>
 
-            <!-- Amount -->
             <div>
-                <label class="block text-sm font-medium mb-1">{{ t('converter.amount') }}</label>
+                <label class="block text-sm font-medium mb-1">{{ t('amount') }}</label>
                 <input
                     type="number"
-                    v-model.number="amount"
-                    class="w-full border rounded px-3 py-2"
+                    v-model="amount"
                     min="0"
                     step="any"
+                    class="w-full border rounded p-2"
                 />
             </div>
-        </form>
 
-        <!-- Result -->
-        <div class="mt-4 text-sm text-gray-700" v-if="converted !== null">
-            {{ amount }} {{ from.toUpperCase() }} ≈ {{ converted }} {{ to.toUpperCase() }}
-        </div>
-    </div>
+            <div v-if="result !== null" class="text-lg font-medium mt-4">
+                {{ t('converted') }}: {{ result }}
+            </div>
+
+            <button
+                type="submit"
+                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+                {{ t('convert') }}
+            </button>
+        </form>
+    </section>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
 const coins = ref([])
-const from = ref('btc')
-const to = ref('eth')
+const from = ref('')
+const to = ref('')
 const amount = ref(1)
-const converted = ref(null)
+const result = ref(null)
 
 onMounted(async () => {
-    const response = await fetch('/api/coins')
-    const data = await response.json()
-    coins.value = data
+    try {
+        const response = await fetch('/api/coins')
+        coins.value = await response.json()
+        if (coins.value.length >= 2) {
+            from.value = coins.value[0].symbol
+            to.value = coins.value[1].symbol
+        }
+    } catch (e) {
+        console.error('Failed to load coins:', e)
+    }
 })
 
-watch([from, to, amount], async () => {
-    if (from.value === to.value || amount.value <= 0) {
-        converted.value = amount.value
-        return
-    }
-
+const convert = async () => {
+    if (!from.value || !to.value || amount.value <= 0) return
     try {
         const res = await fetch(`/api/convert?from=${from.value}&to=${to.value}&amount=${amount.value}`)
         const data = await res.json()
-        converted.value = data.converted
-    } catch (err) {
-        console.error(err)
-        converted.value = null
+        result.value = data.converted
+    } catch (e) {
+        console.error('Conversion failed:', e)
     }
-})
+}
 </script>
