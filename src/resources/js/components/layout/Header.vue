@@ -1,5 +1,7 @@
 <template>
-    <header class="bg-white border-b shadow-sm py-4">
-        <h1 class="text-xl font-semibold">CoinApp</h1>
-    </header>
+    <div class="w-full">
+        <header class="bg-white border-b shadow-sm py-4 w-full">
+            <div class="text-xl font-semibold">CoinApp</div>
+        </header>
+    </div>
 </template>

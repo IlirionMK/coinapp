@@ -1,9 +1,9 @@
-// src/resources/js/router/index.js
-
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../pages/Home.vue'
 import Convert from '../pages/Convert.vue'
 import About from '../pages/About.vue'
+import Login from '../pages/Login.vue'
+import Register from '../pages/Register.vue'
 
 const routes = [
     {
@@ -15,7 +15,7 @@ const routes = [
     {
         path: '/convert',
         name: 'convert',
-        component: Convert, // ✅ правильно
+        component: Convert,
         meta: { layout: 'DefaultLayout' },
     },
     {
@@ -24,6 +24,8 @@ const routes = [
         component: About,
         meta: { layout: 'DefaultLayout' },
     },
+    { path: '/login', name: 'login', component: Login, meta: { layout: 'DefaultLayout' } },
+    { path: '/register', name: 'register', component: Register, meta: { layout: 'DefaultLayout' } },
 ]
 
 const router = createRouter({

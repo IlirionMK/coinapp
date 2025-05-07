@@ -1,10 +1,7 @@
-<?php
+use App\Http\Controllers\AuthController;
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CoinController;
-use App\Http\Controllers\Api\ConvertController;
+Route::middleware('guest')->post('/login', [AuthController::class, 'login']);
+Route::middleware('guest')->post('/register', [AuthController::class, 'register']);
 
-Route::get('/convert', [ConvertController::class, 'convert']);
-Route::get('/coins', [CoinController::class, 'index']);
-Route::get('/convert', [CoinController::class, 'convert']);
-
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);

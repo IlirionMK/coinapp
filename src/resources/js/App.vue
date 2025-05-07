@@ -22,6 +22,4 @@ const layout = computed(() => {
     const name = route.meta.layout || 'DefaultLayout'
     return layouts[name] || DefaultLayout
 })
-console.log('Layout:', layout.value)
-
 </script>
