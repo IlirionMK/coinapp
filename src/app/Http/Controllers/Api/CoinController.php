@@ -42,9 +42,9 @@ class CoinController extends Controller
                             'name' => $coin->name,
                             'symbol' => $coin->symbol,
                             'coingecko_id' => $coin->coingecko_id,
-                            'price' => $coin->price,
-                            'price_change_percentage_24h' => $coin->price_change_percentage_24h,
-                            'market_cap' => $coin->market_cap,
+                            'price' => (float) $coin->price,
+                            'price_change_percentage_24h' => (float) $coin->price_change_percentage_24h,
+                            'market_cap' => (int) $coin->market_cap,
                             'icon_path' => $iconPath,
                         ];
                     });

@@ -4,12 +4,14 @@ import forms from '@tailwindcss/forms'
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        './src/resources/**/*.blade.php',
-        './src/resources/**/*.vue',
-        './src/resources/**/*.js',
+        './resources/**/*.blade.php',
+        './resources/**/*.vue',
+        './resources/**/*.js',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './src/storage/framework/views/*.php',
+        './storage/framework/views/*.php',
     ],
+
+    safelist: ['w-6', 'h-6'],
 
     theme: {
         extend: {

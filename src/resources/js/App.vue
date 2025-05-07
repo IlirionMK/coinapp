@@ -1,5 +1,5 @@
 <template>
-    <component :is="layout">
+    <component :is="resolvedLayout">
         <router-view />
     </component>
 </template>
@@ -11,15 +11,17 @@ import { useRoute } from 'vue-router'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import AuthLayout from '@/layouts/AuthenticatedLayout.vue'
 
-const route = useRoute()
-
-const layouts = {
+ const layouts = {
     DefaultLayout,
     AuthLayout,
 }
+console.time('App loaded')
+console.timeEnd('App loaded')
 
-const layout = computed(() => {
-    const name = route.meta.layout || 'DefaultLayout'
+const route = useRoute()
+
+ const resolvedLayout = computed(() => {
+    const name = route.meta?.layout
     return layouts[name] || DefaultLayout
 })
 </script>
