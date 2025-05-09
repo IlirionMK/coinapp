@@ -1,5 +1,15 @@
 <template>
-    <div class="max-w-full overflow-x-auto rounded-lg shadow-sm bg-white">
+    <div class="max-w-full overflow-x-auto rounded-lg shadow-sm bg-white p-4">
+        <!-- 🔍 Поиск -->
+        <div class="mb-4 flex items-center gap-2">
+            <input
+                v-model="search"
+                type="text"
+                placeholder="Search by name or symbol"
+                class="border rounded p-2 w-full max-w-md text-sm"
+            />
+        </div>
+
         <table class="w-full table-auto border-collapse text-sm">
             <thead>
             <tr class="bg-gray-100 text-gray-700">
@@ -63,11 +73,12 @@
             </tbody>
         </table>
 
+        <!-- Пагинация -->
         <div class="flex justify-between items-center px-4 py-3 text-sm text-gray-600">
             <div>
                 {{ t('showing') }}
-                {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, sortedCoins.length) }}
-                {{ t('of') }} {{ sortedCoins.length }}
+                {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredCoins.length) }}
+                {{ t('of') }} {{ filteredCoins.length }}
             </div>
             <div class="flex items-center gap-2">
                 <button
@@ -115,6 +126,7 @@ const props = defineProps({
     },
 })
 
+const search = ref('')
 const itemsPerPage = 25
 const currentPage = ref(1)
 
@@ -132,9 +144,18 @@ const sortBy = (key) => {
     }
 }
 
+const filteredCoins = computed(() => {
+    const query = search.value.trim().toLowerCase()
+    if (!query) return props.coins
+    return props.coins.filter(
+        (coin) =>
+            coin.name.toLowerCase().includes(query) ||
+            coin.symbol.toLowerCase().includes(query)
+    )
+})
+
 const sortedCoins = computed(() => {
-    if (!Array.isArray(props.coins)) return []
-    return [...props.coins].sort((a, b) => {
+    return [...filteredCoins.value].sort((a, b) => {
         const modifier = sort.value.direction === 'asc' ? 1 : -1
         const aVal = a[sort.value.key] ?? 0
         const bVal = b[sort.value.key] ?? 0
@@ -148,7 +169,7 @@ const paginatedCoins = computed(() => {
 })
 
 const totalPages = computed(() =>
-    Math.ceil(sortedCoins.value.length / itemsPerPage)
+    Math.ceil(filteredCoins.value.length / itemsPerPage)
 )
 
 const handleIconError = (e) => {

@@ -20,5 +20,7 @@ RUN npm install
 
 CMD ["php-fpm"]
 
+ENV HOME=/tmp
+
 USER www-data
 

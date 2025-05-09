@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'CoinApp') }}</title>
+
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
+
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">

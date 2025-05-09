@@ -17,6 +17,13 @@ class Coin extends Model
         'volume_24h',
     ];
 
+    protected $casts = [
+        'price' => 'float',
+        'price_change_percentage_24h' => 'float',
+        'market_cap' => 'integer',
+        'volume_24h' => 'float',
+    ];
+
     protected $appends = ['icon_path'];
 
     public function getIconPathAttribute(): string

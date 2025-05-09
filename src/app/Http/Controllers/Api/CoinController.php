@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Coin;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -31,12 +30,6 @@ class CoinController extends Controller
                     ->orderByDesc('market_cap')
                     ->get()
                     ->map(function ($coin) {
-                        $localIconPath = public_path("icons/{$coin->coingecko_id}.png");
-
-                        $iconPath = File::exists($localIconPath)
-                            ? "/icons/{$coin->coingecko_id}.png"
-                            : "/icons/default.png";
-
                         return [
                             'id' => $coin->id,
                             'name' => $coin->name,
@@ -45,7 +38,8 @@ class CoinController extends Controller
                             'price' => (float) $coin->price,
                             'price_change_percentage_24h' => (float) $coin->price_change_percentage_24h,
                             'market_cap' => (int) $coin->market_cap,
-                            'icon_path' => $iconPath,
+                            // просто подставляем путь — а фронт подстрахует через @error
+                            'icon_path' => "/icons/{$coin->coingecko_id}.png",
                         ];
                     });
 

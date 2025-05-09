@@ -99,12 +99,15 @@ class SyncCoinsCommand extends Command
                     if ($coin->wasRecentlyCreated) {
                         $this->line("➕  Added new coin: {$coin->name}");
                     }
+
+                    // ✅ Сохраняем цену в кеш для мгновенной конвертации
+                    Cache::put("coin:{$symbol}:price", $c['current_price'], now()->addMinutes(10));
                 }
 
                 sleep(1);
             }
 
-            // 🔁 Обновляем кеш
+            // 🔁 Обновляем кеш coins_list
             $cached = Coin::select([
                 'id',
                 'name',
@@ -117,12 +120,6 @@ class SyncCoinsCommand extends Command
                 ->orderByDesc('market_cap')
                 ->get()
                 ->map(function ($coin) {
-                    $localIconPath = public_path("icons/{$coin->coingecko_id}.png");
-
-                    $iconPath = File::exists($localIconPath)
-                        ? "/icons/{$coin->coingecko_id}.png"
-                        : "/icons/default.png";
-
                     return [
                         'id' => $coin->id,
                         'name' => $coin->name,
@@ -131,7 +128,7 @@ class SyncCoinsCommand extends Command
                         'price' => $coin->price,
                         'price_change_percentage_24h' => $coin->price_change_percentage_24h,
                         'market_cap' => $coin->market_cap,
-                        'icon_path' => $iconPath,
+                        'icon_path' => "/icons/{$coin->coingecko_id}.png",
                     ];
                 });
 

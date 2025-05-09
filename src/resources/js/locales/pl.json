@@ -3,7 +3,9 @@
     "nav": {
         "home": "Strona główna",
         "converter": "Kantor",
-        "about": "O nas"
+        "about": "O nas",
+        "login": "Zaloguj się",
+        "register": "Rejestracja"
     },
     "footer": {
         "copyright": "© 2025 CoinApp — Wszelkie prawa zastrzeżone"
@@ -25,5 +27,18 @@
     "change": "Zmiana",
     "24h_change": "Zmiana 24h",
     "coin": "Moneta",
-    "market_cap": "Kapitalizacja rynkowa"
+    "market_cap": "Kapitalizacja rynkowa",
+    "top_cryptocurrencies": "Najlepsze kryptowaluty",
+    "showing": "Wyświetlanie",
+    "of": "z",
+    "prev": "Poprzednia",
+    "next": "Następna",
+
+    "about": {
+        "title": "O projekcie",
+        "description1": "To projekt zaliczeniowy stworzony w ramach ćwiczeń z programowania aplikacji webowych. Skupia się na pracy z zewnętrznym API, synchronizacji danych w tle, architekturze SPA oraz podstawowej interakcji z użytkownikiem.",
+        "description2": "Aplikacja pobiera dane o kryptowalutach z API CoinGecko, zapisuje je w lokalnej bazie danych i automatycznie aktualizuje co 10 minut za pomocą harmonogramu Laravel.",
+        "description3": "Wbudowany konwerter umożliwia szybkie przeliczanie wartości między kryptowalutami na podstawie najnowszych danych.",
+        "stack": "Projekt wykorzystuje następujące technologie:"
+    }
 }

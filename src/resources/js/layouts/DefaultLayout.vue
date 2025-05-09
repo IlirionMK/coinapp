@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col min-h-screen bg-gray-50 text-gray-900">
-        <!-- <Header /> -->
+        <Header />
 
         <Navigation />
 
@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
-import Navigation from '@/components/layout/Navigation.vue'
-import Footer from '@/components/layout/Footer.vue'
- </script>
+import Header from "@/components/layout/Header.vue";
+import Navigation from '@/components/layout/Navigation.vue';
+import Footer from '@/components/layout/Footer.vue';
+</script>
