@@ -5,22 +5,22 @@
         <form @submit.prevent="submit" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium">Name</label>
-                <input v-model="name" type="text" class="w-full border rounded p-2" required />
+                <input v-model="form.name" type="text" class="w-full border rounded p-2" required />
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Email</label>
-                <input v-model="email" type="email" class="w-full border rounded p-2" required />
+                <input v-model="form.email" type="email" class="w-full border rounded p-2" required />
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Password</label>
-                <input v-model="password" type="password" class="w-full border rounded p-2" required />
+                <input v-model="form.password" type="password" class="w-full border rounded p-2" required />
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Confirm Password</label>
-                <input v-model="confirm" type="password" class="w-full border rounded p-2" required />
+                <input v-model="form.password_confirmation" type="password" class="w-full border rounded p-2" required />
             </div>
 
             <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>
@@ -33,30 +33,19 @@
 </template>
 
 <script setup>
-import axios from '@/utils/axios'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive } from 'vue'
+import useAuth from '@/composables/useAuth'
 
-const name = ref('')
-const email = ref('')
-const password = ref('')
-const confirm = ref('')
-const error = ref('')
-const router = useRouter()
+const { register, error } = useAuth()
 
-const submit = async () => {
-    error.value = ''
-    try {
-        await axios.get('/sanctum/csrf-cookie')
-        await axios.post('/register', {
-            name: name.value,
-            email: email.value,
-            password: password.value,
-            password_confirmation: confirm.value,
-        })
-        router.push('/')
-    } catch (err) {
-        error.value = 'Registration failed'
-    }
+const form = reactive({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+})
+
+const submit = () => {
+    register(form)
 }
 </script>

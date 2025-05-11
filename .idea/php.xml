@@ -134,7 +134,6 @@
       <path value="$PROJECT_DIR$/src/vendor/sebastian/exporter" />
       <path value="$PROJECT_DIR$/src/vendor/sebastian/global-state" />
       <path value="$PROJECT_DIR$/src/vendor/laravel/breeze" />
-      <path value="$PROJECT_DIR$/src/vendor/inertiajs/inertia-laravel" />
       <path value="$PROJECT_DIR$/src/vendor/tightenco/ziggy" />
       <path value="$PROJECT_DIR$/src/vendor/laravel/sanctum" />
     </include_path>

@@ -1,6 +1,19 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = '/api'
-axios.defaults.withCredentials = true
+const api = axios.create({
+    baseURL: '/api',
+    withCredentials: true,
+})
 
-export default axios
+
+api.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response?.status === 401) {
+            console.warn('Unauthorized: redirecting to login')
+        }
+        return Promise.reject(error)
+    }
+)
+
+export default api
