@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-//use App\Console\Commands\IconsSyncCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\SyncCoinsCommand;
@@ -19,7 +18,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // Updating prices every 10 min
-        $schedule->command('coins:sync')->everyMinute();
+        $schedule->command('coins:sync')->everyTenMinutes();
         //$schedule->command('coins:cache-images')->dailyAt('02:00');
 
     }

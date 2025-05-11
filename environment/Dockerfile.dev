@@ -1,26 +1,22 @@
 FROM php:8.2-fpm
 
-RUN apt-get update && apt-get install -y \
+ RUN apt-get update && apt-get install -y \
     git curl unzip zip nodejs npm \
     libpq-dev libzip-dev libpng-dev \
-    libonig-dev libxml2-dev \
-    netcat-openbsd \
+    libonig-dev libxml2-dev netcat-openbsd \
     && docker-php-ext-install pdo pdo_pgsql zip \
     && pecl install redis \
     && docker-php-ext-enable redis
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+ WORKDIR /var/www/html
 
-COPY ./src ./
+ COPY ./src ./src
+COPY ./entrypoint.sh /entrypoint.sh
 
-RUN composer install
-RUN npm install
+ RUN chmod +x /entrypoint.sh
+
+ RUN cd src && composer install && npm install
 
 CMD ["php-fpm"]
-
-ENV HOME=/tmp
-
-USER www-data
-

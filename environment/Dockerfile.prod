@@ -1,30 +1,27 @@
 FROM php:8.2-fpm
 
+# Устанавливаем только нужные зависимости
 RUN apt-get update && apt-get install -y \
-    git curl unzip zip nodejs npm \
-    libpq-dev libzip-dev libpng-dev \
-    libonig-dev libxml2-dev \
-    netcat-openbsd && \
-    docker-php-ext-install pdo pdo_pgsql zip && \
-    pecl install redis && \
-    docker-php-ext-enable redis
-
-RUN docker-php-ext-enable opcache
-COPY ./docker/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+    libpq-dev \
+    libzip-dev \
+    unzip \
+    bash \
+    && docker-php-ext-install pdo pdo_pgsql zip \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
 COPY ./src ./
-COPY src/public ./public
 
+# Устанавливаем только production-зависимости
 RUN composer install --no-dev --optimize-autoloader
-RUN npm install
-RUN npm run build
-
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
 
 CMD ["php-fpm"]
+
+ENV HOME=/tmp
+
+USER www-data

@@ -100,14 +100,12 @@ class SyncCoinsCommand extends Command
                         $this->line("➕  Added new coin: {$coin->name}");
                     }
 
-                    // ✅ Сохраняем цену в кеш для мгновенной конвертации
                     Cache::put("coin:{$symbol}:price", $c['current_price'], now()->addMinutes(10));
                 }
 
                 sleep(1);
             }
 
-            // 🔁 Обновляем кеш coins_list
             $cached = Coin::select([
                 'id',
                 'name',

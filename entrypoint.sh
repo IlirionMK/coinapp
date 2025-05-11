@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 echo "Starting service with role: $ROLE"
@@ -16,6 +16,12 @@ case "$ROLE" in
     done
     echo "PostgreSQL is ready."
 
+    echo "Waiting for Redis to be ready..."
+    until nc -z redis 6379; do
+      sleep 1
+    done
+    echo "Redis is ready."
+
     echo "Running database migrations..."
     php artisan migrate --force
 
@@ -31,17 +37,29 @@ case "$ROLE" in
     php artisan view:cache
 
     echo "Starting PHP-FPM server..."
-    exec php-fpm
+    exec php-fpm -F
     ;;
 
   queue)
+    echo "Waiting for Redis to be ready..."
+    until nc -z redis 6379; do
+      sleep 1
+    done
+    echo "Redis is ready."
+
     echo "Starting Laravel queue worker..."
-    php artisan queue:work --tries=3 --timeout=90
+    exec php artisan queue:work --tries=3 --timeout=90
     ;;
 
   scheduler)
+    echo "Waiting for Redis to be ready..."
+    until nc -z redis 6379; do
+      sleep 1
+    done
+    echo "Redis is ready."
+
     echo "Starting Laravel scheduler..."
-    php artisan schedule:work
+    exec php artisan schedule:work
     ;;
 
   *)

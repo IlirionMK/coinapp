@@ -38,7 +38,6 @@ class CoinController extends Controller
                             'price' => (float) $coin->price,
                             'price_change_percentage_24h' => (float) $coin->price_change_percentage_24h,
                             'market_cap' => (int) $coin->market_cap,
-                            // просто подставляем путь — а фронт подстрахует через @error
                             'icon_path' => "/icons/{$coin->coingecko_id}.png",
                         ];
                     });
