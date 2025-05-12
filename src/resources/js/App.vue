@@ -9,15 +9,13 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import AuthLayout from '@/layouts/AuthenticatedLayout.vue'
-import useAuth from '@/composables/useAuth'
-
-const { getUser } = useAuth()
-getUser()
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 
 const layouts = {
     DefaultLayout,
-    AuthLayout,
+    AuthenticatedLayout,
+    AdminLayout,
 }
 
 const route = useRoute()

@@ -32,7 +32,7 @@
                 <template v-if="user">
                     <span class="text-sm text-gray-700 dark:text-gray-200">👤 {{ user.name }}</span>
                     <button
-                        @click="logout"
+                        @click="handleLogout"
                         class="text-sm text-red-600 hover:underline"
                     >
                         {{ t('nav.logout') }}
@@ -80,20 +80,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import { useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { RouterLink } from 'vue-router'
+
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
 import ConverterPreview from '@/components/ConverterPreview.vue'
 import Dropdown from '@/components/ui/Dropdown.vue'
-import useAuth from '@/composables/useAuth'
+import useUser from '@/stores/user'
 
 const { t } = useI18n()
+const router = useRouter()
 const mobileMenu = ref(false)
 
-const { user, logout, getUser } = useAuth()
+const { user, logout } = useUser()
 
-onMounted(() => {
-    getUser()
-})
+const handleLogout = () => {
+    logout(router)
+}
 </script>

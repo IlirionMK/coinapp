@@ -5,12 +5,11 @@ const api = axios.create({
     withCredentials: true,
 })
 
-
 api.interceptors.response.use(
     response => response,
     error => {
-        if (error.response?.status === 401) {
-            console.warn('Unauthorized: redirecting to login')
+        if (import.meta.env.DEV && error.response?.status === 401) {
+            console.warn('[401 Unauthorized] — guest user or expired session')
         }
         return Promise.reject(error)
     }

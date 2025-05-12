@@ -26,9 +26,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from '@/utils/axios'
-import useAuth from '@/composables/useAuth'
+import useUser from '@/stores/user'
 
-const { user } = useAuth()
+const { user } = useUser()
 const subscriptions = ref([])
 
 onMounted(async () => {

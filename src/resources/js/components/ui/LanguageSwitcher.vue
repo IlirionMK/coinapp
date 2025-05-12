@@ -28,7 +28,6 @@ async function switchLang(lng) {
     if (locale.value !== lng) {
         localStorage.setItem('locale', lng)
         await loadLocaleMessages(i18n, lng)
-        // `locale.value = lng` не нужен — уже внутри loadLocaleMessages
     }
 }
 </script>

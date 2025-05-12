@@ -1,4 +1,5 @@
-# запрещаем случайные npm-артефакты в корне
-/package.json
+ /package.json
 /package-lock.json
 /node_modules/
+.idea/
+

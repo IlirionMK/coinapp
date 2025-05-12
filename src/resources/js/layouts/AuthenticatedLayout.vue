@@ -1,4 +1,3 @@
-<!-- resources/js/layouts/AuthorizedLayout.vue -->
 <template>
     <div class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
         <header class="bg-white border-b shadow-sm">
@@ -19,13 +18,7 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import { useRouter } from 'vue-router'
+import useUser from '@/stores/user'
 
-const router = useRouter()
-
-const logout = async () => {
-    await axios.post('/logout')
-    router.push('/login')
-}
+const { logout } = useUser()
 </script>

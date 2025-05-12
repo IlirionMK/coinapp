@@ -34,9 +34,11 @@
 
 <script setup>
 import { reactive } from 'vue'
-import useAuth from '@/composables/useAuth'
+import { useRouter } from 'vue-router'
+import useUser from '@/stores/user'
 
-const { register, error } = useAuth()
+const { register, error } = useUser()
+const router = useRouter()
 
 const form = reactive({
     name: '',
@@ -46,6 +48,6 @@ const form = reactive({
 })
 
 const submit = () => {
-    register(form)
+    register(form, router)
 }
 </script>

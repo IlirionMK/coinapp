@@ -1,10 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import Home from '../pages/Home.vue'
 import Convert from '../pages/Convert.vue'
 import About from '../pages/About.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import Dashboard from '../pages/Dashboard.vue'
+import AdminDashboard from '../pages/AdminDashboard.vue'
+
+import useUser from '@/stores/user'
 
 const routes = [
     {
@@ -29,13 +33,19 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login,
-        meta: { layout: 'DefaultLayout' },
+        meta: {
+            layout: 'DefaultLayout',
+            guestOnly: true,
+        },
     },
     {
         path: '/register',
         name: 'register',
         component: Register,
-        meta: { layout: 'DefaultLayout' },
+        meta: {
+            layout: 'DefaultLayout',
+            guestOnly: true,
+        },
     },
     {
         path: '/dashboard',
@@ -46,6 +56,16 @@ const routes = [
             requiresAuth: true,
         },
     },
+    {
+        path: '/admin',
+        name: 'admin.dashboard',
+        component: AdminDashboard,
+        meta: {
+            layout: 'AdminLayout',
+            requiresAuth: true,
+            requiresAdmin: true,
+        },
+    },
 ]
 
 const router = createRouter({
@@ -53,19 +73,29 @@ const router = createRouter({
     routes,
 })
 
-import axios from 'axios'
-
 router.beforeEach(async (to, from, next) => {
-    if (to.meta.requiresAuth) {
-        try {
-            await axios.get('/api/user')
-            next()
-        } catch {
-            next('/login')
-        }
-    } else {
-        next()
+    const { user, fetchUser } = useUser()
+
+    if (user.value === null && (to.meta.requiresAuth || to.meta.requiresAdmin)) {
+        await fetchUser()
     }
+
+    const isLoggedIn = !!user.value
+    const isAdmin = user.value?.role === 'admin'
+
+    if (to.meta.requiresAuth && !isLoggedIn) {
+        return next('/login')
+    }
+
+    if (to.meta.guestOnly && isLoggedIn) {
+        return next(isAdmin ? '/admin' : '/dashboard')
+    }
+
+    if (to.meta.requiresAdmin && !isAdmin) {
+        return next('/dashboard')
+    }
+
+    return next()
 })
 
 export default router

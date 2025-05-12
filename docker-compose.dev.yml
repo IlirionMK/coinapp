@@ -7,6 +7,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html
+      - ./src/bootstrap/cache:/var/www/html/bootstrap/cache
       - ./entrypoint.sh:/entrypoint.sh
     ports:
       - "9000:9000"
@@ -48,6 +49,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html
+      - ./src/bootstrap/cache:/var/www/html/bootstrap/cache
       - ./entrypoint.sh:/entrypoint.sh
     environment:
       - ROLE=queue
@@ -62,8 +64,49 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html
+      - ./src/bootstrap/cache:/var/www/html/bootstrap/cache
       - ./entrypoint.sh:/entrypoint.sh
     environment:
       - ROLE=scheduler
     depends_on:
-      - ap
+      - app
+    command: ["/entrypoint.sh"]
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.dev.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: coinapp
+      POSTGRES_USER: coinuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
+
+volumes:
+  postgres_data:
