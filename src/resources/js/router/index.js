@@ -66,6 +66,20 @@ const routes = [
             requiresAdmin: true,
         },
     },
+    {
+        path: '/verify-email',
+        name: 'verify-email',
+        component: () => import('../pages/VerifyEmail.vue'),
+        meta: { layout: 'DefaultLayout' },
+    },
+    {
+        path: '/email-verified',
+        name: 'email-verified',
+        component: () => import('../pages/EmailVerified.vue'),
+        meta: { layout: 'DefaultLayout' },
+    }
+
+
 ]
 
 const router = createRouter({
@@ -76,7 +90,10 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const { user, fetchUser } = useUser()
 
-    if (user.value === null && (to.meta.requiresAuth || to.meta.requiresAdmin)) {
+    // 🛑 Не загружаем пользователя на этих маршрутах
+    const skipFetchUser = to.name === 'verify-email'
+
+    if (!skipFetchUser && user.value === null && (to.meta.requiresAuth || to.meta.requiresAdmin)) {
         await fetchUser()
     }
 

@@ -24,6 +24,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - mailpit
     command: ["/entrypoint.sh"]
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost/health || exit 1"]

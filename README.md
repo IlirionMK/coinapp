@@ -39,5 +39,5 @@ Cryptocurrency tracking platform with price monitoring, user subscriptions, emai
 Clone the repository:
 
 ```bash
-git clone https://github.com/IlirionMK/coin_app_s.git
-cd coin_app_s
+git clone https://github.com/IlirionMK/coinapp.git
+cd coinapp

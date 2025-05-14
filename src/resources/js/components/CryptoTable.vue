@@ -1,6 +1,5 @@
 <template>
     <div class="max-w-full overflow-x-auto rounded-lg shadow-sm bg-white p-4">
-        <!-- 🔍 Поиск -->
         <div class="mb-4 flex items-center gap-2">
             <input
                 v-model="search"
@@ -73,7 +72,6 @@
             </tbody>
         </table>
 
-        <!-- Пагинация -->
         <div class="flex justify-between items-center px-4 py-3 text-sm text-gray-600">
             <div>
                 {{ t('showing') }}

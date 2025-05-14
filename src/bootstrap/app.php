@@ -18,12 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
-            EnsureFrontendRequestsAreStateful::class,
             EncryptCookies::class,
             StartSession::class,
             ShareErrorsFromSession::class,
             SubstituteBindings::class,
             AddLinkHeadersForPreloadedAssets::class,
+        ]);
+
+        $middleware->api(prepend: [
+            EnsureFrontendRequestsAreStateful::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

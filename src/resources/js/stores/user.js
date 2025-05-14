@@ -4,7 +4,7 @@ import axios from '@/utils/axios'
 const user = ref(null)
 const error = ref(null)
 
-let fetching = null // <-- предотвращаем дубликаты
+let fetching = null
 
 const fetchUser = async () => {
     if (user.value) return
@@ -14,8 +14,10 @@ const fetchUser = async () => {
             .then(({ data }) => {
                 user.value = data
             })
-            .catch(() => {
-                user.value = null
+            .catch((err) => {
+                if (err.response?.status !== 401) {
+                    user.value = null
+                }
             })
             .finally(() => {
                 fetching = null
@@ -30,7 +32,6 @@ const login = async (form, router) => {
     try {
         await axios.get('/sanctum/csrf-cookie')
         await axios.post('/login', form)
-        await fetchUser()
         router.push('/dashboard')
     } catch (err) {
         handleError(err)
@@ -42,8 +43,7 @@ const register = async (form, router) => {
     try {
         await axios.get('/sanctum/csrf-cookie')
         await axios.post('/register', form)
-        await fetchUser()
-        router.push('/dashboard')
+        router.push('/verify-email')
     } catch (err) {
         handleError(err)
     }

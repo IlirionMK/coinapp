@@ -8,12 +8,16 @@ use App\Services\LoginService;
 use App\Services\LogoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
     public function register(RegisterUserRequest $request, UserRegistrationService $service)
     {
         $user = $service->register($request->validated());
+
+        event(new Registered($user));
+
         Auth::login($user);
 
         return response()->json($user);
