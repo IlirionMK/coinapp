@@ -1,4 +1,6 @@
 import axios from 'axios'
+import router from '@/router'
+import useUser from '@/stores/user'
 
 const api = axios.create({
     baseURL: '/api',
@@ -7,10 +9,17 @@ const api = axios.create({
 
 api.interceptors.response.use(
     response => response,
-    error => {
-        if (import.meta.env.DEV && error.response?.status === 401) {
-            console.warn('[401 Unauthorized] — guest user or expired session')
+    async error => {
+        if (error.response?.status === 401) {
+            const { logout } = useUser()
+
+             const path = window.location.pathname
+            localStorage.setItem('logoutRedirectPath', path)
+
+            await logout(router)
+            router.push('/session-expired')
         }
+
         return Promise.reject(error)
     }
 )

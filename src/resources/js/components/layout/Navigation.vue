@@ -29,16 +29,39 @@
                     </Dropdown>
                 </div>
 
+                <!-- Authenticated user -->
                 <template v-if="user">
-                    <span class="text-sm text-gray-700 dark:text-gray-200">👤 {{ user.name }}</span>
-                    <button
-                        @click="handleLogout"
-                        class="text-sm text-red-600 hover:underline"
-                    >
-                        {{ t('nav.logout') }}
-                    </button>
+                    <Dropdown>
+                        <template #trigger="{ toggle }">
+                            <button
+                                @click="toggle"
+                                class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200 hover:text-blue-600"
+                            >
+                                👤 {{ user.name ?? 'User' }}
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </template>
+
+                        <div class="py-1 text-sm text-left">
+                            <RouterLink
+                                :to="user.role === 'admin' ? '/admin' : '/dashboard'"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            >
+                                {{ t('nav.dashboard') }}
+                            </RouterLink>
+                            <button
+                                @click="handleLogout"
+                                class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            >
+                                {{ t('nav.logout') }}
+                            </button>
+                        </div>
+                    </Dropdown>
                 </template>
 
+                <!-- Guest -->
                 <template v-else>
                     <RouterLink to="/login" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">
                         {{ t('nav.login') }}
@@ -74,6 +97,37 @@
 
             <div class="pt-2 border-t">
                 <ConverterPreview />
+            </div>
+
+            <div class="pt-4 border-t">
+                <template v-if="user">
+                    <div class="text-sm text-gray-700 dark:text-gray-200 mb-2">
+                        👤 {{ user.name ?? 'User' }}
+                    </div>
+                    <RouterLink
+                        :to="user.role === 'admin' ? '/admin' : '/dashboard'"
+                        class="block text-sm text-blue-600 hover:underline mb-2"
+                    >
+                        {{ t('nav.dashboard') }}
+                    </RouterLink>
+                    <button
+                        @click="handleLogout"
+                        class="text-sm text-red-600 hover:underline"
+                    >
+                        {{ t('nav.logout') }}
+                    </button>
+                </template>
+                <template v-else>
+                    <RouterLink to="/login" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">
+                        {{ t('nav.login') }}
+                    </RouterLink>
+                    <RouterLink
+                        to="/register"
+                        class="block text-white bg-blue-600 hover:bg-blue-700 text-sm px-4 py-2 rounded mt-2"
+                    >
+                        {{ t('nav.register') }}
+                    </RouterLink>
+                </template>
             </div>
         </div>
     </nav>

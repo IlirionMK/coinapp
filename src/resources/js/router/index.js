@@ -7,6 +7,8 @@ import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import AdminDashboard from '../pages/AdminDashboard.vue'
+import SessionExpired from '../pages/SessionExpired.vue'
+
 
 import useUser from '@/stores/user'
 
@@ -77,7 +79,16 @@ const routes = [
         name: 'email-verified',
         component: () => import('../pages/EmailVerified.vue'),
         meta: { layout: 'DefaultLayout' },
-    }
+    },
+    {
+        path: '/session-expired',
+        name: 'session-expired',
+        component: SessionExpired,
+        meta: {
+            layout: 'DefaultLayout',
+        },
+    },
+
 
 
 ]

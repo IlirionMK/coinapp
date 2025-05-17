@@ -13,10 +13,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
 });
-Route::middleware(['auth:sanctum', 'admin'])->get('/admin-stats', function () {
-    return ['users' => \App\Models\User::count(), 'coins' => \App\Models\Coin::count()];
-});
 
+Route::middleware(['auth:sanctum', 'admin'])->get('/admin-stats', function () {
+    return [
+        'users' => \App\Models\User::count(),
+        'coins' => \App\Models\Coin::count(),
+    ];
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
@@ -24,4 +27,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/coin-subscriptions', [CoinSubscriptionController::class, 'index']);
     Route::post('/coin-subscriptions', [CoinSubscriptionController::class, 'store']);
+    Route::delete('/coin-subscriptions/{coin}', [CoinSubscriptionController::class, 'destroy']); // ← добавляем
 });

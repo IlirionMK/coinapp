@@ -19,12 +19,20 @@
                 </ul>
                 <p v-else class="text-gray-500">{{ $t('dashboard.no_subscriptions') }}</p>
             </div>
+
+            <RouterLink
+                to="/"
+                class="inline-block text-blue-600 hover:underline text-sm"
+            >
+                ← {{ $t('nav.home') }}
+            </RouterLink>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 import axios from '@/utils/axios'
 import useUser from '@/stores/user'
 

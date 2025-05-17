@@ -1,188 +1,155 @@
 <template>
-    <div class="max-w-full overflow-x-auto rounded-lg shadow-sm bg-white p-4">
-        <div class="mb-4 flex items-center gap-2">
-            <input
-                v-model="search"
-                type="text"
-                placeholder="Search by name or symbol"
-                class="border rounded p-2 w-full max-w-md text-sm"
-            />
-        </div>
+    <nav class="bg-white dark:bg-gray-900 border-b shadow-sm py-4">
+        <div class="max-w-screen-xl mx-auto px-4 flex justify-between items-center gap-4">
+            <RouterLink to="/" class="text-xl font-bold text-gray-800 dark:text-white">
+                CoinApp
+            </RouterLink>
 
-        <table class="w-full table-auto border-collapse text-sm">
-            <thead>
-            <tr class="bg-gray-100 text-gray-700">
-                <th class="px-4 py-2 text-left">#</th>
-                <th class="px-4 py-2 text-left cursor-pointer" @click="sortBy('name')">
-                    {{ t('name') }}
-                    <span v-if="sort.key === 'name'">({{ sort.direction === 'asc' ? '↑' : '↓' }})</span>
-                </th>
-                <th class="px-4 py-2 text-right cursor-pointer" @click="sortBy('price')">
-                    {{ t('price') }}
-                    <span v-if="sort.key === 'price'">({{ sort.direction === 'asc' ? '↑' : '↓' }})</span>
-                </th>
-                <th class="px-4 py-2 text-right cursor-pointer" @click="sortBy('price_change_percentage_24h')">
-                    {{ t('24h_change') }}
-                    <span v-if="sort.key === 'price_change_percentage_24h'">
-                            ({{ sort.direction === 'asc' ? '↑' : '↓' }})
-                        </span>
-                </th>
-                <th class="px-4 py-2 text-right cursor-pointer" @click="sortBy('market_cap')">
-                    {{ t('market_cap') }}
-                    <span v-if="sort.key === 'market_cap'">({{ sort.direction === 'asc' ? '↑' : '↓' }})</span>
-                </th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr
-                v-for="(coin, index) in paginatedCoins"
-                :key="coin.id"
-                class="border-t hover:bg-gray-50"
-            >
-                <td class="px-4 py-2 text-center text-gray-500">
-                    {{ index + 1 + (currentPage - 1) * itemsPerPage }}
-                </td>
-                <td class="px-4 py-2 flex items-center gap-2 font-medium">
-                    <img
-                        :src="coin.icon_path"
-                        :alt="coin.name"
-                        class="w-6 h-6 rounded-full object-cover"
-                        loading="lazy"
-                        @error="handleIconError"
-                    />
-                    <span>{{ coin.name }} ({{ coin.symbol?.toUpperCase?.() ?? '-' }})</span>
-                </td>
-                <td class="px-4 py-2 text-right">
-                    {{ formatPrice(coin.price) }}
-                </td>
-                <td
-                    class="px-4 py-2 text-right font-semibold"
-                    :class="{
-                            'text-green-500': coin.price_change_percentage_24h > 0,
-                            'text-red-500': coin.price_change_percentage_24h < 0
-                        }"
-                >
-                    {{ formatPercent(coin.price_change_percentage_24h) }}
-                </td>
-                <td class="px-4 py-2 text-right">
-                    {{ formatPrice(coin.market_cap) }}
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <div class="flex justify-between items-center px-4 py-3 text-sm text-gray-600">
-            <div>
-                {{ t('showing') }}
-                {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredCoins.length) }}
-                {{ t('of') }} {{ filteredCoins.length }}
+            <div class="hidden md:flex items-center gap-6">
+                <RouterLink to="/" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 text-base">
+                    {{ t('nav.home') }}
+                </RouterLink>
+                <RouterLink to="/about" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 text-base">
+                    {{ t('nav.about') }}
+                </RouterLink>
             </div>
-            <div class="flex items-center gap-2">
-                <button
-                    class="px-2 py-1 border rounded disabled:opacity-50"
-                    @click="currentPage--"
-                    :disabled="currentPage === 1"
-                >
-                    {{ t('prev') }}
-                </button>
-                <button
-                    v-for="page in totalPages"
-                    :key="page"
-                    @click="currentPage = page"
-                    class="px-3 py-1 border rounded"
-                    :class="{ 'bg-blue-500 text-white': page === currentPage }"
-                >
-                    {{ page }}
-                </button>
-                <button
-                    class="px-2 py-1 border rounded disabled:opacity-50"
-                    @click="currentPage++"
-                    :disabled="currentPage === totalPages"
-                >
-                    {{ t('next') }}
-                </button>
+
+            <div class="flex items-center gap-4">
+                <div class="hidden md:block mr-2">
+                    <Dropdown>
+                        <template #trigger="{ toggle }">
+                            <button
+                                @click="toggle"
+                                class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-blue-600 hover:text-white px-3 py-1 rounded text-sm transition"
+                            >
+                                {{ t('nav.converter') }}
+                            </button>
+                        </template>
+                        <ConverterPreview />
+                    </Dropdown>
+                </div>
+
+                <!-- Authenticated user -->
+                <template v-if="user">
+                    <Dropdown>
+                        <template #trigger="{ toggle }">
+                            <button
+                                @click="toggle"
+                                class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200 hover:text-blue-600"
+                            >
+                                👤 {{ user.name ?? 'User' }}
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </template>
+
+                        <div class="py-1 text-sm text-left">
+                            <RouterLink
+                                :to="user.role === 'admin' ? '/admin' : '/dashboard'"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            >
+                                {{ t('nav.dashboard') }}
+                            </RouterLink>
+                            <button
+                                @click="handleLogout"
+                                class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            >
+                                {{ t('nav.logout') }}
+                            </button>
+                        </div>
+                    </Dropdown>
+                </template>
+
+                <!-- Guest -->
+                <template v-else>
+                    <RouterLink to="/login" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">
+                        {{ t('nav.login') }}
+                    </RouterLink>
+                    <RouterLink
+                        to="/register"
+                        class="text-white bg-blue-600 hover:bg-blue-700 text-sm px-4 py-2 rounded"
+                    >
+                        {{ t('nav.register') }}
+                    </RouterLink>
+                </template>
+
+                <LanguageSwitcher />
+
+                <div class="block md:hidden">
+                    <button @click="mobileMenu = !mobileMenu">
+                        <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div v-if="mobileMenu" class="md:hidden px-4 mt-2 space-y-2">
+            <RouterLink to="/" class="block text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                {{ t('nav.home') }}
+            </RouterLink>
+            <RouterLink to="/about" class="block text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                {{ t('nav.about') }}
+            </RouterLink>
+
+            <div class="pt-2 border-t">
+                <ConverterPreview />
+            </div>
+
+            <div class="pt-4 border-t">
+                <template v-if="user">
+                    <div class="text-sm text-gray-700 dark:text-gray-200 mb-2">
+                        👤 {{ user.name ?? 'User' }}
+                    </div>
+                    <RouterLink
+                        :to="user.role === 'admin' ? '/admin' : '/dashboard'"
+                        class="block text-sm text-blue-600 hover:underline mb-2"
+                    >
+                        {{ t('nav.dashboard') }}
+                    </RouterLink>
+                    <button
+                        @click="handleLogout"
+                        class="text-sm text-red-600 hover:underline"
+                    >
+                        {{ t('nav.logout') }}
+                    </button>
+                </template>
+                <template v-else>
+                    <RouterLink to="/login" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">
+                        {{ t('nav.login') }}
+                    </RouterLink>
+                    <RouterLink
+                        to="/register"
+                        class="block text-white bg-blue-600 hover:bg-blue-700 text-sm px-4 py-2 rounded mt-2"
+                    >
+                        {{ t('nav.register') }}
+                    </RouterLink>
+                </template>
+            </div>
+        </div>
+    </nav>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
+import { useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
+import ConverterPreview from '@/components/ConverterPreview.vue'
+import Dropdown from '@/components/ui/Dropdown.vue'
+import useUser from '@/stores/user'
+
 const { t } = useI18n()
+const router = useRouter()
+const mobileMenu = ref(false)
 
-const props = defineProps({
-    coins: {
-        type: Array,
-        required: true,
-    },
-    loading: {
-        type: Boolean,
-        default: false,
-    },
-})
+const { user, logout } = useUser()
 
-const search = ref('')
-const itemsPerPage = 25
-const currentPage = ref(1)
-
-const sort = ref({
-    key: 'market_cap',
-    direction: 'desc',
-})
-
-const sortBy = (key) => {
-    if (sort.value.key === key) {
-        sort.value.direction = sort.value.direction === 'asc' ? 'desc' : 'asc'
-    } else {
-        sort.value.key = key
-        sort.value.direction = 'asc'
-    }
-}
-
-const filteredCoins = computed(() => {
-    const query = search.value.trim().toLowerCase()
-    if (!query) return props.coins
-    return props.coins.filter(
-        (coin) =>
-            coin.name.toLowerCase().includes(query) ||
-            coin.symbol.toLowerCase().includes(query)
-    )
-})
-
-const sortedCoins = computed(() => {
-    return [...filteredCoins.value].sort((a, b) => {
-        const modifier = sort.value.direction === 'asc' ? 1 : -1
-        const aVal = a[sort.value.key] ?? 0
-        const bVal = b[sort.value.key] ?? 0
-        return (aVal > bVal ? 1 : aVal < bVal ? -1 : 0) * modifier
-    })
-})
-
-const paginatedCoins = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage
-    return sortedCoins.value.slice(start, start + itemsPerPage)
-})
-
-const totalPages = computed(() =>
-    Math.ceil(filteredCoins.value.length / itemsPerPage)
-)
-
-const handleIconError = (e) => {
-    e.target.src = '/icons/default.png'
-}
-
-function formatPrice(value) {
-    return typeof value === 'number'
-        ? `$${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`
-        : '-'
-}
-
-function formatPercent(value) {
-    return typeof value === 'number'
-        ? `${value.toFixed(2)}%`
-        : '-'
+const handleLogout = () => {
+    logout(router)
 }
 </script>

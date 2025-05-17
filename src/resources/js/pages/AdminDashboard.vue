@@ -6,13 +6,20 @@
 
         <div class="mt-6">
             <p class="text-sm text-gray-500">You have administrative privileges.</p>
-
         </div>
+
+        <RouterLink
+            to="/"
+            class="inline-block mt-6 text-blue-600 hover:underline text-sm"
+        >
+            ← {{ $t('nav.home') }}
+        </RouterLink>
     </section>
 </template>
 
 <script setup>
 import useUser from '@/stores/user'
+import { RouterLink } from 'vue-router'
 
 const { user } = useUser()
 </script>

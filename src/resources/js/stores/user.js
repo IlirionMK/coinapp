@@ -32,7 +32,11 @@ const login = async (form, router) => {
     try {
         await axios.get('/sanctum/csrf-cookie')
         await axios.post('/login', form)
-        router.push('/dashboard')
+
+         const redirectTo = localStorage.getItem('logoutRedirectPath') || '/dashboard'
+        localStorage.removeItem('logoutRedirectPath')
+
+        router.push(redirectTo)
     } catch (err) {
         handleError(err)
     }

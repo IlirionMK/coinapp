@@ -24,4 +24,18 @@ class CoinSubscriptionController extends Controller
 
         return response()->noContent();
     }
+
+    public function destroy($coinId)
+    {
+        $user = auth()->user();
+
+        $subscription = $user->subscriptions()->where('coin_id', $coinId)->first();
+
+        if ($subscription) {
+            $subscription->delete();
+            return response()->json(['message' => 'Unsubscribed']);
+        }
+
+        return response()->json(['message' => 'Subscription not found'], 404);
+    }
 }
