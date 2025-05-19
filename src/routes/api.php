@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\CoinController;
 use App\Http\Controllers\Api\CurrencyConverterController;
@@ -27,5 +28,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/coin-subscriptions', [CoinSubscriptionController::class, 'index']);
     Route::post('/coin-subscriptions', [CoinSubscriptionController::class, 'store']);
-    Route::delete('/coin-subscriptions/{coin}', [CoinSubscriptionController::class, 'destroy']); // ← добавляем
+    Route::delete('/coin-subscriptions/{coin}', [CoinSubscriptionController::class, 'destroy']);
+
+     Route::post('/email/verification-notification', function (Request $request) {
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->noContent();
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return response()->noContent();
+    });
 });

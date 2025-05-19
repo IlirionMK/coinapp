@@ -1,7 +1,31 @@
+<script setup>
+import { onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import useUser from '@/stores/user'
+
+import Header from "@/components/layout/Header.vue"
+import Navigation from '@/components/layout/Navigation.vue'
+import Footer from '@/components/layout/Footer.vue'
+
+const { user } = useUser()
+const router = useRouter()
+
+ watch(user, (val) => {
+    if (val === null) {
+        router.push('/login')
+    }
+})
+
+onMounted(() => {
+    if (user.value === null) {
+        router.push('/login')
+    }
+})
+</script>
+
 <template>
     <div class="flex flex-col min-h-screen bg-gray-50 text-gray-900">
         <Header />
-
         <Navigation />
 
         <main class="flex-1">
@@ -13,9 +37,3 @@
         <Footer />
     </div>
 </template>
-
-<script setup>
-import Header from "@/components/layout/Header.vue";
-import Navigation from '@/components/layout/Navigation.vue';
-import Footer from '@/components/layout/Footer.vue';
-</script>

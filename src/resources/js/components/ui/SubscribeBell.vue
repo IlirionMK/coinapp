@@ -1,22 +1,12 @@
-<template>
-    <button
-        v-if="user"
-        @click="toggle"
-        class="text-xl"
-        :title="isSubscribed ? t('unsubscribe') : t('subscribe')"
-    >
-        {{ isSubscribed ? '🔔' : '🔕' }}
-    </button>
-</template>
-
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from '@/utils/axios'
 import useUser from '@/stores/user'
 
 const { t } = useI18n()
 const { user } = useUser()
+const toast = inject('toast')
 
 const props = defineProps({
     coinId: {
@@ -47,12 +37,15 @@ const toggle = async () => {
         if (isSubscribed.value) {
             await axios.delete(`/coin-subscriptions/${props.coinId}`)
             subscribedIds.value = subscribedIds.value.filter(id => id !== props.coinId)
+            toast?.value?.show(t('unsubscribed_success'))
         } else {
             await axios.post('/coin-subscriptions', { coin_id: props.coinId })
             subscribedIds.value.push(props.coinId)
+            toast?.value?.show(t('subscribed_success'))
         }
     } catch (err) {
         console.error('Failed to toggle subscription', err)
+        toast?.value?.show(t('subscription_error'))
     }
 }
 

@@ -3,8 +3,15 @@ import axios from '@/utils/axios'
 
 const user = ref(null)
 const error = ref(null)
-
+let isLoggingOut = false
 let fetching = null
+let csrfReady = false
+
+const ensureCsrf = async () => {
+    if (csrfReady) return
+    await axios.get('/sanctum/csrf-cookie')
+    csrfReady = true
+}
 
 const fetchUser = async () => {
     if (user.value) return
@@ -30,10 +37,10 @@ const fetchUser = async () => {
 const login = async (form, router) => {
     error.value = null
     try {
-        await axios.get('/sanctum/csrf-cookie')
+        await ensureCsrf()
         await axios.post('/login', form)
 
-         const redirectTo = localStorage.getItem('logoutRedirectPath') || '/dashboard'
+        const redirectTo = localStorage.getItem('logoutRedirectPath') || '/dashboard'
         localStorage.removeItem('logoutRedirectPath')
 
         router.push(redirectTo)
@@ -45,7 +52,7 @@ const login = async (form, router) => {
 const register = async (form, router) => {
     error.value = null
     try {
-        await axios.get('/sanctum/csrf-cookie')
+        await ensureCsrf()
         await axios.post('/register', form)
         router.push('/verify-email')
     } catch (err) {
@@ -54,9 +61,21 @@ const register = async (form, router) => {
 }
 
 const logout = async (router) => {
-    await axios.post('/logout')
+    if (isLoggingOut) return
+    isLoggingOut = true
+
+    try {
+        await axios.post('/logout')
+    } catch (e) {
+        if (e.response?.status !== 401) {
+            console.error('Logout failed:', e)
+        }
+    }
+
     user.value = null
-    router.push('/login')
+    await router.push('/session-expired')
+
+    isLoggingOut = false
 }
 
 const handleError = (err) => {

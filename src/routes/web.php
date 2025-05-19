@@ -5,6 +5,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'timestamp' => now(),
+        'app' => config('app.name'),
+        'environment' => config('app.env'),
+    ]);
+});
+
 Route::get('/login', function () {
     return redirect('/');
 })->name('login');
@@ -17,11 +26,6 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::get('/email-verified', function () {
     return view('app');
-});
-
-Route::get('/test-log', function () {
-    Log::channel('coins')->info('✅ Test log at ' . now());
-    return 'Logged!';
 });
 
 Route::get('/{any}', function () {

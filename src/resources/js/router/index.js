@@ -88,6 +88,12 @@ const routes = [
             layout: 'DefaultLayout',
         },
     },
+    {
+        path: '/403',
+        name: 'forbidden',
+        component: () => import('@/pages/errors/Forbidden.vue'),
+    }
+
 
 
 
@@ -101,8 +107,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const { user, fetchUser } = useUser()
 
-    // 🛑 Не загружаем пользователя на этих маршрутах
-    const skipFetchUser = to.name === 'verify-email'
+     const skipFetchUser = to.name === 'verify-email'
 
     if (!skipFetchUser && user.value === null && (to.meta.requiresAuth || to.meta.requiresAdmin)) {
         await fetchUser()

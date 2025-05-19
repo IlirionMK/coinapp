@@ -1,8 +1,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import useUser from '@/stores/user'
 
-const IDLE_TIMEOUT = 5 * 60 * 1000      // 5 минут бездействия
-const WARNING_TIME = 60 * 1000          // 1 минута на отмену
+const IDLE_TIMEOUT = 5 * 60 * 1000
+const WARNING_TIME = 60 * 1000
 
 export function useSessionTimer(router) {
     const { user, logout } = useUser()

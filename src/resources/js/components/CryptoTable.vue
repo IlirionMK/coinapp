@@ -24,8 +24,8 @@
                 <th class="px-4 py-2 text-right cursor-pointer" @click="sortBy('price_change_percentage_24h')">
                     {{ t('24h_change') }}
                     <span v-if="sort.key === 'price_change_percentage_24h'">
-                            ({{ sort.direction === 'asc' ? '↑' : '↓' }})
-                        </span>
+                        ({{ sort.direction === 'asc' ? '↑' : '↓' }})
+                    </span>
                 </th>
                 <th class="px-4 py-2 text-right cursor-pointer" @click="sortBy('market_cap')">
                     {{ t('market_cap') }}
@@ -62,9 +62,9 @@
                 <td
                     class="px-4 py-2 text-right font-semibold"
                     :class="{
-                            'text-green-500': coin.price_change_percentage_24h > 0,
-                            'text-red-500': coin.price_change_percentage_24h < 0
-                        }"
+                        'text-green-500': coin.price_change_percentage_24h > 0,
+                        'text-red-500': coin.price_change_percentage_24h < 0
+                    }"
                 >
                     {{ formatPercent(coin.price_change_percentage_24h) }}
                 </td>
@@ -72,13 +72,7 @@
                     {{ formatPrice(coin.market_cap) }}
                 </td>
                 <td class="px-4 py-2 text-center">
-                    <button
-                        @click="subscribe(coin)"
-                        :disabled="subscribing[coin.id]"
-                        class="text-xs px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 text-blue-600 disabled:opacity-50"
-                    >
-                        {{ t('subscribe') }}
-                    </button>
+                    <SubscribeBell :coin-id="coin.id" />
                 </td>
             </tr>
             </tbody>
@@ -122,11 +116,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import axios from '@/utils/axios'
-import useUser from '@/stores/user'
+import SubscribeBell from '@/components/ui/SubscribeBell.vue'
 
 const { t } = useI18n()
-const { user } = useUser()
 
 const props = defineProps({
     coins: {
@@ -199,30 +191,5 @@ function formatPercent(value) {
     return typeof value === 'number'
         ? `${value.toFixed(2)}%`
         : '-'
-}
-
-const subscribing = ref({})
-
-const subscribe = async (coin) => {
-    if (!user.value) {
-        alert('You must be logged in to subscribe.')
-        return
-    }
-
-    if (subscribing.value[coin.id]) return
-
-    subscribing.value[coin.id] = true
-
-    try {
-        await axios.post('/coin-subscriptions', {
-            coin_id: coin.id,
-        })
-        alert(`Subscribed to ${coin.name}`)
-    } catch (err) {
-        console.error(err)
-        alert('Subscription failed.')
-    } finally {
-        subscribing.value[coin.id] = false
-    }
 }
 </script>
