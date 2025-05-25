@@ -12,6 +12,9 @@
                 <RouterLink to="/about" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 text-base">
                     {{ t('nav.about') }}
                 </RouterLink>
+                <RouterLink to="/news" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 text-base">
+                    {{ t('nav.news') }}
+                </RouterLink>
             </div>
 
             <div class="flex items-center gap-4">
@@ -93,6 +96,9 @@
             </RouterLink>
             <RouterLink to="/about" class="block text-gray-700 dark:text-gray-300 hover:text-blue-600">
                 {{ t('nav.about') }}
+            </RouterLink>
+            <RouterLink to="/news" class="block text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                {{ t('nav.news') }}
             </RouterLink>
 
             <div class="pt-2 border-t">

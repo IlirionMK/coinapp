@@ -1,22 +1,9 @@
 <script setup>
-import { onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import useUser from '@/stores/user'
+import { useRouter } from 'vue-router'
 
-const { user, logout } = useUser()
+const { logout } = useUser()
 const router = useRouter()
-
- watch(user, (val) => {
-    if (val === null) {
-        router.push('/login')
-    }
-})
-
-onMounted(() => {
-    if (user.value === null) {
-        router.push('/login')
-    }
-})
 </script>
 
 <template>

@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'cryptopanic' => [
+        'token' => env('CRYPTOPANIC_API_TOKEN'),
+    ],
+
 
 ];

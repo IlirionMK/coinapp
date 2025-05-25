@@ -1,3 +1,11 @@
+<script setup>
+import { useRouter } from 'vue-router'
+import useUser from '@/stores/user'
+
+const { logout } = useUser()
+const router = useRouter()
+</script>
+
 <template>
     <div class="min-h-screen flex flex-col bg-gray-100">
         <header class="bg-white border-b px-6 py-4 shadow-sm flex justify-between items-center">
@@ -14,23 +22,3 @@
         </footer>
     </div>
 </template>
-
-<script setup>
-import { onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import useUser from '@/stores/user'
-
-const { user, logout } = useUser()
-const router = useRouter()
-
-const checkAccess = () => {
-    if (!user.value) {
-        router.push('/login')
-    } else if (user.value.role !== 'admin') {
-        router.push('/403')
-    }
-}
-
-watch(user, () => checkAccess())
-onMounted(() => checkAccess())
-</script>

@@ -5,7 +5,8 @@
         "converter": "Kantor",
         "about": "O nas",
         "login": "Zaloguj się",
-        "register": "Rejestracja"
+        "register": "Rejestracja",
+        "news": "Aktualności"
     },
     "footer": {
         "copyright": "© 2025 CoinApp — Wszelkie prawa zastrzeżone"
@@ -19,8 +20,15 @@
     "converter.from": "Z",
     "converter.to": "Na",
     "converter.amount": "Kwota",
-    "news": "Najnowsze wiadomości",
-    "news_intro": "Tutaj będą pojawiać się najnowsze wiadomości ze świata kryptowalut.",
+    "news": {
+        "title": "Najnowsze wiadomości kryptowalutowe",
+        "filter_by_coin": "Filtruj według monety",
+        "all_coins": "Wszystkie monety",
+        "filter_by_date": "Data publikacji",
+        "search_keywords": "Szukaj słów kluczowych",
+        "read_more": "Czytaj więcej",
+        "clear_filters": "Wyczyść filtry"
+    },
     "loading": "Ładowanie",
     "name": "Nazwa",
     "price": "Cena",
@@ -33,7 +41,6 @@
     "of": "z",
     "prev": "Poprzednia",
     "next": "Następna",
-
     "about": {
         "title": "O projekcie",
         "description1": "To projekt zaliczeniowy stworzony w ramach ćwiczeń z programowania aplikacji webowych. Skupia się na pracy z zewnętrznym API, synchronizacji danych w tle, architekturze SPA oraz podstawowej interakcji z użytkownikiem.",

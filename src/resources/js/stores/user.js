@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import axios from '@/utils/axios'
+import api from '@/utils/axios'
+import rawAxios from 'axios'
 
 const user = ref(null)
 const error = ref(null)
@@ -9,22 +10,27 @@ let csrfReady = false
 
 const ensureCsrf = async () => {
     if (csrfReady) return
-    await axios.get('/sanctum/csrf-cookie')
+    await rawAxios.get('/sanctum/csrf-cookie', {
+        withCredentials: true
+    })
     csrfReady = true
 }
 
 const fetchUser = async () => {
-    if (user.value) return
+    if (user.value) return true
 
     if (!fetching) {
-        fetching = axios.get('/user')
+        fetching = api.get('/user')
             .then(({ data }) => {
                 user.value = data
+                return true
             })
             .catch((err) => {
-                if (err.response?.status !== 401) {
+                if (err.response?.status === 401) {
                     user.value = null
+                    return false
                 }
+                throw err
             })
             .finally(() => {
                 fetching = null
@@ -38,7 +44,7 @@ const login = async (form, router) => {
     error.value = null
     try {
         await ensureCsrf()
-        await axios.post('/login', form)
+        await api.post('/login', form)
 
         const redirectTo = localStorage.getItem('logoutRedirectPath') || '/dashboard'
         localStorage.removeItem('logoutRedirectPath')
@@ -53,7 +59,7 @@ const register = async (form, router) => {
     error.value = null
     try {
         await ensureCsrf()
-        await axios.post('/register', form)
+        await api.post('/register', form)
         router.push('/verify-email')
     } catch (err) {
         handleError(err)
@@ -65,7 +71,7 @@ const logout = async (router) => {
     isLoggingOut = true
 
     try {
-        await axios.post('/logout')
+        await api.post('/logout')
     } catch (e) {
         if (e.response?.status !== 401) {
             console.error('Logout failed:', e)

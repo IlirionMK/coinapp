@@ -7,8 +7,7 @@ use App\Services\UserRegistrationService;
 use App\Services\LoginService;
 use App\Services\LogoutService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -16,11 +15,17 @@ class AuthController extends Controller
     {
         $user = $service->register($request->validated());
 
-        event(new Registered($user));
+         $user->sendEmailVerificationNotification();
 
-        Auth::login($user);
+        Log::info('User registered', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'time' => now()->toDateTimeString(),
+        ]);
 
-        return response()->json($user);
+         return response()->json(['message' => 'Registered']);
     }
 
     public function login(Request $request, LoginService $loginService)
@@ -30,7 +35,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (!$loginService->attempt($credentials)) {
+        if (!$loginService->attempt($credentials, $request)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 

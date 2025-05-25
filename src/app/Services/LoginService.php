@@ -7,16 +7,23 @@ use Illuminate\Support\Facades\Log;
 
 class LoginService
 {
-    public function attempt(array $credentials): bool
+    public function attempt(array $credentials, $request): bool
     {
         $success = Auth::attempt($credentials);
 
-        if (! $success) {
-            Log::warning('Неудачная попытка входа', [
-                'email' => $credentials['email'] ?? null,
-                'ip' => request()->ip(),
-                'user_agent' => request()->userAgent(),
-                'timestamp' => now()->toDateTimeString(),
+        if ($success) {
+            Log::info(' Successful login', [
+                'email' => $credentials['email'],
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'time' => now()->toDateTimeString(),
+            ]);
+        } else {
+            Log::warning(' Failed login attempt', [
+                'email' => $credentials['email'],
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'time' => now()->toDateTimeString(),
             ]);
         }
 

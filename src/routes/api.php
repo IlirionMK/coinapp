@@ -6,6 +6,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\CoinController;
 use App\Http\Controllers\Api\CurrencyConverterController;
 use App\Http\Controllers\Api\CoinSubscriptionController;
+use App\Http\Controllers\Api\NewsController;
+
+Route::get('/debug-api-route', function () {
+    return response()->json(['message' => 'API route is working']);
+});
+
+Route::get('/news', [NewsController::class, 'index']);
 
 Route::get('/coins', [CoinController::class, 'index']);
 Route::get('/convert', [CurrencyConverterController::class, 'convert']);
@@ -39,4 +46,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
         return response()->noContent();
     });
+
 });

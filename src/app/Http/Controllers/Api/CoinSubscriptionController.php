@@ -29,12 +29,27 @@ class CoinSubscriptionController extends Controller
     {
         $user = auth()->user();
 
-        $subscription = $user->subscriptions()->where('coin_id', $coinId)->first();
+        $exists = $user->subscriptions()->where('coin_id', $coinId)->exists();
 
-        if ($subscription) {
-            $subscription->delete();
+        if ($exists) {
+            $user->subscriptions()->detach($coinId);
+
+            \Log::info('Coin unsubscribed', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'coin_id' => $coinId,
+                'time' => now()->toDateTimeString(),
+            ]);
+
             return response()->json(['message' => 'Unsubscribed']);
         }
+
+        \Log::warning('Coin unsubscribe attempt for non-existent subscription', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'coin_id' => $coinId,
+            'time' => now()->toDateTimeString(),
+        ]);
 
         return response()->json(['message' => 'Subscription not found'], 404);
     }

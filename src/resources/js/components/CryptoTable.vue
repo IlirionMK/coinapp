@@ -31,7 +31,7 @@
                     {{ t('market_cap') }}
                     <span v-if="sort.key === 'market_cap'">({{ sort.direction === 'asc' ? '↑' : '↓' }})</span>
                 </th>
-                <th class="px-4 py-2 text-center">
+                <th v-if="canShowActions" class="px-4 py-2 text-center">
                     {{ t('actions') }}
                 </th>
             </tr>
@@ -54,7 +54,12 @@
                         loading="lazy"
                         @error="handleIconError"
                     />
-                    <span>{{ coin.name }} ({{ coin.symbol?.toUpperCase?.() ?? '-' }})</span>
+                    <span
+                        class="text-blue-600 hover:underline cursor-pointer"
+                        @click="goToNews(coin.symbol)"
+                    >
+                        {{ coin.name }} ({{ coin.symbol?.toUpperCase?.() ?? '-' }})
+                    </span>
                 </td>
                 <td class="px-4 py-2 text-right">
                     {{ formatPrice(coin.price) }}
@@ -71,7 +76,7 @@
                 <td class="px-4 py-2 text-right">
                     {{ formatPrice(coin.market_cap) }}
                 </td>
-                <td class="px-4 py-2 text-center">
+                <td v-if="canShowActions" class="px-4 py-2 text-center">
                     <SubscribeBell :coin-id="coin.id" />
                 </td>
             </tr>
@@ -116,8 +121,14 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import useUser from '@/stores/user'
 import SubscribeBell from '@/components/ui/SubscribeBell.vue'
 
+const { user } = useUser()
+const canShowActions = computed(() => user.value !== null)
+
+const router = useRouter()
 const { t } = useI18n()
 
 const props = defineProps({
@@ -191,5 +202,11 @@ function formatPercent(value) {
     return typeof value === 'number'
         ? `${value.toFixed(2)}%`
         : '-'
+}
+
+function goToNews(symbol) {
+    if (symbol) {
+        router.push(`/news?currency=${symbol.toUpperCase()}`)
+    }
 }
 </script>

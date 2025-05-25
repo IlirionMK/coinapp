@@ -1,3 +1,34 @@
+<template>
+    <button
+        @click="toggle"
+        :disabled="isLoading"
+        class="flex items-center justify-center w-8 h-8 rounded-full transition hover:bg-gray-100"
+        :title="isSubscribed ? t('unsubscribe') : t('subscribe')"
+    >
+        <svg
+            v-if="isSubscribed"
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6 text-yellow-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+        >
+            <path d="M12 2a7 7 0 0 0-7 7v3.586l-1.707 1.707A1 1 0 0 0 4 16h16a1 1 0 0 0 .707-1.707L19 12.586V9a7 7 0 0 0-7-7zm0 20a3 3 0 0 0 2.995-2.824L15 19h-6a3 3 0 0 0 2.824 2.995L12 22z"/>
+        </svg>
+        <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+    </button>
+</template>
+
 <script setup>
 import { ref, onMounted, computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -16,6 +47,8 @@ const props = defineProps({
 })
 
 const subscribedIds = ref([])
+const isLoading = ref(false)
+let loaded = false
 
 const isSubscribed = computed(() => {
     return subscribedIds.value.includes(props.coinId)
@@ -31,7 +64,8 @@ const fetchSubscriptions = async () => {
 }
 
 const toggle = async () => {
-    if (!user.value) return
+    if (!user.value || isLoading.value) return
+    isLoading.value = true
 
     try {
         if (isSubscribed.value) {
@@ -45,13 +79,16 @@ const toggle = async () => {
         }
     } catch (err) {
         console.error('Failed to toggle subscription', err)
-        toast?.value?.show(t('subscription_error'))
+        toast?.value?.show(err.response?.data?.message || t('subscription_error'))
+    } finally {
+        isLoading.value = false
     }
 }
 
 onMounted(() => {
-    if (user.value && subscribedIds.value.length === 0) {
-        fetchSubscriptions()
-    }
+    if (!user.value || loaded) return
+    loaded = true
+    fetchSubscriptions()
 })
 </script>
+

@@ -5,7 +5,8 @@
         "converter": "Convert",
         "about": "About",
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "news": "News"
     },
     "footer": {
         "copyright": "© 2025 CoinApp — All rights reserved"
@@ -19,8 +20,15 @@
     "converter.from": "From",
     "converter.to": "To",
     "converter.amount": "Amount",
-    "news": "Latest News",
-    "news_intro": "Here will be the latest news from the world of cryptocurrencies.",
+    "news": {
+        "title": "Latest Cryptocurrency News",
+        "filter_by_coin": "Filter by coin",
+        "all_coins": "All coins",
+        "filter_by_date": "Filter by publish date",
+        "search_keywords": "Search keywords",
+        "read_more": "Read more",
+        "clear_filters": "Clear filters"
+    },
     "loading": "Loading",
     "name": "Name",
     "price": "Price",
@@ -33,7 +41,6 @@
     "of": "of",
     "prev": "Prev",
     "next": "Next",
-
     "about": {
         "title": "About the Project",
         "description1": "This is a course project developed as part of web development practice. It focuses on working with external APIs, background data synchronization, SPA architecture, and user interaction through a simple interface.",
