@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\URL;
+use App\Models\User;
 
-class VerifyEmailController extends Controller
+class EmailVerificationController extends Controller
 {
-    public function __invoke(EmailVerificationRequest $request)
+    public function __invoke(Request $request, $id, $hash)
     {
-        if (!$request->hasValidSignature()) {
+        if (!URL::hasValidSignature($request)) {
             return redirect('/403');
         }
 
-        $user = $request->user();
+        $user = User::find($id);
+
+        if (!$user || sha1($user->getEmailForVerification()) !== $hash) {
+            return redirect('/403');
+        }
 
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();

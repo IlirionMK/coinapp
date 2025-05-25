@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 
 Route::get('/health', function () {
     return response()->json([
@@ -18,14 +16,14 @@ Route::get('/login', function () {
     return redirect('/');
 })->name('login');
 
-Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
+Route::get('/email/verify/{id}/{hash}', EmailVerificationController::class)
     ->middleware(['signed'])
     ->name('verification.verify');
 
- Route::get('/email-verified', function () {
+Route::get('/email-verified', function () {
     return view('app');
 });
 
- Route::get('/{any}', function () {
+Route::get('/{any}', function () {
     return view('app');
 })->where('any', '^(?!api).*$');

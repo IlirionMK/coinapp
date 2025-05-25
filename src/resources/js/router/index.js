@@ -40,10 +40,8 @@ router.beforeEach(async (to, from, next) => {
     let isLoggedIn = !!user.value
     let isAdmin = user.value?.role === 'admin'
 
-     if (!skipFetchUser && needsAuth && user.value === null) {
-        const fetched = await fetchUser()
-        isLoggedIn = fetched
-        isAdmin = user.value?.role === 'admin'
+    if (!skipFetchUser && needsAuth && user.value === null) {
+        await fetchUser()
     }
 
     if (to.meta.requiresAuth && !isLoggedIn) {

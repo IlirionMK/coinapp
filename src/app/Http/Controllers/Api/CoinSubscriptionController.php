@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubscribeToCoinRequest;
 use App\Models\Coin;
+use App\Models\User;
 use App\Services\SubscribeToCoinService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CoinSubscriptionController extends Controller
 {
@@ -27,14 +29,19 @@ class CoinSubscriptionController extends Controller
 
     public function destroy($coinId)
     {
+        /** @var User|null $user */
         $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
         $exists = $user->subscriptions()->where('coin_id', $coinId)->exists();
 
         if ($exists) {
             $user->subscriptions()->detach($coinId);
 
-            \Log::info('Coin unsubscribed', [
+            Log::info('Coin unsubscribed', [
                 'user_id' => $user->id,
                 'email' => $user->email,
                 'coin_id' => $coinId,
@@ -44,7 +51,7 @@ class CoinSubscriptionController extends Controller
             return response()->json(['message' => 'Unsubscribed']);
         }
 
-        \Log::warning('Coin unsubscribe attempt for non-existent subscription', [
+        Log::warning('Coin unsubscribe attempt for non-existent subscription', [
             'user_id' => $user->id,
             'email' => $user->email,
             'coin_id' => $coinId,
