@@ -1,15 +1,17 @@
 #!/bin/bash
-
 set -e
 
 echo "Starting production service with role: $ROLE"
 
+# Laravel .env
+cp /var/www/html/.env.production /var/www/html/.env
+
+# Permissions
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 case "$ROLE" in
   app)
-    echo "Fixing permissions for Laravel..."
-    chown -R www-data:www-data storage bootstrap/cache
-    chmod -R 775 storage bootstrap/cache
-
     echo "Running database migrations..."
     php artisan migrate --force
 

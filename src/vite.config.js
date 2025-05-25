@@ -27,4 +27,12 @@ export default defineConfig({
             clientPort: 5173,
         },
     },
+    build: {
+        outDir: 'public/build',
+        emptyOutDir: true,
+        manifest: true,
+        rollupOptions: {
+            input: 'resources/js/app.js',
+        },
+    },
 })

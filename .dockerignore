@@ -2,7 +2,7 @@ node_modules
 src/node_modules
 vendor
 .env
-.env.*
+src/.env.production
 *.log
 storage/*.key
 storage/logs

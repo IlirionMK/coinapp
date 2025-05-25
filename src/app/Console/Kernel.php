@@ -21,10 +21,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // Updating prices every 10 min
-        $schedule->command('coins:sync')->everyTenMinutes();
+        $schedule->command('coins:sync')->everyMinute();
 
         // Sync news every 15 min
-        $schedule->job(new SyncNewsFromApi)->everyFifteenMinutes();
+        $schedule->job(new SyncNewsFromApi)->everyMinute();
+        $schedule->command('log:test')->everyMinute();
+
     }
 
     protected function commands(): void

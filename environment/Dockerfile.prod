@@ -1,11 +1,11 @@
 FROM php:8.2-fpm
 
-# Устанавливаем только нужные зависимости
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
     unzip \
     bash \
+    netcat-openbsd \
     && docker-php-ext-install pdo pdo_pgsql zip \
     && pecl install redis \
     && docker-php-ext-enable redis \
@@ -16,12 +16,11 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 COPY ./src ./
+COPY .env.production /var/www/html/.env
+COPY ./src/public/build ./public/build
 
-# Устанавливаем только production-зависимости
 RUN composer install --no-dev --optimize-autoloader
 
 CMD ["php-fpm"]
 
 ENV HOME=/tmp
-
-USER www-data
