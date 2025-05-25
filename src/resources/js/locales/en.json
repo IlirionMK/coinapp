@@ -6,13 +6,17 @@
         "about": "About",
         "login": "Login",
         "register": "Register",
-        "news": "News"
+        "news": "News",
+        "dashboard": "Dashboard",
+        "logout": "Logout",
+        "profile": "My Profile"
     },
     "footer": {
         "copyright": "© 2025 CoinApp — All rights reserved"
     },
     "crypto_dashboard": "Crypto Dashboard",
     "crypto_table": "Crypto Prices",
+    "search_placeholder": "Search coin...",
     "converter": "Currency Converter",
     "converter_intro": "Convert between different cryptocurrencies instantly.",
     "converter.title": "Currency Converter",
@@ -47,5 +51,30 @@
         "description2": "The application loads cryptocurrency data from the CoinGecko API, saves it to a local database, and updates it automatically every 10 minutes using Laravel's scheduler.",
         "description3": "The converter allows quick value conversion between cryptocurrencies based on the latest available prices.",
         "stack": "The project uses the following technologies:"
+    },
+    "profile": {
+        "title": "My Profile",
+        "name": "Name",
+        "email": "Email",
+        "save": "Save",
+        "updated": "Profile successfully updated",
+        "change_password": "Change Password",
+        "current_password": "Current Password",
+        "new_password": "New Password",
+        "new_password_confirmation": "Confirm New Password",
+        "save_password": "Save Password",
+        "password_updated": "Password successfully updated"
+    },
+    "verify": {
+        "title": "Verify your email",
+        "instructions": "Please check your inbox and click the verification link.",
+        "resend": "Resend verification email"
+    },
+    "email_verified": {
+        "title": "Email successfully verified!",
+        "message": "You can now continue using the app."
+    },
+    "error": {
+        "unknown": "Something went wrong. Please try again later."
     }
 }

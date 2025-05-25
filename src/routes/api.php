@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CoinController;
 use App\Http\Controllers\Api\CurrencyConverterController;
 use App\Http\Controllers\Api\CoinSubscriptionController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/debug-api-route', function () {
     return response()->json(['message' => 'API route is working']);
@@ -21,6 +22,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
 });
+Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
+
 
 Route::middleware(['auth:sanctum', 'admin'])->get('/admin-stats', function () {
     return [
@@ -37,7 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/coin-subscriptions', [CoinSubscriptionController::class, 'store']);
     Route::delete('/coin-subscriptions/{coin}', [CoinSubscriptionController::class, 'destroy']);
 
-     Route::post('/email/verification-notification', function (Request $request) {
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+
+    Route::post('/email/verification-notification', function (Request $request) {
         if ($request->user()->hasVerifiedEmail()) {
             return response()->noContent();
         }
@@ -46,5 +52,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
         return response()->noContent();
     });
-
 });

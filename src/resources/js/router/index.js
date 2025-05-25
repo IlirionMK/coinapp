@@ -8,6 +8,8 @@ import Register from '../pages/Register.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import AdminDashboard from '../pages/AdminDashboard.vue'
 import SessionExpired from '../pages/SessionExpired.vue'
+import Profile from '../pages/Profile.vue'
+import ChangePassword from '../pages/ChangePassword.vue'
 
 import useUser from '@/stores/user'
 
@@ -18,6 +20,8 @@ const routes = [
     { path: '/login', name: 'login', component: Login, meta: { layout: 'DefaultLayout', guestOnly: true } },
     { path: '/register', name: 'register', component: Register, meta: { layout: 'DefaultLayout', guestOnly: true } },
     { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
+    { path: '/profile', name: 'profile', component: Profile, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
+    { path: '/profile/password', name: 'profile.password', component: ChangePassword, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
     { path: '/admin', name: 'admin.dashboard', component: AdminDashboard, meta: { layout: 'AdminLayout', requiresAuth: true, requiresAdmin: true } },
     { path: '/verify-email', name: 'verify-email', component: () => import('../pages/VerifyEmail.vue'), meta: { layout: 'DefaultLayout' } },
     { path: '/email-verified', name: 'email-verified', component: () => import('../pages/EmailVerified.vue'), meta: { layout: 'DefaultLayout' } },

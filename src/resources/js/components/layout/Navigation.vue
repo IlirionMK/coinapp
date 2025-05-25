@@ -32,7 +32,6 @@
                     </Dropdown>
                 </div>
 
-                <!-- Authenticated user -->
                 <template v-if="user">
                     <Dropdown>
                         <template #trigger="{ toggle }">
@@ -49,6 +48,12 @@
 
                         <div class="py-1 text-sm text-left">
                             <RouterLink
+                                to="/profile"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            >
+                                {{ t('nav.profile') }}
+                            </RouterLink>
+                            <RouterLink
                                 :to="user.role === 'admin' ? '/admin' : '/dashboard'"
                                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
@@ -64,7 +69,6 @@
                     </Dropdown>
                 </template>
 
-                <!-- Guest -->
                 <template v-else>
                     <RouterLink to="/login" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">
                         {{ t('nav.login') }}
@@ -110,6 +114,12 @@
                     <div class="text-sm text-gray-700 dark:text-gray-200 mb-2">
                         👤 {{ user.name ?? 'User' }}
                     </div>
+                    <RouterLink
+                        to="/profile"
+                        class="block text-sm text-blue-600 hover:underline mb-2"
+                    >
+                        {{ t('nav.profile') }}
+                    </RouterLink>
                     <RouterLink
                         :to="user.role === 'admin' ? '/admin' : '/dashboard'"
                         class="block text-sm text-blue-600 hover:underline mb-2"
