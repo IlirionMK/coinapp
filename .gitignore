@@ -1,5 +1,40 @@
+# Laravel
+/vendor
+/.phpunit.cache
+/phpunit.result.cache
+.env
+.env.*
+.env.backup
+/storage/*.key
+/storage/pail
+/public/storage
+/public/hot
+/public/build
+
+# Node & Frontend
+/node_modules
+/node_modules/
 /package.json
 /package-lock.json
-/node_modules/
-/.idea/
+npm-debug.log
+yarn-error.log
 
+# IDE & Tools
+/.idea
+/.vscode
+/.zed
+/.fleet
+.phpactor.json
+
+# Homestead
+Homestead.json
+Homestead.yaml
+
+# Nova (если используешь Laravel Nova)
+.nova
+
+# Auth config (если есть)
+auth.json
+
+# Production env outside project (удалить, если лишнее)
+../.env.production
