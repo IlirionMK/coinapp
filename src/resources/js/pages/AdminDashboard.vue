@@ -1,25 +1,47 @@
 <template>
-    <section class="p-6 max-w-4xl mx-auto">
-        <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
+    <section class="min-h-screen bg-gray-100 py-8 px-4">
+        <div class="max-w-6xl mx-auto space-y-6">
+             <div class="flex justify-between items-center">
+                <div class="space-x-4">
+                    <RouterLink to="/" class="text-blue-600 hover:underline text-sm">
+                        ← {{ $t('nav.home') }}
+                    </RouterLink>
+                    <RouterLink to="/profile" class="text-blue-600 hover:underline text-sm">
+                        {{ $t('dashboard.edit_profile') }}
+                    </RouterLink>
+                </div>
+                <div class="flex items-center gap-2">
+                    <LanguageSwitcher />
+                    <button
+                        @click="handleLogout"
+                        class="text-red-600 hover:underline text-sm"
+                    >
+                        {{ $t('nav.logout') }}
+                    </button>
+                </div>
+            </div>
 
-        <p class="text-gray-600">Welcome, {{ user.name }} ({{ user.email }})</p>
+             <h1 class="text-2xl font-bold">{{ $t('admin.users_title') }}</h1>
 
-        <div class="mt-6">
-            <p class="text-sm text-gray-500">You have administrative privileges.</p>
+            <p class="text-gray-600">
+                Welcome, {{ user.name }} ({{ user.email }})
+            </p>
+
+             <AdminUserList />
         </div>
-
-        <RouterLink
-            to="/"
-            class="inline-block mt-6 text-blue-600 hover:underline text-sm"
-        >
-            ← {{ $t('nav.home') }}
-        </RouterLink>
     </section>
 </template>
 
 <script setup>
+import { RouterLink, useRouter } from 'vue-router'
 import useUser from '@/stores/user'
-import { RouterLink } from 'vue-router'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
+import AdminUserList from '@/components/admin/AdminUserList.vue'
 
-const { user } = useUser()
+const { user, logout } = useUser()
+const router = useRouter()
+
+const handleLogout = () => {
+    logout(router)
+}
 </script>

@@ -30,4 +30,12 @@ class Coin extends Model
     {
         return "/icons/" . strtolower($this->symbol) . ".png";
     }
+    public function subscribers()
+    {
+        return $this->belongsToMany(User::class, 'coin_subscriptions')
+            ->using(\App\Models\CoinSubscription::class)
+            ->withPivot(['notification_frequency', 'change_threshold'])
+            ->as('subscription');
+    }
+
 }

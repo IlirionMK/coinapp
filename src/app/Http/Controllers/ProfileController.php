@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
+use App\Models\UserSetting;
 
 class ProfileController extends Controller
 {
-    public function show(Request $request)
+    public function show(Request $request): JsonResponse
     {
         return response()->json($request->user());
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $user = $request->user();
 
@@ -32,10 +34,10 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return response()->json(['message' => 'Profile.vue updated']);
+        return response()->json(['message' => 'Profile updated']);
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): JsonResponse
     {
         $user = $request->user();
 
@@ -52,5 +54,37 @@ class ProfileController extends Controller
         $user->save();
 
         return response()->json(['message' => 'Password updated']);
+    }
+
+    public function destroy(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $user->delete();
+
+        return response()->json(['message' => 'Account deleted.']);
+    }
+
+    public function getSettings(Request $request): JsonResponse
+    {
+        $settings = $request->user()->settings;
+
+        return response()->json([
+            'notification_frequency' => $settings?->notification_frequency ?? 'daily',
+            'change_threshold' => $settings?->change_threshold ?? null,
+        ]);
+    }
+
+    public function updateSettings(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'notification_frequency' => ['required', Rule::in(['instant', 'daily', 'none'])],
+            'change_threshold' => ['nullable', 'numeric', 'min:0', 'max:100'],
+        ]);
+
+        $user = $request->user();
+        $settings = $user->settings()->firstOrCreate([]);
+        $settings->update($validated);
+
+        return response()->json(['message' => 'Notification settings updated.']);
     }
 }

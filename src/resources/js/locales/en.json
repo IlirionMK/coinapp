@@ -65,6 +65,31 @@
         "save_password": "Save Password",
         "password_updated": "Password successfully updated"
     },
+    "admin": {
+        "users_title": "User Management",
+        "search_placeholder": "Search by name or email...",
+        "sort_name": "Sort by Name",
+        "sort_email": "Sort by Email",
+        "sort_created": "Sort by Date",
+        "name": "Name",
+        "email": "Email",
+        "registered": "Registered",
+        "verified": "Verified",
+        "status": "Status",
+        "actions": "Actions",
+        "ban": "Ban",
+        "unban": "Unban",
+        "verify": "Verify",
+        "delete": "Delete",
+        "active": "Active",
+        "banned": "Banned",
+        "prev": "← Prev",
+        "next": "Next →",
+        "page": "Page {current} of {total}",
+        "confirm_ban": "Are you sure you want to {action} user {email}?",
+        "confirm_verify": "Verify email for {email}?",
+        "confirm_delete": "Delete user {email}?"
+    },
     "verify": {
         "title": "Verify your email",
         "instructions": "Please check your inbox and click the verification link.",
@@ -76,5 +101,28 @@
     },
     "error": {
         "unknown": "Something went wrong. Please try again later."
+    },
+    "session": {
+        "expired_title": "Session Expired",
+        "expired_message": "Your session has expired. Please log in again.",
+        "go_to_login": "Login again",
+        "go_back": "Return to previous page",
+        "homepage": "Back to homepage",
+        "logged_out": "You have been logged out."
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "name": "Name",
+        "email": "Email",
+        "edit_profile": "Edit profile",
+        "subscriptions": "Your subscriptions",
+        "no_subscriptions": "You don't have any active subscriptions.",
+        "notifications": "Notification Settings",
+        "frequency": "Notification frequency",
+        "frequency_instant": "Immediately when price changes",
+        "frequency_daily": "Once per day",
+        "frequency_none": "Never",
+        "threshold": "Minimum price change to notify",
+        "save_settings": "Save settings"
     }
 }

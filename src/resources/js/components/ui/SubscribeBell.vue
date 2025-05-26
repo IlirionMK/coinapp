@@ -41,7 +41,7 @@ const toast = inject('toast')
 
 const props = defineProps({
     coinId: {
-        type: String,
+        type: Number, // 👈 используем Number, так как coin.id — число
         required: true
     }
 })
@@ -71,15 +71,15 @@ const toggle = async () => {
         if (isSubscribed.value) {
             await axios.delete(`/coin-subscriptions/${props.coinId}`)
             subscribedIds.value = subscribedIds.value.filter(id => id !== props.coinId)
-            toast?.value?.show(t('unsubscribed_success'))
+            toast?.value?.show(t('unsubscribed_success'), 'success')
         } else {
             await axios.post('/coin-subscriptions', { coin_id: props.coinId })
             subscribedIds.value.push(props.coinId)
-            toast?.value?.show(t('subscribed_success'))
+            toast?.value?.show(t('subscribed_success'), 'success')
         }
     } catch (err) {
         console.error('Failed to toggle subscription', err)
-        toast?.value?.show(err.response?.data?.message || t('subscription_error'))
+        toast?.value?.show(err.response?.data?.message || t('subscription_error'), 'error')
     } finally {
         isLoading.value = false
     }
@@ -91,4 +91,3 @@ onMounted(() => {
     fetchSubscriptions()
 })
 </script>
-

@@ -1,17 +1,17 @@
 <template>
     <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center p-6">
         <h1 class="text-2xl font-bold text-red-600 mb-4">
-            Session Expired
+            {{ $t('session.expired_title') }}
         </h1>
         <p class="text-gray-700 mb-6">
-            Your session has expired. Please log in again.
+            {{ $t('session.expired_message') }}
         </p>
 
         <RouterLink
             to="/login"
             class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
         >
-            Login again
+            {{ $t('session.go_to_login') }}
         </RouterLink>
 
         <RouterLink
@@ -19,25 +19,33 @@
             :to="previousPath"
             class="mt-4 text-sm text-blue-600 underline hover:no-underline"
         >
-            Return to previous page
+            {{ $t('session.go_back') }}
         </RouterLink>
 
         <RouterLink
             to="/"
             class="mt-2 text-sm text-gray-500 hover:underline"
         >
-            Back to homepage
+            {{ $t('session.homepage') }}
         </RouterLink>
+
+        <Toast ref="toastRef" />
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import Toast from '@/components/ui/Toast.vue'
 
 const previousPath = ref(null)
+const toastRef = ref()
+const { t } = useI18n()
 
 onMounted(() => {
+    toastRef.value?.show(t('session.logged_out'), 'info')
+
     const path = localStorage.getItem('logoutRedirectPath')
     if (path && path !== '/session-expired' && path !== '/login') {
         previousPath.value = path

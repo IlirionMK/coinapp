@@ -13,7 +13,7 @@ import { ref, computed } from 'vue'
 
 const visible = ref(false)
 const message = ref('')
-const type = ref('info') // success | error | info | warning
+const type = ref('info')
 
 function show(msg, variant = 'info', duration = 3000) {
     message.value = msg

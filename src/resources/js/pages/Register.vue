@@ -23,22 +23,27 @@
                 <input v-model="form.password_confirmation" type="password" class="w-full border rounded p-2" required />
             </div>
 
-            <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>
-
-            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+            <button
+                type="submit"
+                class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+            >
                 Register
             </button>
         </form>
+
+        <Toast ref="toastRef" />
     </section>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import useUser from '@/stores/user'
+import Toast from '@/components/ui/Toast.vue'
 
-const { register, error } = useUser()
+const { register } = useUser()
 const router = useRouter()
+const toastRef = ref()
 
 const form = reactive({
     name: '',
@@ -47,7 +52,13 @@ const form = reactive({
     password_confirmation: '',
 })
 
-const submit = () => {
-    register(form, router)
+const submit = async () => {
+    try {
+        await register(form, router)
+        toastRef.value?.show('Registration successful. Please verify your email.', 'success')
+        await router.push('/')
+    } catch (e) {
+        toastRef.value?.show('Registration failed. Please check your input.', 'error')
+    }
 }
 </script>

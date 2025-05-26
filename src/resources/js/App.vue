@@ -27,6 +27,7 @@ const resolvedLayout = computed(() => {
 <template>
     <component :is="resolvedLayout">
         <router-view />
-        <Toast ref="toast" />
     </component>
+
+     <Toast ref="toast" />
 </template>

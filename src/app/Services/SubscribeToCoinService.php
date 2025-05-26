@@ -4,14 +4,19 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Coin;
+use App\Models\CoinSubscription;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SubscribeToCoinService
 {
-    public function subscribe(User $user, Coin $coin): void
+    public function subscribe(User $user, Coin $coin, string $frequency = 'instant', ?float $threshold = null): void
     {
-        if ($user->subscriptions()->where('coin_id', $coin->id)->exists()) {
+        $alreadyExists = $user->coinSubscriptions()
+            ->where('coin_id', $coin->id)
+            ->exists();
+
+        if ($alreadyExists) {
             Log::warning('Duplicate subscription attempt', [
                 'user_id' => $user->id,
                 'email' => $user->email,
@@ -23,7 +28,11 @@ class SubscribeToCoinService
             throw new HttpException(409, 'Already subscribed to this coin.');
         }
 
-        $user->subscriptions()->attach($coin->id);
+        $user->coinSubscriptions()->create([
+            'coin_id' => $coin->id,
+            'notification_frequency' => $frequency,
+            'change_threshold' => $threshold,
+        ]);
 
         Log::info('Coin subscription created', [
             'user_id' => $user->id,

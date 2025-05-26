@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class SubscribeToCoinRequest extends FormRequest
+class UpdateCoinSubscriptionRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,8 +15,7 @@ class SubscribeToCoinRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'coin_id' => ['required', 'exists:coins,id'],
-            'notification_frequency' => ['required', 'in:instant,daily,none'],
+            'notification_frequency' => ['required', Rule::in(['instant', 'daily', 'none'])],
             'change_threshold' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }

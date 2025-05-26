@@ -71,4 +71,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(UserSetting::class);
     }
+    public function coinSubscriptions()
+    {
+        return $this->belongsToMany(Coin::class, 'coin_subscriptions')
+            ->using(\App\Models\CoinSubscription::class)
+            ->withPivot(['notification_frequency', 'change_threshold'])
+            ->as('subscription');
+    }
+
 }

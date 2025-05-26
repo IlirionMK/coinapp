@@ -25,8 +25,6 @@
                 />
             </div>
 
-            <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>
-
             <button
                 type="submit"
                 :disabled="isLoading"
@@ -36,6 +34,8 @@
                 <span v-else>Login</span>
             </button>
         </form>
+
+        <Toast ref="toastRef" />
     </section>
 </template>
 
@@ -43,9 +43,11 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import useUser from '@/stores/user'
+import Toast from '@/components/ui/Toast.vue'
 
-const { login, error } = useUser()
+const { login } = useUser()
 const router = useRouter()
+const toastRef = ref()
 
 const form = reactive({
     email: '',
@@ -58,6 +60,10 @@ const submit = async () => {
     isLoading.value = true
     try {
         await login(form, router)
+        toastRef.value?.show('Logged in successfully.', 'success')
+        await router.push('/')
+    } catch (e) {
+        toastRef.value?.show('Invalid credentials or server error.', 'error')
     } finally {
         isLoading.value = false
     }

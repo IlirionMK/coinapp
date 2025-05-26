@@ -65,6 +65,31 @@
         "save_password": "Zapisz hasło",
         "password_updated": "Hasło zostało zmienione"
     },
+    "admin": {
+        "users_title": "Zarządzanie użytkownikami",
+        "search_placeholder": "Szukaj po imieniu lub e-mailu...",
+        "sort_name": "Sortuj wg imienia",
+        "sort_email": "Sortuj wg e-maila",
+        "sort_created": "Sortuj wg daty",
+        "name": "Imię",
+        "email": "E-mail",
+        "registered": "Zarejestrowany",
+        "verified": "Zweryfikowany",
+        "status": "Status",
+        "actions": "Akcje",
+        "ban": "Zbanuj",
+        "unban": "Odbanuj",
+        "verify": "Zweryfikuj",
+        "delete": "Usuń",
+        "active": "Aktywny",
+        "banned": "Zbanowany",
+        "prev": "← Poprzednia",
+        "next": "Następna →",
+        "page": "Strona {current} z {total}",
+        "confirm_ban": "Czy na pewno chcesz {action} użytkownika {email}?",
+        "confirm_verify": "Zweryfikować e-mail użytkownika {email}?",
+        "confirm_delete": "Usunąć użytkownika {email}?"
+    },
     "verify": {
         "title": "Zweryfikuj swój adres e-mail",
         "instructions": "Sprawdź skrzynkę odbiorczą i kliknij link weryfikacyjny.",
@@ -76,5 +101,28 @@
     },
     "error": {
         "unknown": "Coś poszło nie tak. Spróbuj ponownie później."
+    },
+    "session": {
+        "expired_title": "Sesja wygasła",
+        "expired_message": "Twoja sesja wygasła. Zaloguj się ponownie.",
+        "go_to_login": "Zaloguj się ponownie",
+        "go_back": "Wróć do poprzedniej strony",
+        "homepage": "Powrót do strony głównej",
+        "logged_out": "Zostałeś wylogowany."
+    },
+    "dashboard": {
+    "title": "Panel użytkownika",
+    "name": "Imię",
+    "email": "Email",
+    "edit_profile": "Edytuj profil",
+    "subscriptions": "Twoje subskrypcje",
+    "no_subscriptions": "Nie masz żadnych aktywnych subskrypcji.",
+    "notifications": "Ustawienia powiadomień",
+    "frequency": "Częstotliwość powiadomień",
+    "frequency_instant": "Natychmiast po zmianie ceny",
+    "frequency_daily": "Raz dziennie",
+    "frequency_none": "Nigdy",
+    "threshold": "Minimalna zmiana ceny (%)",
+    "save_settings": "Zapisz ustawienia"
     }
 }
