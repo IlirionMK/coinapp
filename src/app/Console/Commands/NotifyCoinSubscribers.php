@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Coin;
-use App\Models\User;
 use App\Notifications\CoinPriceAlertNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -29,9 +28,9 @@ class NotifyCoinSubscribers extends Command
             $percentChange = abs(($coin->price - $previousPrice) / $previousPrice * 100);
 
             foreach ($coin->subscribers as $user) {
-                $settings = $user->pivot;
+                $settings = $user->subscription;
 
-                if ($settings->notification_frequency === 'none') {
+                if (!$settings || $settings->notification_frequency === 'none') {
                     continue;
                 }
 

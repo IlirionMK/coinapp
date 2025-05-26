@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Services\SubscribeToCoinService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
 
 class CoinSubscriptionController extends Controller
 {
@@ -41,16 +40,29 @@ class CoinSubscriptionController extends Controller
         SubscribeToCoinRequest $request,
         SubscribeToCoinService $service
     ) {
-        $coin = Coin::findOrFail($request->validated()['coin_id']);
+        $data = $request->validated();
+        $coin = Coin::findOrFail($data['coin_id']);
+
+        $frequency = $data['notification_frequency'] ?? 'daily';
+        $threshold = $data['change_threshold'] ?? 1.0;
 
         $service->subscribe(
             $request->user(),
             $coin,
-            $request->validated()['notification_frequency'],
-            $request->validated()['change_threshold'] ?? null
+            $frequency,
+            $threshold
         );
 
-        return response()->noContent();
+        Log::info('Coin subscribed', [
+            'user_id' => $request->user()->id,
+            'email' => $request->user()->email,
+            'coin_id' => $coin->id,
+            'notification_frequency' => $frequency,
+            'change_threshold' => $threshold,
+            'time' => now()->toDateTimeString(),
+        ]);
+
+        return response()->json(['message' => __('Subscribed successfully')]);
     }
 
     public function update(UpdateCoinSubscriptionRequest $request, $coinId)
@@ -58,30 +70,36 @@ class CoinSubscriptionController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $subscription = $user->coinSubscriptions()->where('coin_id', $coinId)->first();
+        $exists = $user->coinSubscriptions()->where('coin_id', $coinId)->exists();
 
-        if (!$subscription) {
-            return response()->json(['message' => 'Subscription not found'], 404);
+        if (!$exists) {
+            return response()->json(['message' => __('Subscription not found')], 404);
         }
 
-        $subscription->update($request->validated());
+        $user->coinSubscriptions()->updateExistingPivot($coinId, $request->validated());
 
-        return response()->json(['message' => 'Subscription updated']);
+        Log::info('Coin subscription updated', [
+            'user_id' => $user->id,
+            'coin_id' => $coinId,
+            'updates' => $request->validated(),
+            'time' => now()->toDateTimeString(),
+        ]);
+
+        return response()->json(['message' => __('Subscription updated')]);
     }
 
     public function destroy($coinId)
     {
-        /** @var User|null $user */
         $user = auth()->user();
 
         if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => __('Unauthorized')], 401);
         }
 
-        $subscription = $user->coinSubscriptions()->where('coin_id', $coinId)->first();
+        $attached = $user->coinSubscriptions()->where('coin_id', $coinId)->exists();
 
-        if ($subscription) {
-            $subscription->delete();
+        if ($attached) {
+            $user->coinSubscriptions()->detach($coinId);
 
             Log::info('Coin unsubscribed', [
                 'user_id' => $user->id,
@@ -90,7 +108,7 @@ class CoinSubscriptionController extends Controller
                 'time' => now()->toDateTimeString(),
             ]);
 
-            return response()->json(['message' => 'Unsubscribed']);
+            return response()->json(['message' => __('Unsubscribed')]);
         }
 
         Log::warning('Coin unsubscribe attempt for non-existent subscription', [
@@ -100,6 +118,6 @@ class CoinSubscriptionController extends Controller
             'time' => now()->toDateTimeString(),
         ]);
 
-        return response()->json(['message' => 'Subscription not found'], 404);
+        return response()->json(['message' => __('Subscription not found')], 404);
     }
 }

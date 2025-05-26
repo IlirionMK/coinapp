@@ -31,15 +31,16 @@ class CoinPriceAlertNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         $diff = round((($this->newPrice - $this->oldPrice) / $this->oldPrice) * 100, 2);
+        $symbol = strtoupper($this->coin->symbol);
 
         return (new MailMessage)
             ->subject("📈 Price Alert: {$this->coin->name}")
             ->greeting("Hello {$notifiable->name},")
-            ->line("The price of {$this->coin->name} ({$this->coin->symbol}) has changed.")
+            ->line("The price of {$this->coin->name} ({$symbol}) has changed.")
             ->line("Old price: \${$this->oldPrice}")
             ->line("New price: \${$this->newPrice}")
             ->line("Change: {$diff}%")
-            ->action('View Coin', url("/coins/{$this->coin->id}"))
+            ->action('View Coin News', url("/news?currency={$symbol}"))
             ->line('You are receiving this email because of your alert settings.');
     }
 }

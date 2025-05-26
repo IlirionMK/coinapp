@@ -24,11 +24,11 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('coins:sync')->everyMinute();
+        $schedule->command('coins:sync')->everyTenMinutes();
         $schedule->command('notify:coin-subscribers')->everyFiveMinutes()->withoutOverlapping();
 
-        $schedule->job(new SyncNewsFromApi)->everyMinute();
-        $schedule->command('log:test')->everyMinute();
+        $schedule->job(new SyncNewsFromApi)->everyTenMinutes();
+        $schedule->command('log:test')->everyTenMinutes();
     }
 
 

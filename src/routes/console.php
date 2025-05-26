@@ -16,12 +16,12 @@ Artisan::command('log:test', function () {
 });
 
 
-Schedule::command('coins:sync')->everyMinute();
+Schedule::command('coins:sync')->everyTenMinutes();
 
 Schedule::command('notify:coin-subscribers')
     ->everyMinute()
     ->withoutOverlapping();
 
-Schedule::job(new SyncNewsFromApi)->everyMinute();
+Schedule::job(new SyncNewsFromApi)->everyTenMinutes();
 
-Schedule::command('log:test')->everyMinute();
+Schedule::command('log:test')->everyTenMinutes();

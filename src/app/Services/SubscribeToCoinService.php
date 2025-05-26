@@ -10,13 +10,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SubscribeToCoinService
 {
-    public function subscribe(User $user, Coin $coin, string $frequency = 'instant', ?float $threshold = null): void
+    public function subscribe(User $user, Coin $coin, string $frequency = null, ?float $threshold = null): void
     {
-        $alreadyExists = $user->coinSubscriptions()
+        $exists = CoinSubscription::query()
+            ->where('user_id', $user->id)
             ->where('coin_id', $coin->id)
             ->exists();
 
-        if ($alreadyExists) {
+        if ($exists) {
             Log::warning('Duplicate subscription attempt', [
                 'user_id' => $user->id,
                 'email' => $user->email,
@@ -28,8 +29,10 @@ class SubscribeToCoinService
             throw new HttpException(409, 'Already subscribed to this coin.');
         }
 
-        $user->coinSubscriptions()->create([
-            'coin_id' => $coin->id,
+        $frequency = $frequency ?? 'daily';
+        $threshold = $threshold ?? 1.0;
+
+        $user->coinSubscriptions()->attach($coin->id, [
             'notification_frequency' => $frequency,
             'change_threshold' => $threshold,
         ]);
@@ -39,6 +42,8 @@ class SubscribeToCoinService
             'email' => $user->email,
             'coin_id' => $coin->id,
             'coin' => $coin->symbol,
+            'notification_frequency' => $frequency,
+            'change_threshold' => $threshold,
             'time' => now()->toDateTimeString(),
         ]);
     }

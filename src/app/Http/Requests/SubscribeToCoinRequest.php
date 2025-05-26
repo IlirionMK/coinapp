@@ -15,7 +15,7 @@ class SubscribeToCoinRequest extends FormRequest
     {
         return [
             'coin_id' => ['required', 'exists:coins,id'],
-            'notification_frequency' => ['required', 'in:instant,daily,none'],
+            'notification_frequency' => ['nullable', 'in:instant,daily,none'],
             'change_threshold' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
