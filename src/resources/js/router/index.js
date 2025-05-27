@@ -10,6 +10,8 @@ import AdminDashboard from '../pages/AdminDashboard.vue'
 import SessionExpired from '../pages/SessionExpired.vue'
 import Profile from '../pages/Profile.vue'
 import ChangePassword from '../pages/ChangePassword.vue'
+import ForgotPassword from '../pages/ForgotPassword.vue'
+import ResetPassword from '../pages/ResetPassword.vue'
 
 import useUser from '@/stores/user'
 
@@ -19,6 +21,8 @@ const routes = [
     { path: '/about', name: 'about', component: About, meta: { layout: 'DefaultLayout' } },
     { path: '/login', name: 'login', component: Login, meta: { layout: 'DefaultLayout', guestOnly: true } },
     { path: '/register', name: 'register', component: Register, meta: { layout: 'DefaultLayout', guestOnly: true } },
+    { path: '/forgot-password', name: 'forgot-password', component: ForgotPassword, meta: { layout: 'DefaultLayout', guestOnly: true } },
+    { path: '/reset-password/:token', name: 'reset-password', component: ResetPassword, meta: { layout: 'DefaultLayout', guestOnly: true } },
     { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
     { path: '/profile', name: 'profile', component: Profile, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
     { path: '/profile/password', name: 'profile.password', component: ChangePassword, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
@@ -46,6 +50,8 @@ router.beforeEach(async (to, from, next) => {
 
     if (!skipFetchUser && needsAuth && user.value === null) {
         await fetchUser()
+        isLoggedIn = !!user.value
+        isAdmin = user.value?.role === 'admin'
     }
 
     if (to.meta.requiresAuth && !isLoggedIn) {

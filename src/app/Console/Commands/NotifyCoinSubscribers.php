@@ -28,7 +28,7 @@ class NotifyCoinSubscribers extends Command
             $percentChange = abs(($coin->price - $previousPrice) / $previousPrice * 100);
 
             foreach ($coin->subscribers as $user) {
-                $settings = $user->subscription;
+                $settings = $user->pivot;
 
                 if (!$settings || $settings->notification_frequency === 'none') {
                     continue;

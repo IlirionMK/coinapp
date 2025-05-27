@@ -29,8 +29,8 @@ class CoinSubscriptionController extends Controller
                             'symbol' => $coin->symbol,
                             'price' => $coin->price,
                         ],
-                        'notification_frequency' => $coin->subscription->notification_frequency,
-                        'change_threshold' => $coin->subscription->change_threshold,
+                        'notification_frequency' => $coin->pivot->notification_frequency,
+                        'change_threshold' => $coin->pivot->change_threshold,
                     ];
                 })
         );

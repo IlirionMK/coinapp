@@ -34,8 +34,7 @@ class Coin extends Model
     {
         return $this->belongsToMany(User::class, 'coin_subscriptions')
             ->using(\App\Models\CoinSubscription::class)
-            ->withPivot(['notification_frequency', 'change_threshold'])
-            ->as('subscription');
+            ->withPivot(['notification_frequency', 'change_threshold']);
     }
 
 }

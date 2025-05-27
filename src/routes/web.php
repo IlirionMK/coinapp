@@ -20,6 +20,10 @@ Route::get('/email/verify/{id}/{hash}', EmailVerificationController::class)
     ->middleware(['signed'])
     ->name('verification.verify');
 
+Route::get('/reset-password/{token}', function () {
+    return view('app');
+})->name('password.reset');
+
 Route::get('/email-verified', function () {
     return view('app');
 });
