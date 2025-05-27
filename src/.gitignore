@@ -1,4 +1,3 @@
-# Laravel
 /vendor
 /.phpunit.cache
 /phpunit.result.cache
@@ -11,7 +10,6 @@
 /public/hot
 /public/build
 
-# Node & Frontend
 /node_modules
 /node_modules/
 /package.json
@@ -19,22 +17,16 @@
 npm-debug.log
 yarn-error.log
 
-# IDE & Tools
 /.idea
 /.vscode
 /.zed
 /.fleet
 .phpactor.json
 
-# Homestead
 Homestead.json
 Homestead.yaml
 
-# Nova (если используешь Laravel Nova)
-.nova
 
-# Auth config (если есть)
 auth.json
 
-# Production env outside project (удалить, если лишнее)
 ../.env.production

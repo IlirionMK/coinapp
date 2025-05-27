@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         $user = $service->register($request->validated());
 
-         $user->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 
         Log::info('User registered', [
             'user_id' => $user->id,
@@ -25,7 +25,7 @@ class AuthController extends Controller
             'time' => now()->toDateTimeString(),
         ]);
 
-         return response()->json(['message' => 'Registered']);
+        return response()->json(['message' => 'Registered']);
     }
 
     public function login(Request $request, LoginService $loginService)
@@ -35,9 +35,11 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (!$loginService->attempt($credentials, $request)) {
+        if (! $loginService->attempt($credentials, $request)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
+
+        $request->session()->regenerate();
 
         return response()->json($loginService->currentUser());
     }

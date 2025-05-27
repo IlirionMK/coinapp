@@ -18,10 +18,8 @@ Route::get('/news', [NewsController::class, 'index']);
 Route::get('/coins', [CoinController::class, 'index']);
 Route::get('/convert', [CurrencyConverterController::class, 'convert']);
 
-Route::middleware('guest')->group(function () {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
-});
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
 
@@ -33,7 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/coin-subscriptions', [CoinSubscriptionController::class, 'store']);
     Route::delete('/coin-subscriptions/{coin}', [CoinSubscriptionController::class, 'destroy']);
     Route::put('/coin-subscriptions/{coin}', [CoinSubscriptionController::class, 'update']);
-
 
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/profile', [ProfileController::class, 'update']);
