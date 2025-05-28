@@ -63,7 +63,14 @@
         "new_password": "Nowe hasło",
         "new_password_confirmation": "Potwierdź nowe hasło",
         "save_password": "Zapisz hasło",
-        "password_updated": "Hasło zostało zmienione"
+        "password_updated": "Hasło zostało zmienione",
+        "delete_account": "Usuń konto",
+        "delete_account_desc": "To trwale usunie Twoje konto i wszystkie powiązane dane.",
+        "delete_account_button": "Usuń moje konto",
+        "delete_account_confirm": "Czy na pewno chcesz usunąć swoje konto?",
+        "confirm_delete_title": "Potwierdź usunięcie konta",
+        "confirm_delete_desc": "Ta operacja jest nieodwracalna. Wprowadź hasło, aby potwierdzić.",
+        "account_deleted": "Twoje konto zostało usunięte."
     },
     "admin": {
         "users_title": "Zarządzanie użytkownikami",
@@ -111,18 +118,6 @@
         "logged_out": "Zostałeś wylogowany."
     },
     "dashboard": {
-    "title": "Panel użytkownika",
-    "name": "Imię",
-    "email": "Email",
-    "edit_profile": "Edytuj profil",
-    "subscriptions": "Twoje subskrypcje",
-    "no_subscriptions": "Nie masz żadnych aktywnych subskrypcji.",
-    "notifications": "Ustawienia powiadomień",
-    "frequency": "Częstotliwość powiadomień",
-    "frequency_instant": "Natychmiast po zmianie ceny",
-    "frequency_daily": "Raz dziennie",
-    "frequency_none": "Nigdy",
-    "threshold": "Minimalna zmiana ceny (%)",
-    "save_settings": "Zapisz ustawienia"
-    }
-}
+        "title": "Panel użytkownika",
+        "name": "Imię",
+        "email":

@@ -1,7 +1,7 @@
 <template>
     <main class="min-h-screen bg-gray-100 py-10 px-4">
         <div class="max-w-xl mx-auto space-y-10">
-             <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center">
                 <RouterLink
                     to="/dashboard"
                     class="text-blue-600 hover:underline text-sm"
@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-             <section class="bg-white p-6 rounded-xl shadow">
+            <section class="bg-white p-6 rounded-xl shadow">
                 <h1 class="text-2xl font-bold mb-6">{{ $t('profile.title') }}</h1>
 
                 <form @submit.prevent="updateProfile">
@@ -57,7 +57,7 @@
                 </form>
             </section>
 
-             <section class="bg-white p-6 rounded-xl shadow">
+            <section class="bg-white p-6 rounded-xl shadow">
                 <h2 class="text-xl font-semibold mb-6">{{ $t('profile.change_password') }}</h2>
 
                 <form @submit.prevent="updatePassword">
@@ -104,7 +104,7 @@
                 </form>
             </section>
 
-             <section class="bg-white p-6 rounded-xl shadow">
+            <section class="bg-white p-6 rounded-xl shadow">
                 <h2 class="text-xl font-semibold mb-4 text-red-600">
                     {{ $t('profile.delete_account') }}
                 </h2>
@@ -118,6 +118,9 @@
                 </button>
             </section>
         </div>
+
+        <Toast ref="toast" />
+        <ConfirmDeleteModal ref="confirmDeleteModal" />
     </main>
 </template>
 
@@ -127,11 +130,15 @@ import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import { useRouter, RouterLink } from 'vue-router'
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
+import Toast from '@/components/ui/Toast.vue'
+import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal.vue'
 import useUser from '@/stores/user'
 
 const { t } = useI18n()
 const router = useRouter()
 const { logout } = useUser()
+const toast = ref(null)
+const confirmDeleteModal = ref(null)
 
 const form = ref({
     name: '',
@@ -156,7 +163,7 @@ const updateProfile = async () => {
     updateErrors.value = []
     try {
         await axios.put('/api/profile', form.value)
-        alert('✔ ' + t('profile.updated'))
+        toast.value.show(t('profile.updated'), 'success')
     } catch (e) {
         if (e.response?.status === 422) {
             const data = e.response.data
@@ -173,7 +180,7 @@ const updatePassword = async () => {
     passwordErrors.value = []
     try {
         await axios.put('/api/profile/password', passwordForm.value)
-        alert('✔ ' + t('profile.password_updated'))
+        toast.value.show(t('profile.password_updated'), 'success')
         passwordForm.value.current_password = ''
         passwordForm.value.new_password = ''
         passwordForm.value.new_password_confirmation = ''
@@ -189,16 +196,25 @@ const updatePassword = async () => {
     }
 }
 
-const confirmDelete = async () => {
-    if (!confirm(t('profile.delete_account_confirm'))) return
-
-    try {
-        await axios.delete('/api/profile')
-        alert(t('profile.account_deleted'))
-        await router.push('/login')
-    } catch (e) {
-        alert(t('error.unknown'))
-    }
+const confirmDelete = () => {
+    confirmDeleteModal.value.show(async (password) => {
+        try {
+            await axios.delete('/api/profile', {
+                data: { password },
+                withCredentials: true,
+            })
+            toast.value.show(t('profile.account_deleted'), 'success')
+            await logout(router)
+            await router.push('/login')
+        } catch (e) {
+            if (e.response?.status === 422) {
+                const message = e.response.data.errors?.password?.[0] || e.response.data.message
+                toast.value.show(message || t('error.unknown'), 'error')
+            } else {
+                toast.value.show(t('error.unknown'), 'error')
+            }
+        }
+    })
 }
 
 const handleLogout = () => {

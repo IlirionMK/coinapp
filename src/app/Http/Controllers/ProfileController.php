@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use App\Models\UserSetting;
+use App\Services\UserDeletionService;
 
 class ProfileController extends Controller
 {
@@ -56,10 +58,21 @@ class ProfileController extends Controller
         return response()->json(['message' => 'Password updated']);
     }
 
-    public function destroy(Request $request): JsonResponse
+    public function destroy(Request $request, UserDeletionService $service): JsonResponse
     {
+        $request->validate([
+            'password' => ['required']
+        ]);
+
         $user = $request->user();
-        $user->delete();
+
+        if (!Hash::check($request->input('password'), $user->password)) {
+            throw ValidationException::withMessages([
+                'password' => ['Incorrect password.']
+            ]);
+        }
+
+        $service->delete($user);
 
         return response()->json(['message' => 'Account deleted.']);
     }
