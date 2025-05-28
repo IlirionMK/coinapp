@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use App\Models\Coin;
 
-
 class CacheCoinImages extends Command
 {
     protected $signature = 'coins:cache-images';
