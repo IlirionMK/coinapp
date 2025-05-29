@@ -10,9 +10,7 @@ let csrfReady = false
 
 const ensureCsrf = async () => {
     if (csrfReady) return
-    await rawAxios.get('/sanctum/csrf-cookie', {
-        withCredentials: true
-    })
+    await rawAxios.get('/sanctum/csrf-cookie', { withCredentials: true })
     csrfReady = true
 }
 
@@ -21,49 +19,26 @@ const fetchUser = async () => {
 
     if (!fetching) {
         fetching = api.get('/user')
-            .then(({ data }) => {
-                user.value = data
-                return true
-            })
-            .catch((err) => {
-                if (err.response?.status === 401) {
-                    user.value = null
-                    return false
-                }
+            .then(({ data }) => { user.value = data; return true })
+            .catch(err => {
+                if (err.response?.status === 401) { user.value = null; return false }
                 throw err
             })
-            .finally(() => {
-                fetching = null
-            })
+            .finally(() => { fetching = null })
     }
-
     return fetching
 }
 
-const login = async (form, router) => {
+const login = async (form) => {
     error.value = null
-    try {
-        await ensureCsrf()
-        await api.post('/login', form)
-
-        const redirectTo = localStorage.getItem('logoutRedirectPath') || '/dashboard'
-        localStorage.removeItem('logoutRedirectPath')
-
-        router.push(redirectTo)
-    } catch (err) {
-        handleError(err)
-    }
+    await ensureCsrf()
+    return api.post('/login', form, { withCredentials: true })
 }
 
-const register = async (form, router) => {
+const register = async (form) => {
     error.value = null
-    try {
-        await ensureCsrf()
-        await api.post('/register', form)
-        router.push('/verify-email')
-    } catch (err) {
-        handleError(err)
-    }
+    await ensureCsrf()
+    return api.post('/register', form, { withCredentials: true })
 }
 
 const logout = async (router) => {
@@ -73,33 +48,14 @@ const logout = async (router) => {
     try {
         await api.post('/logout')
     } catch (e) {
-        if (e.response?.status !== 401) {
-            console.error('Logout failed:', e)
-        }
+        if (e.response?.status !== 401) console.error('Logout failed', e)
     }
 
     user.value = null
     await router.push('/session-expired')
-
     isLoggingOut = false
 }
 
-const handleError = (err) => {
-    if (err.response?.status === 422) {
-        const errors = err.response.data.errors
-        error.value = Object.values(errors).flat()[0]
-    } else {
-        error.value = err.response?.data?.message || 'Authentication error'
-    }
-}
-
-export default function useUser() {
-    return {
-        user,
-        error,
-        login,
-        register,
-        logout,
-        fetchUser,
-    }
+export default function useUser () {
+    return { user, error, login, register, logout, fetchUser }
 }

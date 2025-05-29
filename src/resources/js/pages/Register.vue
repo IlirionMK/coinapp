@@ -20,13 +20,12 @@
 
             <div>
                 <label class="block text-sm font-medium">Confirm Password</label>
-                <input v-model="form.password_confirmation" type="password" class="w-full border rounded p-2" required />
+                <input v-model="form.password_confirmation" type="password"
+                       class="w-full border rounded p-2" required />
             </div>
 
-            <button
-                type="submit"
-                class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-            >
+            <button type="submit"
+                    class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
                 Register
             </button>
         </form>
@@ -54,11 +53,11 @@ const form = reactive({
 
 const submit = async () => {
     try {
-        await register(form, router)
+        await register(form)
         toastRef.value?.show('Registration successful. Please verify your email.', 'success')
-        await router.push('/')
+        await router.push('/verify-email')
     } catch (e) {
         toastRef.value?.show('Registration failed. Please check your input.', 'error')
-    }
+     }
 }
 </script>

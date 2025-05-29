@@ -50,13 +50,6 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /**
-     * Subscribed coins (many-to-many).
-     */
-    public function subscriptions()
-    {
-        return $this->belongsToMany(Coin::class);
-    }
 
     /**
      * Override default email verification notification to queue-based one.

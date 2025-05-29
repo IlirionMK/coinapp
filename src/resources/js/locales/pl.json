@@ -120,4 +120,22 @@
     "dashboard": {
         "title": "Panel użytkownika",
         "name": "Imię",
-        "email":
+        "email": "E-mail"
+    },
+    "delete": "Usuń",
+    "cancel": "Anuluj",
+    "auth": {
+        "login": "Zaloguj się",
+        "email": "E-mail",
+        "password": "Hasło",
+        "forgot_password": "Nie pamiętasz hasła?",
+        "logging_in": "Logowanie...",
+        "login_success": "Zalogowano pomyślnie.",
+        "login_error": "Nieprawidłowe dane logowania.",
+        "login_server_error": "Coś poszło nie tak. Spróbuj ponownie.",
+        "failed": "Nieprawidłowe dane logowania. Spróbuj ponownie.",
+        "success": "Zalogowano pomyślnie."
+    }
+
+
+}

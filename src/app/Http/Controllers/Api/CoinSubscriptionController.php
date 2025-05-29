@@ -15,9 +15,11 @@ class CoinSubscriptionController extends Controller
 {
     public function index(Request $request)
     {
+        /** @var User $user */
+        $user = $request->user();
+
         return response()->json(
-            $request->user()
-                ->coinSubscriptions()
+            $user->coinSubscriptions()
                 ->withPivot('notification_frequency', 'change_threshold')
                 ->get()
                 ->map(function ($coin) {
@@ -40,22 +42,20 @@ class CoinSubscriptionController extends Controller
         SubscribeToCoinRequest $request,
         SubscribeToCoinService $service
     ) {
+        /** @var User $user */
+        $user = $request->user();
+
         $data = $request->validated();
         $coin = Coin::findOrFail($data['coin_id']);
 
         $frequency = $data['notification_frequency'] ?? 'daily';
         $threshold = $data['change_threshold'] ?? 1.0;
 
-        $service->subscribe(
-            $request->user(),
-            $coin,
-            $frequency,
-            $threshold
-        );
+        $service->subscribe($user, $coin, $frequency, $threshold);
 
         Log::info('Coin subscribed', [
-            'user_id' => $request->user()->id,
-            'email' => $request->user()->email,
+            'user_id' => $user->id,
+            'email' => $user->email,
             'coin_id' => $coin->id,
             'notification_frequency' => $frequency,
             'change_threshold' => $threshold,
@@ -72,7 +72,7 @@ class CoinSubscriptionController extends Controller
 
         $exists = $user->coinSubscriptions()->where('coin_id', $coinId)->exists();
 
-        if (!$exists) {
+        if (! $exists) {
             return response()->json(['message' => __('Subscription not found')], 404);
         }
 
@@ -90,9 +90,10 @@ class CoinSubscriptionController extends Controller
 
     public function destroy($coinId)
     {
+        /** @var User $user */
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => __('Unauthorized')], 401);
         }
 

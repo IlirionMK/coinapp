@@ -117,6 +117,18 @@
         "homepage": "Back to homepage",
         "logged_out": "You have been logged out."
     },
+    "auth": {
+        "login": "Login",
+        "email": "Email",
+        "password": "Password",
+        "forgot_password": "Forgot password?",
+        "logging_in": "Logging in...",
+        "login_success": "Logged in successfully.",
+        "login_error": "Invalid credentials.",
+        "login_server_error": "Something went wrong. Please try again."
+    }
+,
+
     "dashboard": {
         "title": "Dashboard",
         "name": "Name",
