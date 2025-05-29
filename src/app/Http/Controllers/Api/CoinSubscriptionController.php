@@ -15,12 +15,9 @@ class CoinSubscriptionController extends Controller
 {
     public function index(Request $request)
     {
-        /** @var User $user */
-        $user = $request->user();
-
         return response()->json(
-            $user->coinSubscriptions()
-                ->withPivot('notification_frequency', 'change_threshold')
+            $request->user()
+                ->coinSubscriptions()
                 ->get()
                 ->map(function ($coin) {
                     return [
@@ -31,8 +28,8 @@ class CoinSubscriptionController extends Controller
                             'symbol' => $coin->symbol,
                             'price' => $coin->price,
                         ],
-                        'notification_frequency' => $coin->pivot->notification_frequency,
-                        'change_threshold' => $coin->pivot->change_threshold,
+                        'notification_frequency' => $coin->subscription?->notification_frequency,
+                        'change_threshold' => $coin->subscription?->change_threshold,
                     ];
                 })
         );

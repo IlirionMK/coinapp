@@ -5,19 +5,21 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Coin;
 use Illuminate\Support\Facades\Log;
+use App\Enums\NotificationFrequency;
 
 class SubscribeToCoinService
 {
-    public function subscribe(User $user, Coin $coin, string $frequency = null, ?float $threshold = null): void
+    public function subscribe(User $user, Coin $coin, NotificationFrequency|string|null $frequency = null, ?float $threshold = null): void
     {
-        $frequency = $frequency ?? 'daily';
+        $frequency = $frequency instanceof NotificationFrequency
+            ? $frequency
+            : NotificationFrequency::tryFrom($frequency) ?? NotificationFrequency::Daily;
+
         $threshold = $threshold ?? 1.0;
 
-        $user->coinSubscriptions()->syncWithoutDetaching([
-            $coin->id => [
-                'notification_frequency' => $frequency,
-                'change_threshold' => $threshold,
-            ]
+        $user->coinSubscriptions()->attach($coin->id, [
+            'notification_frequency' => $frequency->value,
+            'change_threshold' => $threshold,
         ]);
 
         Log::info('Coin subscription created or updated', [
@@ -25,7 +27,7 @@ class SubscribeToCoinService
             'email' => $user->email,
             'coin_id' => $coin->id,
             'coin' => $coin->symbol,
-            'notification_frequency' => $frequency,
+            'notification_frequency' => $frequency->value,
             'change_threshold' => $threshold,
             'time' => now()->toDateTimeString(),
         ]);

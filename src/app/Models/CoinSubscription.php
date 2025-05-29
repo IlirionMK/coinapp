@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\NotificationFrequency;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class CoinSubscription extends Pivot
@@ -17,6 +18,10 @@ class CoinSubscription extends Pivot
         'coin_id',
         'notification_frequency',
         'change_threshold',
+    ];
+
+    protected $casts = [
+        'notification_frequency' => NotificationFrequency::class,
     ];
 
     public function coin()

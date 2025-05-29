@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Enums\NotificationFrequency;
+
 
 class UpdateCoinSubscriptionRequest extends FormRequest
 {
@@ -15,7 +17,7 @@ class UpdateCoinSubscriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'notification_frequency' => ['required', Rule::in(['instant', 'daily', 'none'])],
+            'notification_frequency' => ['required', Rule::in(NotificationFrequency::values())],
             'change_threshold' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
