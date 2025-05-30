@@ -134,7 +134,9 @@
         "login_error": "Nieprawidłowe dane logowania.",
         "login_server_error": "Coś poszło nie tak. Spróbuj ponownie.",
         "failed": "Nieprawidłowe dane logowania. Spróbuj ponownie.",
-        "success": "Zalogowano pomyślnie."
+        "success": "Zalogowano pomyślnie.",
+        "banned": "Your account has been banned."
+
     }
 
 

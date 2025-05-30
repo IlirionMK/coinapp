@@ -60,7 +60,13 @@ const submit = async () => {
         await router.push(redirect)
 
     } catch (e) {
-        toastRef.value?.show(t('auth.login_error'), 'error')
+        let message = t('auth.login_error')
+
+        if (e.response?.data?.errors?.email?.[0]) {
+            message = e.response.data.errors.email[0]
+        }
+
+        toastRef.value?.show(message, 'error')
         form.password = ''
     } finally {
         isLoading.value = false
