@@ -17,11 +17,16 @@ const ensureCsrf = async () => {
 const fetchUser = async () => {
     if (user.value) return true
 
+    await ensureCsrf() // ← ДОБАВЛЕНО
+
     if (!fetching) {
         fetching = api.get('/user')
             .then(({ data }) => { user.value = data; return true })
             .catch(err => {
-                if (err.response?.status === 401) { user.value = null; return false }
+                if (err.response?.status === 401) {
+                    user.value = null
+                    return false
+                }
                 throw err
             })
             .finally(() => { fetching = null })
@@ -54,6 +59,7 @@ const logout = async (router) => {
     user.value = null
     await router.push('/session-expired')
     isLoggingOut = false
+    csrfReady = false
 }
 
 export default function useUser () {
