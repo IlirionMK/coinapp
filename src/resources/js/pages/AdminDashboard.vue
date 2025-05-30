@@ -29,10 +29,18 @@
 
              <AdminUserList />
         </div>
+        <Toast ref="toast" />
+
     </section>
 </template>
 
 <script setup>
+import Toast from '@/components/ui/Toast.vue'
+import { ref, provide } from 'vue'
+
+const toast = ref()
+provide('toast', toast)
+
 import { RouterLink, useRouter } from 'vue-router'
 import useUser from '@/stores/user'
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'

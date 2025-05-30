@@ -14,7 +14,7 @@ const router = useRouter()
         </header>
 
         <main class="flex-1 px-6 py-6">
-            <slot />
+            <router-view />
         </main>
 
         <footer class="text-center text-xs py-4 text-gray-400">

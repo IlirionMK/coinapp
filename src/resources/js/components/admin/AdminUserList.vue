@@ -34,9 +34,9 @@
                 <td class="p-2">{{ new Date(user.created_at).toLocaleDateString() }}</td>
                 <td class="p-2">{{ user.email_verified_at ? '✔' : '✖' }}</td>
                 <td class="p-2">
-                        <span :class="user.is_banned ? 'text-red-600' : 'text-green-600'">
-                            {{ user.is_banned ? 'Banned' : 'Active' }}
-                        </span>
+                    <span :class="user.is_banned ? 'text-red-600' : 'text-green-600'">
+                        {{ user.is_banned ? 'Banned' : 'Active' }}
+                    </span>
                 </td>
                 <td class="p-2 space-x-2">
                     <button
@@ -88,11 +88,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import axios from '@/utils/axios'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+const toast = inject('toast')
 
 const users = ref({
     data: [],
@@ -104,8 +105,11 @@ const users = ref({
 const search = ref('')
 const sort = ref('created_at')
 
-const fetchUsers = async (url = '/api/admin/users') => {
-    const response = await axios.get(url, {
+const fetchUsers = async (url = '/admin/users') => {
+    // Удаляем домен, если absolute URL от paginator
+    const finalUrl = url.replace(/^https?:\/\/[^/]+/, '')
+
+    const response = await axios.get(finalUrl, {
         params: {
             search: search.value,
             sort: sort.value,
@@ -116,21 +120,34 @@ const fetchUsers = async (url = '/api/admin/users') => {
 }
 
 const confirmDelete = async (user) => {
-    if (!confirm(`Delete user ${user.email}?`)) return
-    await axios.delete(`/api/admin/users/${user.id}`)
-    fetchUsers()
+    try {
+        await axios.delete(`/admin/users/${user.id}`)
+        toast.value?.show(`User ${user.email} deleted`, 'success')
+        fetchUsers()
+    } catch (e) {
+        toast.value?.show(`Error deleting user: ${e.response?.data?.message || e.message}`, 'error')
+    }
 }
 
 const confirmBan = async (user) => {
-    if (!confirm(`${user.is_banned ? 'Unban' : 'Ban'} user ${user.email}?`)) return
-    await axios.put(`/api/admin/users/${user.id}/ban`)
-    fetchUsers()
+    try {
+        await axios.put(`/admin/users/${user.id}/ban`)
+        const action = user.is_banned ? 'unbanned' : 'banned'
+        toast.value?.show(`User ${user.email} ${action}`, 'success')
+        fetchUsers()
+    } catch (e) {
+        toast.value?.show(`Error banning user: ${e.response?.data?.message || e.message}`, 'error')
+    }
 }
 
 const confirmVerify = async (user) => {
-    if (!confirm(`Verify email for ${user.email}?`)) return
-    await axios.put(`/api/admin/users/${user.id}/verify`)
-    fetchUsers()
+    try {
+        await axios.put(`/admin/users/${user.id}/verify`)
+        toast.value?.show(`Email verified for ${user.email}`, 'success')
+        fetchUsers()
+    } catch (e) {
+        toast.value?.show(`Error verifying email: ${e.response?.data?.message || e.message}`, 'error')
+    }
 }
 
 onMounted(fetchUsers)

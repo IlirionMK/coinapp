@@ -10,6 +10,9 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 
+// импортируем EnsureUserIsAdmin вручную
+use App\Http\Middleware\EnsureUserIsAdmin;
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -17,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'admin' => EnsureUserIsAdmin::class,
+        ]);
+
         $middleware->web(append: [
             EncryptCookies::class,
             StartSession::class,
