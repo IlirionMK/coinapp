@@ -183,7 +183,13 @@ const handleIconError = (e) => {
 }
 
 function formatPrice(value) {
-    return typeof value === 'number' ? `$${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}` : '-'
+    if (typeof value !== 'number') return '-'
+
+    const options = value >= 1
+        ? { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        : { minimumFractionDigits: 2, maximumFractionDigits: 8 }
+
+    return `$${value.toLocaleString(undefined, options)}`
 }
 
 function formatPercent(value) {

@@ -1,9 +1,7 @@
 <template>
     <nav class="bg-white dark:bg-gray-900 border-b shadow-sm py-4">
         <div class="max-w-screen-xl mx-auto px-4 flex justify-between items-center gap-4">
-            <RouterLink to="/" class="text-xl font-bold text-gray-800 dark:text-white">
-                CoinApp
-            </RouterLink>
+
 
             <div class="hidden md:flex items-center gap-6">
                 <RouterLink to="/" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 text-base">

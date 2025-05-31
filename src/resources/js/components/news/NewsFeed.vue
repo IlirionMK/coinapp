@@ -2,7 +2,7 @@
     <div class="max-w-5xl mx-auto p-4">
         <h1 class="text-3xl font-bold mb-6">{{ $t('news.title') }}</h1>
 
-         <div class="flex flex-wrap md:flex-nowrap gap-4 mb-6">
+        <div class="flex flex-wrap md:flex-nowrap gap-4 mb-6">
             <div class="flex-1 min-w-[160px]">
                 <label class="block mb-1 text-sm font-medium">{{ $t('news.filter_by_coin') }}</label>
                 <select v-model="currencyCode" @change="loadPage(1)"
@@ -40,29 +40,51 @@
         <div v-else>
             <div v-if="news.length === 0" class="text-center text-gray-500">No news found.</div>
 
-            <ul class="space-y-4">
-                <li v-for="item in news" :key="item.uuid" class="bg-white dark:bg-gray-800 shadow rounded p-4">
-                    <h2 class="text-lg font-semibold mb-1">{{ item.title }}</h2>
-                    <p class="text-sm text-gray-600 mb-2">
-                        {{ formatDate(item.published_at) }} — {{ item.source || 'Unknown' }}
-                    </p>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div
+                    v-for="item in news"
+                    :key="item.uuid"
+                    class="rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
+                >
+                    <div class="p-4 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <h2 class="text-base font-semibold leading-snug text-gray-900 dark:text-white">
+                                {{ item.title }}
+                            </h2>
+                            <span class="text-xs text-gray-500 whitespace-nowrap">
+                                {{ formatDate(item.published_at) }}
+                            </span>
+                        </div>
 
-                    <p class="text-gray-700 text-sm mb-3" v-if="item.summary">
-                        {{ item.summary }}
-                    </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-4" v-if="item.summary">
+                            {{ item.summary }}
+                        </p>
 
-                    <div class="flex flex-wrap gap-2 mb-3">
-            <span v-for="currency in item.currencies ?? []" :key="currency.code"
-                  class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-              {{ currency.code.toUpperCase() }}
-            </span>
+                        <div class="flex flex-wrap gap-1">
+                            <span
+                                v-for="currency in item.currencies ?? []"
+                                :key="currency.code"
+                                class="bg-blue-100 text-blue-800 text-[11px] px-2 py-0.5 rounded-full dark:bg-blue-800 dark:text-blue-100"
+                            >
+                                {{ currency.code.toUpperCase() }}
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-2 border-t border-gray-100 dark:border-gray-700">
+                            <span class="text-xs text-gray-400 italic">
+                                {{ item.source || 'Unknown' }}
+                            </span>
+                            <a
+                                :href="item.url"
+                                target="_blank"
+                                class="text-sm font-medium text-blue-600 hover:underline"
+                            >
+                                {{ $t('news.read_more') }}
+                            </a>
+                        </div>
                     </div>
-
-                    <a :href="item.url" target="_blank" class="text-blue-600 hover:underline text-sm">
-                        {{ $t('news.read_more') }}
-                    </a>
-                </li>
-            </ul>
+                </div>
+            </div>
 
             <div
                 class="mt-6 flex justify-center"
