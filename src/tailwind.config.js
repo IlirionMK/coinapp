@@ -13,6 +13,8 @@ export default {
 
     safelist: ['w-6', 'h-6'],
 
+    darkMode: 'class',
+
     theme: {
         extend: {
             fontFamily: {

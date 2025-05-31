@@ -4,13 +4,13 @@
         <p class="text-gray-600">{{ t('converter.description') }}</p>
 
         <!-- Конвертер -->
-        <Converter />
+        <ConverterPreview />
     </section>
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import Converter from '@/components/Converter.vue'
+import ConverterPreview from "@/components/ConverterPreview.vue";
 
 const { t } = useI18n()
 </script>

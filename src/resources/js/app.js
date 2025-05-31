@@ -16,6 +16,12 @@ loadLocaleMessages(i18n, locale).then(() => {
     const app = createApp(App)
     app.use(router)
     app.use(i18n)
+    const theme = localStorage.getItem('theme')
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
     document.title = 'CoinApp'
     app.mount('#app')
 })

@@ -31,7 +31,12 @@
         "filter_by_date": "Data publikacji",
         "search_keywords": "Szukaj słów kluczowych",
         "read_more": "Czytaj więcej",
-        "clear_filters": "Wyczyść filtry"
+        "clear_filters": "Wyczyść filtry",
+        "search_placeholder": "np. SEC, Binance, regulacja"
+    },
+    "pagination": {
+        "prev": "Poprzednia",
+        "next": "Następna"
     },
     "loading": "Ładowanie",
     "name": "Nazwa",

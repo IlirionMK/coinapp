@@ -1,8 +1,6 @@
 <template>
     <nav class="bg-white dark:bg-gray-900 border-b shadow-sm py-4">
         <div class="max-w-screen-xl mx-auto px-4 flex justify-between items-center gap-4">
-
-
             <div class="hidden md:flex items-center gap-6">
                 <RouterLink to="/" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 text-base">
                     {{ t('nav.home') }}
@@ -79,6 +77,7 @@
                     </RouterLink>
                 </template>
 
+                <ThemeToggle />
                 <LanguageSwitcher />
 
                 <div class="block md:hidden">
@@ -142,6 +141,7 @@
                         {{ t('nav.register') }}
                     </RouterLink>
                 </template>
+                <ThemeToggle class="mt-4" />
             </div>
         </div>
     </nav>
@@ -155,6 +155,7 @@ import { useI18n } from 'vue-i18n'
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
 import ConverterPreview from '@/components/ConverterPreview.vue'
 import Dropdown from '@/components/ui/Dropdown.vue'
+import ThemeToggle from '@/components/ui/ThemeToggle.vue'
 import useUser from '@/stores/user'
 
 const { t } = useI18n()

@@ -1,12 +1,18 @@
 <template>
-    <div class="max-w-5xl mx-auto p-4">
-        <h1 class="text-3xl font-bold mb-6">{{ $t('news.title') }}</h1>
+    <div class="max-w-6xl mx-auto px-4 py-6">
+        <div class="flex justify-end mb-2">
+            <button @click="resetFilters" class="text-sm text-blue-600 hover:underline whitespace-nowrap">
+                {{ $t('news.clear_filters') }}
+            </button>
+        </div>
 
-        <div class="flex flex-wrap md:flex-nowrap gap-4 mb-6">
-            <div class="flex-1 min-w-[160px]">
-                <label class="block mb-1 text-sm font-medium">{{ $t('news.filter_by_coin') }}</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 mb-6">
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 dark:text-gray-700 mb-1">
+                    {{ $t('news.filter_by_coin') }}
+                </label>
                 <select v-model="currencyCode" @change="loadPage(1)"
-                        class="w-full border border-gray-300 rounded px-3 py-2">
+                        class="w-full h-10 text-sm px-3 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-400 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">{{ $t('news.all_coins') }}</option>
                     <option v-for="code in availableCoins" :key="code" :value="code">
                         {{ code }}
@@ -14,88 +20,81 @@
                 </select>
             </div>
 
-            <div class="flex-1 min-w-[160px]">
-                <label class="block mb-1 text-sm font-medium">{{ $t('news.filter_by_date') }}</label>
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 dark:text-gray-700 mb-1">
+                    {{ $t('news.filter_by_date') }}
+                </label>
                 <input type="date" v-model="fromDate" @change="loadPage(1)"
-                       class="w-full border border-gray-300 rounded px-3 py-2" />
+                       class="w-full h-10 text-sm px-3 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-400 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <div class="flex-1 min-w-[160px]">
-                <label class="block mb-1 text-sm font-medium">{{ $t('news.search_keywords') }}</label>
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 dark:text-gray-700 mb-1">
+                    {{ $t('news.search_keywords') }}
+                </label>
                 <input type="text" v-model="searchTerm" @keydown.enter="loadPage(1)"
-                       class="w-full border border-gray-300 rounded px-3 py-2"
-                       placeholder="e.g. SEC, Binance, regulation" />
-            </div>
-
-            <div class="flex items-end">
-                <button @click="resetFilters"
-                        class="text-sm text-blue-600 hover:underline">
-                    {{ $t('news.clear_filters') }}
-                </button>
+                       :placeholder="$t('news.search_placeholder')"
+                       class="w-full h-10 text-sm px-3 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-400 dark:border-gray-600 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
         </div>
 
-        <div v-if="loading" class="text-center text-gray-500">Loading...</div>
+        <div v-if="loading" class="text-center text-gray-500 dark:text-gray-400">Loading...</div>
 
         <div v-else>
-            <div v-if="news.length === 0" class="text-center text-gray-500">No news found.</div>
+            <div v-if="news.length === 0" class="text-center text-gray-500 dark:text-gray-400">No news found.</div>
 
-            <div class="grid gap-4 md:grid-cols-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6">
                 <div
                     v-for="item in news"
                     :key="item.uuid"
-                    class="rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
+                    class="flex flex-col justify-between h-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-5 transition-transform duration-200 hover:shadow-md hover:-translate-y-1"
                 >
-                    <div class="p-4 space-y-3">
-                        <div class="flex justify-between items-start">
-                            <h2 class="text-base font-semibold leading-snug text-gray-900 dark:text-white">
-                                {{ item.title }}
-                            </h2>
-                            <span class="text-xs text-gray-500 whitespace-nowrap">
-                                {{ formatDate(item.published_at) }}
-                            </span>
-                        </div>
+                    <div>
+                        <h2 class="text-base font-semibold text-gray-900 dark:text-white leading-snug mb-2">
+                            {{ item.title }}
+                        </h2>
 
-                        <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-4" v-if="item.summary">
+                        <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-4 mb-3" v-if="item.summary">
                             {{ item.summary }}
                         </p>
 
-                        <div class="flex flex-wrap gap-1">
+                        <div class="flex flex-wrap gap-2 mb-3">
                             <span
                                 v-for="currency in item.currencies ?? []"
                                 :key="currency.code"
-                                class="bg-blue-100 text-blue-800 text-[11px] px-2 py-0.5 rounded-full dark:bg-blue-800 dark:text-blue-100"
+                                class="bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 text-[11px] font-medium px-2 py-0.5 rounded-full"
                             >
                                 {{ currency.code.toUpperCase() }}
                             </span>
                         </div>
+                    </div>
 
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-100 dark:border-gray-700">
-                            <span class="text-xs text-gray-400 italic">
-                                {{ item.source || 'Unknown' }}
-                            </span>
+                    <div class="mt-auto">
+                        <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 border-t pt-3 border-gray-100 dark:border-gray-700">
+                            <span class="italic truncate">{{ item.source || 'Unknown' }}</span>
+                            <span class="ml-auto whitespace-nowrap">{{ formatDate(item.published_at) }}</span>
+                        </div>
+
+                        <div class="mt-2 text-right">
                             <a
                                 :href="item.url"
                                 target="_blank"
                                 class="text-sm font-medium text-blue-600 hover:underline"
                             >
-                                {{ $t('news.read_more') }}
+                                {{ $t('news.read_more') }} →
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div
-                class="mt-6 flex justify-center"
-                v-if="pagination && pagination.total > pagination.per_page"
-            >
-                <button class="mx-1 px-3 py-1 border rounded"
+            <div class="mt-10 flex justify-center" v-if="pagination && pagination.total > pagination.per_page">
+                <button class="mx-1 px-3 py-1 border rounded text-sm"
                         :disabled="pagination.current_page === 1"
                         @click="loadPage(pagination.current_page - 1)">
                     {{ $t('pagination.prev') }}
                 </button>
-                <button class="mx-1 px-3 py-1 border rounded"
+                <button class="mx-1 px-3 py-1 border rounded text-sm"
                         :disabled="pagination.current_page === pagination.last_page"
                         @click="loadPage(pagination.current_page + 1)">
                     {{ $t('pagination.next') }}
@@ -158,7 +157,8 @@ const resetFilters = () => {
 }
 
 const formatDate = (isoString) => {
-    return new Date(isoString).toLocaleString()
+    const date = new Date(isoString)
+    return date.toLocaleDateString() + ', ' + date.toLocaleTimeString()
 }
 
 onMounted(() => {

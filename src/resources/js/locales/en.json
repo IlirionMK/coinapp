@@ -30,8 +30,13 @@
         "all_coins": "All coins",
         "filter_by_date": "Filter by publish date",
         "search_keywords": "Search keywords",
+        "search_placeholder": "e.g. SEC, Binance, regulation",
         "read_more": "Read more",
         "clear_filters": "Clear filters"
+    },
+    "pagination": {
+        "prev": "Prev",
+        "next": "Next"
     },
     "loading": "Loading",
     "name": "Name",
