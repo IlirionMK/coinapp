@@ -29,5 +29,5 @@ const resolvedLayout = computed(() => {
         <router-view />
     </component>
 
-     <Toast ref="toast" />
+    <Toast ref="toast" />
 </template>

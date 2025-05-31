@@ -2,6 +2,10 @@
     <div class="min-h-screen bg-gray-100 py-8 px-4">
         <div class="max-w-4xl mx-auto space-y-6">
             <h1 class="text-2xl font-bold">{{ $t('dashboard.title') }}</h1>
+            <div class="flex justify-end">
+                <LanguageSwitcher />
+            </div>
+
 
             <div class="bg-white p-6 rounded-xl shadow">
                 <p><strong>{{ $t('dashboard.name') }}:</strong> {{ user.name }}</p>
@@ -22,11 +26,11 @@
                     <table class="w-full text-left border border-gray-200">
                         <thead class="bg-gray-100 text-sm font-semibold">
                         <tr>
-                            <th class="p-2">Coin</th>
-                            <th class="p-2">Price</th>
-                            <th class="p-2">Frequency</th>
-                            <th class="p-2">Threshold (%)</th>
-                            <th class="p-2">Actions</th>
+                            <th class="p-2">{{ $t('dashboard.coin') }}</th>
+                            <th class="p-2">{{ $t('dashboard.price') }}</th>
+                            <th class="p-2">{{ $t('dashboard.frequency') }}</th>
+                            <th class="p-2">{{ $t('dashboard.threshold') }}</th>
+                            <th class="p-2">{{ $t('dashboard.actions') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -40,9 +44,9 @@
                                     v-model="sub.notification_frequency"
                                     class="border rounded px-2 py-1"
                                 >
-                                    <option value="instant">Instant</option>
-                                    <option value="daily">Daily</option>
-                                    <option value="none">None</option>
+                                    <option value="instant">{{ $t('dashboard.frequency_instant') }}</option>
+                                    <option value="daily">{{ $t('dashboard.frequency_daily') }}</option>
+                                    <option value="none">{{ $t('dashboard.frequency_none') }}</option>
                                 </select>
                             </td>
                             <td class="p-2">
@@ -60,13 +64,13 @@
                                     @click="updateSubscription(sub)"
                                     class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
                                 >
-                                    Save
+                                    {{ $t('dashboard.save') }}
                                 </button>
                                 <button
                                     @click="unsubscribe(sub.coin_id)"
                                     class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
                                 >
-                                    Unsubscribe
+                                    {{ $t('dashboard.unsubscribe') }}
                                 </button>
                             </td>
                         </tr>
@@ -94,6 +98,7 @@ import { RouterLink } from 'vue-router'
 import axios from '@/utils/axios'
 import useUser from '@/stores/user'
 import Toast from '@/components/ui/Toast.vue'
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher.vue";
 
 const { user } = useUser()
 const subscriptions = ref([])

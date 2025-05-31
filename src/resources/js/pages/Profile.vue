@@ -9,15 +9,7 @@
                     ← {{ $t('profile.back_to_dashboard') }}
                 </RouterLink>
 
-                <div class="flex items-center gap-2">
-                    <LanguageSwitcher />
-                    <button
-                        @click="handleLogout"
-                        class="text-red-600 hover:underline text-sm"
-                    >
-                        {{ $t('nav.logout') }}
-                    </button>
-                </div>
+                <LanguageSwitcher />
             </div>
 
             <section class="bg-white p-6 rounded-xl shadow">
@@ -136,9 +128,9 @@ import useUser from '@/stores/user'
 
 const { t } = useI18n()
 const router = useRouter()
-const { logout } = useUser()
 const toast = ref(null)
 const confirmDeleteModal = ref(null)
+const { logout } = useUser()
 
 const form = ref({
     name: '',
@@ -215,9 +207,5 @@ const confirmDelete = () => {
             }
         }
     })
-}
-
-const handleLogout = () => {
-    logout(router)
 }
 </script>

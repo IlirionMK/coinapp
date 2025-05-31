@@ -52,7 +52,9 @@ const submit = async () => {
     isLoading.value = true
     try {
         await login(form)
+        await new Promise(resolve => setTimeout(resolve, 100))
         await fetchUser()
+
         toastRef.value?.show(t('auth.login_success'), 'success')
 
         const redirect = localStorage.getItem('logoutRedirectPath') || '/dashboard'

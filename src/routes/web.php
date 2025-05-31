@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\EmailVerificationController;
 
+
 Route::get('/health', function () {
     return response()->json([
         'status' => 'ok',
@@ -31,3 +32,4 @@ Route::get('/email-verified', function () {
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '^(?!api).*$');
+

@@ -70,7 +70,8 @@
         "delete_account_confirm": "Czy na pewno chcesz usunąć swoje konto?",
         "confirm_delete_title": "Potwierdź usunięcie konta",
         "confirm_delete_desc": "Ta operacja jest nieodwracalna. Wprowadź hasło, aby potwierdzić.",
-        "account_deleted": "Twoje konto zostało usunięte."
+        "account_deleted": "Twoje konto zostało usunięte.",
+        "back_to_dashboard": "Powrót do panelu"
     },
     "admin": {
         "users_title": "Zarządzanie użytkownikami",
@@ -120,10 +121,32 @@
     "dashboard": {
         "title": "Panel użytkownika",
         "name": "Imię",
-        "email": "E-mail"
+        "email": "E-mail",
+        "edit_profile": "Edytuj profil",
+        "subscriptions": "Twoje subskrypcje",
+        "no_subscriptions": "Nie masz żadnych aktywnych subskrypcji.",
+        "notifications": "Ustawienia powiadomień",
+        "save_settings": "Zapisz ustawienia",
+        "coin": "Moneta",
+        "price": "Cena",
+        "frequency": "Częstotliwość",
+        "threshold": "Próg (%)",
+        "actions": "Akcje",
+        "save": "Zapisz",
+        "unsubscribe": "Anuluj subskrypcję",
+        "frequency_instant": "Natychmiast",
+        "frequency_daily": "Codziennie",
+        "frequency_none": "Nigdy"
     },
     "delete": "Usuń",
     "cancel": "Anuluj",
+    "actions": "Akcje",
+    "subscribe": "Subskrybuj",
+    "unsubscribe": "Anuluj subskrypcję",
+    "subscribed_success_default": "Pomyślnie zasubskrybowano.",
+    "unsubscribed_success": "Anulowano subskrypcję.",
+    "subscription_error": "Nie udało się zapisać. Spróbuj ponownie.",
+
     "auth": {
         "login": "Zaloguj się",
         "email": "E-mail",
@@ -135,9 +158,6 @@
         "login_server_error": "Coś poszło nie tak. Spróbuj ponownie.",
         "failed": "Nieprawidłowe dane logowania. Spróbuj ponownie.",
         "success": "Zalogowano pomyślnie.",
-        "banned": "Your account has been banned."
-
+        "banned": "Twoje konto zostało zablokowane."
     }
-
-
 }

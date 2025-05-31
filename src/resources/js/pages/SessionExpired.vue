@@ -37,18 +37,21 @@
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import rawAxios from 'axios'
 import Toast from '@/components/ui/Toast.vue'
 
 const previousPath = ref(null)
 const toastRef = ref()
 const { t } = useI18n()
 
-onMounted(() => {
+onMounted(async () => {
     toastRef.value?.show(t('session.logged_out'), 'info')
 
     const path = localStorage.getItem('logoutRedirectPath')
     if (path && path !== '/session-expired' && path !== '/login') {
         previousPath.value = path
     }
+
+     await rawAxios.get('/sanctum/csrf-cookie', { withCredentials: true })
 })
 </script>

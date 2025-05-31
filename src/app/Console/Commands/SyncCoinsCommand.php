@@ -13,7 +13,7 @@ use Throwable;
 
 class SyncCoinsCommand extends Command
 {
-    protected $signature   = 'coins:sync {--pages=4 : How many pages of 250 coins to fetch}';
+    protected $signature   = 'coins:sync {--pages=5 : How many pages of 250 coins to fetch}';
     protected $description = 'Fetch and update cryptocurrency data from CoinGecko';
 
     private const BASE_URL = 'https://api.coingecko.com/api/v3/coins/markets';
