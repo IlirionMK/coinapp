@@ -40,7 +40,7 @@ import { useI18n } from 'vue-i18n'
 import useUser from '@/stores/user'
 import Toast from '@/components/ui/Toast.vue'
 
-const { login, fetchUser } = useUser()
+const { login } = useUser()
 const router = useRouter()
 const { t } = useI18n()
 const toastRef = ref()
@@ -52,22 +52,17 @@ const submit = async () => {
     isLoading.value = true
     try {
         await login(form)
-        await new Promise(resolve => setTimeout(resolve, 100))
-        await fetchUser()
 
         toastRef.value?.show(t('auth.login_success'), 'success')
 
         const redirect = localStorage.getItem('logoutRedirectPath') || '/dashboard'
         localStorage.removeItem('logoutRedirectPath')
         await router.push(redirect)
-
     } catch (e) {
         let message = t('auth.login_error')
-
         if (e.response?.data?.errors?.email?.[0]) {
             message = e.response.data.errors.email[0]
         }
-
         toastRef.value?.show(message, 'error')
         form.password = ''
     } finally {

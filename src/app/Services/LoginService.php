@@ -11,10 +11,8 @@ class LoginService
 {
     public function attempt(array $credentials, $request): bool
     {
-        // Получаем пользователя по email
         $user = User::where('email', $credentials['email'])->first();
 
-        // Проверяем, существует ли пользователь и забанен ли он
         if ($user && $user->is_banned) {
             Log::warning('Blocked user login attempt', [
                 'email' => $credentials['email'],
@@ -23,7 +21,7 @@ class LoginService
                 'time' => now()->toDateTimeString(),
             ]);
 
-             throw ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'email' => [__('auth.banned')],
             ]);
         }
@@ -31,6 +29,8 @@ class LoginService
         $success = Auth::attempt($credentials);
 
         if ($success) {
+            $request->session()->regenerate();
+
             Log::info('Successful login', [
                 'email' => $credentials['email'],
                 'ip' => $request->ip(),

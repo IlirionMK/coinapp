@@ -17,11 +17,14 @@ const ensureCsrf = async () => {
 const fetchUser = async () => {
     if (user.value) return true
 
-    await ensureCsrf() // ← ДОБАВЛЕНО
+    await ensureCsrf()
 
     if (!fetching) {
         fetching = api.get('/user')
-            .then(({ data }) => { user.value = data; return true })
+            .then(({ data }) => {
+                user.value = data
+                return true
+            })
             .catch(err => {
                 if (err.response?.status === 401) {
                     user.value = null
@@ -29,7 +32,9 @@ const fetchUser = async () => {
                 }
                 throw err
             })
-            .finally(() => { fetching = null })
+            .finally(() => {
+                fetching = null
+            })
     }
     return fetching
 }
@@ -37,7 +42,9 @@ const fetchUser = async () => {
 const login = async (form) => {
     error.value = null
     await ensureCsrf()
-    return api.post('/login', form, { withCredentials: true })
+    await api.post('/login', form, { withCredentials: true })
+    await new Promise(resolve => setTimeout(resolve, 150))
+    await fetchUser()
 }
 
 const register = async (form) => {
@@ -57,9 +64,9 @@ const logout = async (router) => {
     }
 
     user.value = null
+    csrfReady = false
     await router.push('/session-expired')
     isLoggingOut = false
-    csrfReady = false
 }
 
 export default function useUser () {

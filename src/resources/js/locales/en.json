@@ -127,7 +127,9 @@
         "login_success": "Logged in successfully.",
         "login_error": "Invalid credentials.",
         "login_server_error": "Something went wrong. Please try again.",
-        "banned": "Your account has been banned."
+        "banned": "Your account has been banned.",
+        "register_success": "Registration successful. Please verify your email.",
+        "register_error": "Registration failed. Please check your input."
     },
     "dashboard": {
         "title": "Dashboard",
@@ -149,6 +151,12 @@
         "frequency_daily": "Daily",
         "frequency_none": "None"
 
+    },
+    "form": {
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "password_confirmation": "Confirm Password"
     },
     "delete": "Delete",
     "cancel": "Cancel",

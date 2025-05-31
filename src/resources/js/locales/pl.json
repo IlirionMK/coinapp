@@ -158,6 +158,14 @@
         "login_server_error": "Coś poszło nie tak. Spróbuj ponownie.",
         "failed": "Nieprawidłowe dane logowania. Spróbuj ponownie.",
         "success": "Zalogowano pomyślnie.",
-        "banned": "Twoje konto zostało zablokowane."
+        "banned": "Twoje konto zostało zablokowane.",
+        "register_success": "Rejestracja zakończona sukcesem. Sprawdź swój e-mail.",
+        "register_error": "Rejestracja nie powiodła się. Sprawdź dane formularza."
+    },
+    "form": {
+        "name": "Imię",
+        "email": "E-mail",
+        "password": "Hasło",
+        "password_confirmation": "Potwierdź hasło"
     }
 }

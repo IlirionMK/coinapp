@@ -5,10 +5,11 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class LogoutService
 {
-    public function logout(): void
+    public function logout(Request $request): void
     {
         /** @var User|null $user */
         $user = Auth::user();
@@ -22,5 +23,8 @@ class LogoutService
         }
 
         Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
     }
 }

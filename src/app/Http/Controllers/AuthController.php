@@ -39,14 +39,12 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $request->session()->regenerate();
-
         return response()->json($loginService->currentUser());
     }
 
     public function logout(Request $request, LogoutService $logoutService)
     {
-        $logoutService->logout();
+        $logoutService->logout($request);
 
         return response()->json(['message' => 'Logged out']);
     }
