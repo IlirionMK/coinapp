@@ -149,7 +149,7 @@
         "coin": "Coin",
         "price": "Price",
         "frequency": "Frequency",
-        "threshold": "Threshold (%)",
+        "threshold": "Threshold",
         "actions": "Actions",
         "save": "Save",
         "unsubscribe": "Unsubscribe",

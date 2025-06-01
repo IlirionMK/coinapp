@@ -1,96 +1,115 @@
 <template>
-    <div class="min-h-screen bg-gray-100 py-8 px-4">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 py-4 px-2 sm:px-4 transition-colors">
         <div class="max-w-4xl mx-auto space-y-6">
-            <h1 class="text-2xl font-bold">{{ $t('dashboard.title') }}</h1>
-
-            <div class="flex justify-end">
-                <LanguageSwitcher />
-            </div>
+            <h1 class="text-xl font-bold text-gray-900 dark:text-white text-center sm:text-left">
+                {{ $t('dashboard.title') }}
+            </h1>
 
             <!-- User Info -->
-            <div class="bg-white p-6 rounded-xl shadow" v-if="user">
-                <p><strong>{{ $t('dashboard.name') }}:</strong> {{ user.name }}</p>
-                <p><strong>{{ $t('dashboard.email') }}:</strong> {{ user.email }}</p>
-
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-center sm:text-left space-y-1">
+                <p class="text-gray-800 dark:text-gray-100 text-sm">
+                    <strong>{{ $t('dashboard.name') }}:</strong> {{ user.name }}
+                </p>
+                <p class="text-gray-800 dark:text-gray-100 text-sm">
+                    <strong>{{ $t('dashboard.email') }}:</strong> {{ user.email }}
+                </p>
                 <RouterLink
                     to="/profile"
-                    class="inline-block mt-4 text-blue-600 hover:underline text-sm"
+                    class="inline-block text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1"
                 >
                     {{ $t('dashboard.edit_profile') }}
                 </RouterLink>
             </div>
-            <div v-else class="bg-white p-6 rounded-xl shadow text-gray-500">
-                {{ $t('loading') }}...
-            </div>
 
             <!-- Subscriptions -->
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h2 class="text-xl font-semibold mb-4">{{ $t('dashboard.subscriptions') }}</h2>
+            <div class="bg-white dark:bg-gray-800 p-4 sm:p-5 rounded-xl shadow transition-colors">
+                <h2 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
+                    {{ $t('dashboard.subscriptions') }}
+                </h2>
 
                 <div v-if="subscriptions.length">
-                    <table class="w-full text-left border border-gray-200">
-                        <thead class="bg-gray-100 text-sm font-semibold">
-                        <tr>
-                            <th class="p-2">{{ $t('dashboard.coin') }}</th>
-                            <th class="p-2">{{ $t('dashboard.price') }}</th>
-                            <th class="p-2">{{ $t('dashboard.frequency') }}</th>
-                            <th class="p-2">{{ $t('dashboard.threshold') }}</th>
-                            <th class="p-2">{{ $t('dashboard.actions') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="sub in subscriptions" :key="sub.coin_id" class="border-t">
-                            <td class="p-2">
-                                {{ sub.coin.name }} ({{ sub.coin.symbol.toUpperCase() }})
-                            </td>
-                            <td class="p-2">${{ sub.coin.price }}</td>
-                            <td class="p-2">
-                                <select
-                                    v-model="sub.notification_frequency"
-                                    class="border rounded px-2 py-1"
-                                >
-                                    <option value="instant">{{ $t('dashboard.frequency_instant') }}</option>
-                                    <option value="daily">{{ $t('dashboard.frequency_daily') }}</option>
-                                    <option value="none">{{ $t('dashboard.frequency_none') }}</option>
-                                </select>
-                            </td>
-                            <td class="p-2">
-                                <input
-                                    v-model.number="sub.change_threshold"
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="0.01"
-                                    class="border rounded px-2 py-1 w-24"
-                                />
-                            </td>
-                            <td class="p-2 space-x-2">
-                                <button
-                                    @click="updateSubscription(sub)"
-                                    class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-                                >
-                                    {{ $t('dashboard.save') }}
-                                </button>
-                                <button
-                                    @click="unsubscribe(sub.coin_id)"
-                                    class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
-                                >
-                                    {{ $t('dashboard.unsubscribe') }}
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border border-gray-200 dark:border-gray-700 table-fixed">
+                            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium text-center">
+                            <tr>
+                                <th @click="sortBy('symbol')" class="px-1 py-1 w-14 cursor-pointer">
+                                    <span class="sm:inline hidden">{{ $t('dashboard.coin') }}</span>
+                                    <span class="sm:hidden">#</span>
+                                </th>
+                                <th @click="sortBy('price')" class="px-1 py-1 w-16 cursor-pointer">
+                                    {{ $t('dashboard.price') }}
+                                </th>
+                                <th @click="sortBy('frequency')" class="px-1 py-1 w-14 cursor-pointer">
+                                    <span class="sm:inline hidden">{{ $t('dashboard.frequency') }}</span>
+                                    <span class="sm:hidden"><AlarmClock class="w-4 h-4 inline" /></span>
+                                </th>
+                                <th @click="sortBy('threshold')" class="px-1 py-1 w-14 cursor-pointer">
+                                    <span class="sm:inline hidden">{{ $t('dashboard.threshold') }} (%)</span>
+                                    <span class="sm:hidden"><Percent class="w-4 h-4 inline" /></span>
+                                </th>
+                                <th class="px-1 py-1 w-16">
+                                    {{ $t('dashboard.actions') }}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr
+                                v-for="sub in sortedSubscriptions"
+                                :key="sub.coin_id"
+                                class="border-t border-gray-200 dark:border-gray-700 text-center"
+                            >
+                                <td class="px-1 py-1 truncate">
+                                    <span class="sm:inline hidden">{{ sub.coin.name }} ({{ sub.coin.symbol.toUpperCase() }})</span>
+                                    <span class="sm:hidden">{{ sub.coin.symbol.toUpperCase() }}</span>
+                                </td>
+                                <td class="px-1 py-1">${{ sub.coin.price }}</td>
+                                <td class="px-1 py-1">
+                                    <select
+                                        v-model="sub.notification_frequency"
+                                        class="border rounded px-1 pr-5 py-1 w-full sm:w-auto bg-white dark:bg-gray-700
+                             border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm"
+                                    >
+                                        <option value="instant">{{ $t('dashboard.frequency_instant') }}</option>
+                                        <option value="daily">{{ $t('dashboard.frequency_daily') }}</option>
+                                        <option value="none">{{ $t('dashboard.frequency_none') }}</option>
+                                    </select>
+                                </td>
+                                <td class="px-1 py-1">
+                                    <input
+                                        v-model.number="sub.change_threshold"
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        step="0.01"
+                                        class="border rounded px-2 py-1 w-16 bg-white dark:bg-gray-700
+                             border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm"
+                                    />
+                                </td>
+                                <td class="px-1 py-1 h-[36px]">
+                                    <div class="flex items-center justify-center gap-1 h-full">
+                                        <button
+                                            @click="updateSubscription(sub)"
+                                            class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
+                                            title="Save"
+                                        >
+                                            <Check class="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            @click="unsubscribe(sub.coin_id)"
+                                            class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200"
+                                            title="Unsubscribe"
+                                        >
+                                            <X class="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <p v-else class="text-gray-500">{{ $t('dashboard.no_subscriptions') }}</p>
+                <p v-else class="text-gray-500 dark:text-gray-300 mt-2">{{ $t('dashboard.no_subscriptions') }}</p>
             </div>
-
-            <RouterLink
-                to="/"
-                class="inline-block text-blue-600 hover:underline text-sm"
-            >
-                ← {{ $t('nav.home') }}
-            </RouterLink>
 
             <Toast ref="toastRef" />
         </div>
@@ -98,16 +117,56 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import axios from '@/utils/axios'
 import useUser from '@/stores/user'
 import Toast from '@/components/ui/Toast.vue'
-import LanguageSwitcher from '@/components/ui/LanguageSwitcher.vue'
+import { Check, X, AlarmClock, Percent } from 'lucide-vue-next'
 
 const { user } = useUser()
 const subscriptions = ref([])
 const toastRef = ref()
+
+const sortKey = ref(null)
+const sortAsc = ref(true)
+
+const sortedSubscriptions = computed(() => {
+    if (!sortKey.value) return subscriptions.value
+    return [...subscriptions.value].sort((a, b) => {
+        let aValue, bValue
+        switch (sortKey.value) {
+            case 'symbol':
+                aValue = a.coin.symbol
+                bValue = b.coin.symbol
+                break
+            case 'price':
+                aValue = a.coin.price
+                bValue = b.coin.price
+                break
+            case 'frequency':
+                aValue = a.notification_frequency
+                bValue = b.notification_frequency
+                break
+            case 'threshold':
+                aValue = a.change_threshold
+                bValue = b.change_threshold
+                break
+        }
+        return sortAsc.value
+            ? aValue > bValue ? 1 : -1
+            : aValue < bValue ? 1 : -1
+    })
+})
+
+function sortBy(key) {
+    if (sortKey.value === key) {
+        sortAsc.value = !sortAsc.value
+    } else {
+        sortKey.value = key
+        sortAsc.value = true
+    }
+}
 
 onMounted(async () => {
     try {
