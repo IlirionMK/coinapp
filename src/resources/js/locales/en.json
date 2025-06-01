@@ -134,7 +134,8 @@
         "login_server_error": "Something went wrong. Please try again.",
         "banned": "Your account has been banned.",
         "register_success": "Registration successful. Please verify your email.",
-        "register_error": "Registration failed. Please check your input."
+        "register_error": "Registration failed. Please check your input.",
+        "logout": "Logout"
     },
     "dashboard": {
         "title": "Dashboard",

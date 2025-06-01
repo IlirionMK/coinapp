@@ -165,7 +165,8 @@
         "success": "Zalogowano pomyślnie.",
         "banned": "Twoje konto zostało zablokowane.",
         "register_success": "Rejestracja zakończona sukcesem. Sprawdź swój e-mail.",
-        "register_error": "Rejestracja nie powiodła się. Sprawdź dane formularza."
+        "register_error": "Rejestracja nie powiodła się. Sprawdź dane formularza.",
+        "logout": "Wyloguj się"
     },
     "form": {
         "name": "Imię",
