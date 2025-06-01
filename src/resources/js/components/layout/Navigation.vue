@@ -12,6 +12,9 @@
                     <RouterLink to="/news" class="nav-link">
                         {{ t('nav.news') }}
                     </RouterLink>
+                    <RouterLink to="/convert" class="nav-link">
+                        {{ t('nav.converter') }}
+                    </RouterLink>
                 </div>
 
                 <div class="flex items-center gap-2 flex-wrap justify-center md:justify-end w-full md:w-auto">
@@ -30,17 +33,18 @@
                         <Dropdown>
                             <template #trigger="{ toggle }">
                                 <button @click="toggle" class="user-button">
-                                    👤 {{ user.name ?? 'User' }}
+                                    <UserCircle class="w-4 h-4" />
+                                    <span>{{ user.name ?? 'User' }}</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
                             </template>
                             <div class="py-1 text-sm text-left">
-                                <RouterLink to="/profile" class="dropdown-link">
+                                <RouterLink to="/profile" class="dropdown-link text-blue-600 dark:text-blue-400">
                                     {{ t('nav.profile') }}
                                 </RouterLink>
-                                <RouterLink :to="user.role === 'admin' ? '/admin' : '/dashboard'" class="dropdown-link">
+                                <RouterLink :to="user.role === 'admin' ? '/admin' : '/dashboard'" class="dropdown-link text-blue-600 dark:text-blue-400">
                                     {{ t('nav.dashboard') }}
                                 </RouterLink>
                                 <button @click="handleLogout" class="dropdown-link text-red-600">
@@ -64,8 +68,7 @@
 
                     <button class="md:hidden ml-2" @click="toggleMobileMenu" aria-label="Toggle menu">
                         <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 6h16M4 12h16M4 18h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                 </div>
@@ -82,45 +85,15 @@
                 <RouterLink to="/" class="nav-link block">{{ t('nav.home') }}</RouterLink>
                 <RouterLink to="/about" class="nav-link block">{{ t('nav.about') }}</RouterLink>
                 <RouterLink to="/news" class="nav-link block">{{ t('nav.news') }}</RouterLink>
+                <RouterLink to="/convert" class="nav-link block">{{ t('nav.converter') }}</RouterLink>
             </div>
 
             <div class="border-t pt-4">
                 <ConverterPreview />
             </div>
-
-            <div class="border-t pt-4 space-y-2">
-                <template v-if="user">
-                    <div class="text-sm text-gray-700 dark:text-gray-200">
-                        👤 {{ user.name ?? 'User' }}
-                    </div>
-                    <RouterLink to="/profile" class="text-sm text-blue-600 hover:underline block">
-                        {{ t('nav.profile') }}
-                    </RouterLink>
-                    <RouterLink :to="user.role === 'admin' ? '/admin' : '/dashboard'" class="text-sm text-blue-600 hover:underline block">
-                        {{ t('nav.dashboard') }}
-                    </RouterLink>
-                    <button @click="handleLogout" class="text-sm text-red-600 hover:underline block">
-                        {{ t('nav.logout') }}
-                    </button>
-                </template>
-                <template v-else>
-                    <RouterLink to="/login" class="nav-link block text-sm">
-                        {{ t('nav.login') }}
-                    </RouterLink>
-                    <RouterLink to="/register" class="btn-primary block mt-2">
-                        {{ t('nav.register') }}
-                    </RouterLink>
-                </template>
-                <div class="mt-4 flex gap-2">
-                    <ThemeToggle />
-                    <LanguageSwitcher />
-                </div>
-            </div>
         </div>
     </transition>
 </template>
-
-
 
 <script setup>
 import { ref } from 'vue'
@@ -131,6 +104,7 @@ import ConverterPreview from '@/components/ConverterPreview.vue'
 import Dropdown from '@/components/ui/Dropdown.vue'
 import ThemeToggle from '@/components/ui/ThemeToggle.vue'
 import useUser from '@/stores/user'
+import { UserCircle } from 'lucide-vue-next'
 
 const { t } = useI18n()
 const router = useRouter()
