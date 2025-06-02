@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer.vue'
 </script>
 
 <template>
-    <div class="flex flex-col min-h-screen bg-gray-50 text-gray-900">
+    <div class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
         <Header />
         <Navigation />
         <main class="flex-1">
@@ -16,5 +16,3 @@ import Footer from '@/components/layout/Footer.vue'
         <Footer />
     </div>
 </template>
-
-

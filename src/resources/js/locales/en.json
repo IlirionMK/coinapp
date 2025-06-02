@@ -52,11 +52,12 @@
     "next": "Next",
     "about": {
         "title": "About the Project",
-        "description1": "This is a course project developed as part of web development practice. It focuses on working with external APIs, background data synchronization, SPA architecture, and user interaction through a simple interface.",
-        "description2": "The application loads cryptocurrency data from the CoinGecko API, saves it to a local database, and updates it automatically every 10 minutes using Laravel's scheduler.",
-        "description3": "The converter allows quick value conversion between cryptocurrencies based on the latest available prices.",
+        "description1": "CoinApp is a modern single-page web application (SPA) built to provide cryptocurrency price tracking, news, subscriptions, and conversion tools.",
+        "description2": "Users can register, log in, subscribe to coin price alerts, and receive email notifications based on customizable thresholds and frequency. News are fetched from CryptoPanic API and filtered by coin or keywords.",
+        "description3": "The project is fully responsive, supports dark mode, and is built with best practices using Laravel, Vue 3, Tailwind CSS, Docker, PostgreSQL, and Redis.",
         "stack": "The project uses the following technologies:"
-    },
+    }
+,
     "profile": {
         "title": "My Profile",
         "name": "Name",

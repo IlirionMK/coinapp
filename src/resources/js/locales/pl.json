@@ -52,11 +52,12 @@
     "next": "Następna",
     "about": {
         "title": "O projekcie",
-        "description1": "To projekt zaliczeniowy stworzony w ramach ćwiczeń z programowania aplikacji webowych. Skupia się na pracy z zewnętrznym API, synchronizacji danych w tle, architekturze SPA oraz podstawowej interakcji z użytkownikiem.",
-        "description2": "Aplikacja pobiera dane o kryptowalutach z API CoinGecko, zapisuje je w lokalnej bazie danych i automatycznie aktualizuje co 10 minut za pomocą harmonogramu Laravel.",
-        "description3": "Wbudowany konwerter umożliwia szybkie przeliczanie wartości między kryptowalutami na podstawie najnowszych danych.",
+        "description1": "CoinApp to nowoczesna aplikacja internetowa typu SPA do śledzenia cen kryptowalut, przeglądania wiadomości, subskrypcji i konwersji walut.",
+        "description2": "Użytkownicy mogą się rejestrować, logować, subskrybować alerty cenowe dla kryptowalut i otrzymywać powiadomienia e-mail na podstawie progów i częstotliwości. Wiadomości są pobierane z API CryptoPanic i można je filtrować według monety lub słów kluczowych.",
+        "description3": "Projekt jest w pełni responsywny, obsługuje tryb ciemny i został zbudowany zgodnie z dobrymi praktykami z użyciem Laravel, Vue 3, Tailwind CSS, Dockera, PostgreSQL i Redis.",
         "stack": "Projekt wykorzystuje następujące technologie:"
-    },
+    }
+,
     "profile": {
         "title": "Mój profil",
         "name": "Imię",
