@@ -2,4 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Autofill background fix for dark mode */
+input:-webkit-autofill {
+    background-color: #374151 !important;
+    color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+
+
 

@@ -167,7 +167,16 @@
         "banned": "Twoje konto zostało zablokowane.",
         "register_success": "Rejestracja zakończona sukcesem. Sprawdź swój e-mail.",
         "register_error": "Rejestracja nie powiodła się. Sprawdź dane formularza.",
-        "logout": "Wyloguj się"
+        "logout": "Wyloguj się",
+        "send_link": "Wyślij link resetujący",
+        "sending": "Wysyłanie...",
+        "success_reset_sent": "Link do resetu hasła został wysłany na Twój adres e-mail.",
+        "forgot_password_info": "Podaj swój e-mail, a wyślemy Ci link do zresetowania hasła.",
+        "reset_password": "Zresetuj swoje hasło",
+        "resetting": "Resetowanie...",
+        "reset_success": "Hasło zostało zresetowane. Możesz się teraz zalogować.",
+        "reset_failed": "Nie udało się zresetować hasła. Spróbuj ponownie."
+
     },
     "form": {
         "name": "Imię",

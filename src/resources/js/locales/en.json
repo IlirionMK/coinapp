@@ -136,7 +136,15 @@
         "banned": "Your account has been banned.",
         "register_success": "Registration successful. Please verify your email.",
         "register_error": "Registration failed. Please check your input.",
-        "logout": "Logout"
+        "logout": "Logout",
+        "send_link": "Send reset link",
+        "sending": "Sending...",
+        "success_reset_sent": "Password reset link sent to your email.",
+        "forgot_password_info": "Enter your email and we’ll send you a password reset link.",
+        "reset_password": "Reset your password",
+        "resetting": "Resetting...",
+        "reset_success": "Password reset successfully. You can now log in.",
+        "reset_failed": "Password reset failed. Please try again."
     },
     "dashboard": {
         "title": "Dashboard",
