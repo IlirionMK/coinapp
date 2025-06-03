@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('notify:coin-subscribers')->everyFiveMinutes()->withoutOverlapping();
 
         //$schedule->job(new SyncNewsFromApi)->everyTenMinutes();
-        $schedule->command('log:test')->everyTenMinutes();
+        //$schedule->command('log:test')->everyTenMinutes();
     }
 
 

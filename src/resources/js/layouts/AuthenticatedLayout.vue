@@ -25,20 +25,7 @@ const { t } = useI18n()
 
                 <div class="flex items-center gap-3 order-2">
                     <ThemeToggle />
-                    <LanguageSwitcher
-                        class="flex gap-1
-                   [&>button]:px-2
-                   [&>button]:py-1
-                   [&>button]:rounded
-                   [&>button]:text-sm
-                   [&>button]:transition
-                   [&>button]:bg-gray-200
-                   dark:[&>button]:bg-gray-700
-                   [&>button]:text-gray-700
-                   dark:[&>button]:text-gray-200
-                   [&>button]:hover:bg-gray-300
-                   dark:[&>button]:hover:bg-gray-600"
-                    />
+                    <LanguageSwitcher/>
                     <button
                         @click="logout(router)"
                         class="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline"

@@ -36,7 +36,9 @@
     },
     "pagination": {
         "prev": "Poprzednia",
-        "next": "Następna"
+        "next": "Następna",
+        "page": "Strona",
+        "of": "z"
     },
     "loading": "Ładowanie",
     "name": "Nazwa",
@@ -80,6 +82,15 @@
         "back_to_dashboard": "Powrót do panelu"
     },
     "admin": {
+
+        "user_deleted": "Użytkownik :email został usunięty.",
+        "error_deleting": "Błąd usuwania użytkownika: :message",
+        "user_status_changed": "Status użytkownika :email został zmieniony: :action.",
+        "error_banning": "Błąd zmiany statusu: :message",
+        "email_verified": "Użytkownik :email został zweryfikowany.",
+        "error_verifying": "Błąd weryfikacji adresu e-mail: :message",
+        "unbanned": "odblokowany",
+        "banned_action": "zablokowany",
         "users_title": "Zarządzanie użytkownikami",
         "search_placeholder": "Szukaj po imieniu lub e-mailu...",
         "sort_name": "Sortuj wg imienia",
@@ -97,9 +108,7 @@
         "delete": "Usuń",
         "active": "Aktywny",
         "banned": "Zbanowany",
-        "prev": "← Poprzednia",
-        "next": "Następna →",
-        "page": "Strona {current} z {total}",
+
         "confirm_ban": "Czy na pewno chcesz {action} użytkownika {email}?",
         "confirm_verify": "Zweryfikować e-mail użytkownika {email}?",
         "confirm_delete": "Usunąć użytkownika {email}?"
@@ -142,7 +151,9 @@
         "unsubscribe": "Anuluj subskrypcję",
         "frequency_instant": "Natychmiast",
         "frequency_daily": "Codziennie",
-        "frequency_none": "Nigdy"
+        "frequency_none": "Nigdy",
+        "welcome": "Witaj"
+
     },
     "delete": "Usuń",
     "cancel": "Anuluj",

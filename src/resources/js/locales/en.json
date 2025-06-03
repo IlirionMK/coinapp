@@ -35,8 +35,10 @@
         "clear_filters": "Clear filters"
     },
     "pagination": {
-        "prev": "Prev",
-        "next": "Next"
+        "prev": "Previous",
+        "next": "Next",
+        "page": "Page",
+        "of": "of"
     },
     "loading": "Loading",
     "name": "Name",
@@ -79,6 +81,7 @@
         "account_deleted": "Your account has been deleted.",
         "back_to_dashboard": "Back to Dashboard"
     },
+
     "admin": {
         "users_title": "User Management",
         "search_placeholder": "Search by name or email...",
@@ -102,8 +105,17 @@
         "page": "Page {current} of {total}",
         "confirm_ban": "Are you sure you want to {action} user {email}?",
         "confirm_verify": "Verify email for {email}?",
-        "confirm_delete": "Delete user {email}?"
+        "confirm_delete": "Delete user {email}?",
+        "user_deleted": "User :email has been deleted.",
+        "error_deleting": "Error deleting user: :message",
+        "user_status_changed": "User :email has been :action.",
+        "error_banning": "Error updating status: :message",
+        "email_verified": "User :email has been verified.",
+        "error_verifying": "Error verifying email: :message",
+        "unbanned": "unbanned",
+        "banned_action": "banned"
     },
+
     "verify": {
         "title": "Verify your email",
         "instructions": "Please check your inbox and click the verification link.",
@@ -164,8 +176,8 @@
         "unsubscribe": "Unsubscribe",
         "frequency_instant": "Instant",
         "frequency_daily": "Daily",
-        "frequency_none": "None"
-
+        "frequency_none": "None",
+        "welcome": "Welcome"
     },
     "form": {
         "name": "Name",

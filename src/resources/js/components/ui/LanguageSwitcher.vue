@@ -5,10 +5,10 @@
             :key="lng"
             @click="switchLang(lng)"
             :class="[
-                'px-3 py-1 rounded text-sm font-semibold',
+                'px-3 py-1 rounded text-sm font-semibold transition-colors duration-150',
                 locale.value === lng
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 hover:bg-gray-300'
+                    ? 'bg-blue-600 text-white dark:bg-blue-500 dark:text-white'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
             ]"
         >
             {{ lng.toUpperCase() }}

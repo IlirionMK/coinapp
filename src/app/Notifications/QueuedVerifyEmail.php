@@ -13,7 +13,7 @@ class QueuedVerifyEmail extends VerifyEmail implements ShouldQueue
 
     public function via($notifiable)
     {
-        Log::info('📧 Отправка письма подтверждения email', [
+        Log::info('[EMAIL] verify sent', [
             'user_id' => $notifiable->id,
             'email' => $notifiable->email,
             'time' => now()->toDateTimeString(),
