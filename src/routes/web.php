@@ -2,20 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\EmailVerificationController;
-use Illuminate\Support\Facades\Artisan;
-
-Route::get('/', fn () => 'Laravel is running');
-
-Route::get('/init', function () {
-    try {
-        Artisan::call('key:generate');
-        Artisan::call('migrate', ['--force' => true]);
-        Artisan::call('coins:sync');
-        return 'Initialization completed successfully.';
-    } catch (\Throwable $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
 
 
 
