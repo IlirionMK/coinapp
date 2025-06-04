@@ -2,5 +2,14 @@
   "build": {
     "builder": "docker",
     "dockerfilePath": "src/Dockerfile"
+  },
+  "deploy": {
+    "startCommand": null,
+    "healthcheckPath": "/",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  },
+  "experimental": {
+    "port": 8080
   }
 }
