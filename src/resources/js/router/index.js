@@ -1,42 +1,52 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from '../pages/Home.vue'
-import Convert from '../pages/Convert.vue'
-import About from '../pages/About.vue'
-import Login from '../pages/Login.vue'
-import Register from '../pages/Register.vue'
-import Dashboard from '../pages/Dashboard.vue'
-import AdminDashboard from '../pages/AdminDashboard.vue'
-import SessionExpired from '../pages/SessionExpired.vue'
-import Profile from '../pages/Profile.vue'
-import ChangePassword from '../pages/ChangePassword.vue'
-import ForgotPassword from '../pages/ForgotPassword.vue'
-import ResetPassword from '../pages/ResetPassword.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 
 import useUser from '@/stores/user'
 
-const routes = [
-    { path: '/', name: 'home', component: Home, meta: { layout: 'DefaultLayout' } },
-    { path: '/convert', name: 'convert', component: Convert, meta: { layout: 'DefaultLayout' } },
-    { path: '/about', name: 'about', component: About, meta: { layout: 'DefaultLayout' } },
-    { path: '/login', name: 'login', component: Login, meta: { layout: 'DefaultLayout', guestOnly: true } },
-    { path: '/register', name: 'register', component: Register, meta: { layout: 'DefaultLayout', guestOnly: true } },
-    { path: '/forgot-password', name: 'forgot-password', component: ForgotPassword, meta: { layout: 'DefaultLayout', guestOnly: true } },
-    { path: '/reset-password/:token', name: 'reset-password', component: ResetPassword, meta: { layout: 'DefaultLayout', guestOnly: true } },
-    { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
-    { path: '/profile', name: 'profile', component: Profile, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
-    { path: '/profile/password', name: 'profile.password', component: ChangePassword, meta: { layout: 'AuthenticatedLayout', requiresAuth: true } },
-    { path: '/admin', name: 'admin.dashboard', component: AdminDashboard, meta: { layout: 'AdminLayout', requiresAuth: true, requiresAdmin: true } },
-    { path: '/verify-email', name: 'verify-email', component: () => import('../pages/VerifyEmail.vue'), meta: { layout: 'DefaultLayout' } },
-    { path: '/email-verified', name: 'email-verified', component: () => import('../pages/EmailVerified.vue'), meta: { layout: 'DefaultLayout' } },
-    { path: '/session-expired', name: 'session-expired', component: SessionExpired, meta: { layout: 'DefaultLayout' } },
-    { path: '/403', name: 'forbidden', component: () => import('@/pages/errors/Forbidden.vue') },
-    { path: '/news', name: 'news', component: () => import('@/pages/News.vue'), meta: { requiresAuth: false } },
-]
-
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes: [
+        {
+            path: '/',
+            component: DefaultLayout,
+            children: [
+                { path: '', name: 'home', component: () => import('@/pages/Home.vue') },
+                { path: 'convert', name: 'convert', component: () => import('@/pages/Convert.vue') },
+                { path: 'about', name: 'about', component: () => import('@/pages/About.vue') },
+                { path: 'login', name: 'login', component: () => import('@/pages/Login.vue'), meta: { guestOnly: true } },
+                { path: 'register', name: 'register', component: () => import('@/pages/Register.vue'), meta: { guestOnly: true } },
+                { path: 'forgot-password', name: 'forgot-password', component: () => import('@/pages/ForgotPassword.vue'), meta: { guestOnly: true } },
+                { path: 'reset-password/:token', name: 'reset-password', component: () => import('@/pages/ResetPassword.vue'), meta: { guestOnly: true } },
+                { path: 'verify-email', name: 'verify-email', component: () => import('@/pages/VerifyEmail.vue') },
+                { path: 'email-verified', name: 'email-verified', component: () => import('@/pages/EmailVerified.vue') },
+                { path: 'session-expired', name: 'session-expired', component: () => import('@/pages/SessionExpired.vue') },
+                { path: 'news', name: 'news', component: () => import('@/pages/News.vue') },
+                { path: '403', name: 'forbidden', component: () => import('@/pages/errors/Forbidden.vue') },
+            ],
+        },
+        {
+            path: '/',
+            component: AuthenticatedLayout,
+            meta: { requiresAuth: true },
+            children: [
+                { path: 'dashboard', name: 'dashboard', component: () => import('@/pages/Dashboard.vue') },
+                { path: 'profile', name: 'profile', component: () => import('@/pages/Profile.vue') },
+                { path: 'profile/password', name: 'profile.password', component: () => import('@/pages/ChangePassword.vue') },
+            ],
+        },
+        {
+            path: '/admin',
+            component: AdminLayout,
+            meta: { requiresAuth: true, requiresAdmin: true },
+            children: [
+                { path: '', name: 'admin.dashboard', component: () => import('@/pages/AdminDashboard.vue') },
+                { path: 'users', name: 'admin.users', component: () => import('@/components/admin/AdminUserList.vue') },
+            ],
+        },
+    ],
 })
 
 router.beforeEach(async (to, from, next) => {

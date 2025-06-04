@@ -5,8 +5,10 @@
                 {{ $t('dashboard.title') }}
             </h1>
 
-            <!-- User Info -->
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-center sm:text-left space-y-1">
+            <div
+                v-if="user"
+                class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-center sm:text-left space-y-1"
+            >
                 <p class="text-gray-800 dark:text-gray-100 text-sm">
                     <strong>{{ $t('dashboard.name') }}:</strong> {{ user.name }}
                 </p>
@@ -21,7 +23,19 @@
                 </RouterLink>
             </div>
 
-            <!-- Subscriptions -->
+            <div
+                v-else
+                class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-center sm:text-left space-y-1 text-gray-500 dark:text-gray-300"
+            >
+                <p>{{ $t('dashboard.user_info_not_available') || 'User information not available. Please log in.' }}</p>
+                <RouterLink
+                    to="/login"
+                    class="inline-block text-blue-600 dark:text-blue-400 hover:underline text-sm mt-1"
+                >
+                    {{ $t('dashboard.login_now') || 'Login now' }}
+                </RouterLink>
+            </div>
+
             <div class="bg-white dark:bg-gray-800 p-4 sm:p-5 rounded-xl shadow transition-colors">
                 <h2 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
                     {{ $t('dashboard.subscriptions') }}
@@ -67,7 +81,7 @@
                                     <select
                                         v-model="sub.notification_frequency"
                                         class="border rounded px-1 pr-5 py-1 w-full sm:w-auto bg-white dark:bg-gray-700
-                             border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm"
+                                               border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm"
                                     >
                                         <option value="instant">{{ $t('dashboard.frequency_instant') }}</option>
                                         <option value="daily">{{ $t('dashboard.frequency_daily') }}</option>
@@ -82,7 +96,7 @@
                                         max="100"
                                         step="0.01"
                                         class="border rounded px-2 py-1 w-16 bg-white dark:bg-gray-700
-                             border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm"
+                                               border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm"
                                     />
                                 </td>
                                 <td class="px-1 py-1 h-[36px]">
@@ -134,15 +148,15 @@ const sortAsc = ref(true)
 const sortedSubscriptions = computed(() => {
     if (!sortKey.value) return subscriptions.value
     return [...subscriptions.value].sort((a, b) => {
-        let aValue, bValue
+        let aValue = null, bValue = null
         switch (sortKey.value) {
             case 'symbol':
-                aValue = a.coin.symbol
-                bValue = b.coin.symbol
+                aValue = a.coin?.symbol
+                bValue = b.coin?.symbol
                 break
             case 'price':
-                aValue = a.coin.price
-                bValue = b.coin.price
+                aValue = a.coin?.price
+                bValue = b.coin?.price
                 break
             case 'frequency':
                 aValue = a.notification_frequency
@@ -153,9 +167,13 @@ const sortedSubscriptions = computed(() => {
                 bValue = b.change_threshold
                 break
         }
+
+        if (aValue === null || aValue === undefined) return sortAsc.value ? -1 : 1
+        if (bValue === null || bValue === undefined) return sortAsc.value ? 1 : -1
+
         return sortAsc.value
-            ? aValue > bValue ? 1 : -1
-            : aValue < bValue ? 1 : -1
+            ? aValue > bValue ? 1 : (aValue < bValue ? -1 : 0)
+            : aValue < bValue ? 1 : (aValue > bValue ? -1 : 0)
     })
 })
 

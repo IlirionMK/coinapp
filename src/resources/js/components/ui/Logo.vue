@@ -1,27 +1,22 @@
- <template>
-    <div class="flex items-center gap-3">
-        <svg
-            class="w-10 h-10"
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <circle cx="50" cy="50" r="48" fill="#0f172a" stroke="#fff" stroke-width="4" />
-            <path d="M50,50 L85,35 A45,45 0 0,1 65,85 Z" fill="#f7931a" /> <!-- BTC -->
-            <path d="M50,50 L65,85 A45,45 0 0,1 35,85 Z" fill="#26a17b" /> <!-- USDT -->
-            <path d="M50,50 L35,85 A45,45 0 0,1 15,35 Z" fill="#00aaff" /> <!-- XRP -->
-            <path d="M50,50 L15,35 A45,45 0 0,1 85,35 Z" fill="#627eea" /> <!-- ETH -->
-            <circle cx="50" cy="50" r="14" fill="#ffffff" stroke="#000000" stroke-width="2" />
-            <text
-                x="50%" y="54%"
-                text-anchor="middle"
-                fill="#000000"
-                font-size="16"
-                font-weight="bold"
-                font-family="Arial"
-            >
-                C
-            </text>
-        </svg>
-        <span class="text-2xl font-bold text-white">CoinApp</span>
-    </div>
+<template>
+    <header class="bg-gray-900 shadow-sm py-4 w-full">
+        <div class="max-w-screen-xl mx-auto px-4 flex items-center gap-2">
+            <RouterLink to="/" class="inline-flex items-center gap-2 text-white text-xl font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="h-10 w-10">
+                    <circle cx="128" cy="128" r="120" fill="none" stroke="white" stroke-width="12"/>
+
+                    <polygon points="128,45 84,71 84,101 128,128 172,101 172,71" fill="#DAA520"/>
+
+                    <polygon points="128,211 172,185 172,155 128,128 84,155 84,185" fill="#40E0D0"/>
+
+                    <polygon points="128,97 100,113 100,143 128,159 156,143 156,113" fill="#FFFFFF"/>
+                </svg>
+                CoinApp
+            </RouterLink>
+        </div>
+    </header>
 </template>
+
+<script setup>
+import { RouterLink } from 'vue-router'
+</script>

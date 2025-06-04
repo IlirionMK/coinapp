@@ -38,7 +38,7 @@ const { t } = useI18n()
         </header>
 
         <main class="flex-1 container mx-auto px-4 py-4">
-            <slot />
+            <router-view />
         </main>
 
         <footer class="text-center text-sm py-4 text-gray-500 dark:text-gray-400">
