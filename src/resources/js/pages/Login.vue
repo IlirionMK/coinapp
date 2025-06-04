@@ -66,7 +66,7 @@ import { useI18n } from 'vue-i18n'
 import useUser from '@/stores/user'
 import Toast from '@/components/ui/Toast.vue'
 
-const { login } = useUser()
+const { login, user } = useUser()
 const router = useRouter()
 const { t } = useI18n()
 const toastRef = ref()
@@ -81,7 +81,10 @@ const submit = async () => {
 
         toastRef.value?.show(t('auth.login_success'), 'success')
 
-        const redirect = localStorage.getItem('logoutRedirectPath') || '/dashboard'
+        let redirect = localStorage.getItem('logoutRedirectPath')
+        if (!redirect) {
+            redirect = user.value?.role === 'admin' ? '/admin' : '/dashboard'
+        }
         localStorage.removeItem('logoutRedirectPath')
         await router.push(redirect)
     } catch (e) {
